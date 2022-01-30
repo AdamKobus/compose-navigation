@@ -1,0 +1,28 @@
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - Composable
+
+formatting:
+  ArgumentListWrapping:
+    maxLineLength: 140
+  MaximumLineLength:
+    maxLineLength: 140
+  ParameterListWrapping:
+    maxLineLength: 140
+
+style:
+  MaxLineLength:
+    maxLineLength: 140
+  UnusedPrivateMember:
+    active: true
+    allowedNames: '(_|ignored|expected|serialVersionUID|.*Preview)'
+  UnnecessaryAbstractClass:
+    active: true
+    ignoreAnnotated:
+      - 'Module'
+
+complexity:
+  TooManyFunctions:
+    # It's very easy to run into function limit with Compose
+    active: false

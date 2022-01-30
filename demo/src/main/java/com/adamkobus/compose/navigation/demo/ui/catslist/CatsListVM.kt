@@ -1,0 +1,81 @@
+package com.adamkobus.compose.navigation.demo.ui.catslist
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.demo.R
+import com.adamkobus.compose.navigation.demo.nav.FromCatsList
+import com.adamkobus.compose.navigation.demo.nav.FromGlobal
+import com.adamkobus.compose.navigation.demo.ui.Elevation
+import com.adamkobus.compose.navigation.demo.ui.ext.onStartStop
+import com.adamkobus.compose.navigation.demo.ui.topbar.DemoColors
+import com.adamkobus.compose.navigation.demo.ui.topbar.TopBarStateSource
+import com.adamkobus.compose.navigation.democore.model.CatsSource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class CatsListVM @Inject constructor(
+    private val navActionConsumer: NavActionConsumer,
+    private val topBarStateSource: TopBarStateSource,
+    private val catsSource: CatsSource
+) : ViewModel(), LifecycleEventObserver {
+
+    private val _listState = mutableStateOf<CatsListState>(CatsListState.Loading)
+    val listState: State<CatsListState> = _listState
+
+    private var catsListRefreshJob: Job? = null
+
+    val interactions = CatsListInteractions(
+        onCatListItemSelected = {
+            navActionConsumer.offer(FromCatsList.ToCatDetails(it.id))
+        }
+    )
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        event.onStartStop(onStart = ::onStart, onStop = ::onStop)
+    }
+
+    private fun onStart() {
+        cleanUp()
+        topBarStateSource.setUpTopBar {
+            titleResId = R.string.cats_list_title
+            elevation = Elevation.AppBar
+            background = DemoColors.PrimarySurface
+            action {
+                icon = Icons.Filled.Settings
+                onClick = { onSettingsSelected() }
+            }
+        }
+        catsListRefreshJob = viewModelScope.launch {
+            catsSource.observeCats().collect {
+                _listState.value = CatsListState.Loaded(it)
+            }
+        }
+    }
+
+    private fun onStop() {
+        cleanUp()
+    }
+
+    private fun cleanUp() {
+        catsListRefreshJob?.cancel()
+        catsListRefreshJob = null
+    }
+
+    private fun onSettingsSelected() {
+        viewModelScope.launch {
+            navActionConsumer.offer(FromGlobal.ToSettings)
+        }
+    }
+}

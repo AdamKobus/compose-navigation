@@ -1,0 +1,34 @@
+import com.adamkobus.compose.navigation.Libs
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+
+}
+
+dependencies {
+    implementation Libs.AndroidX.Core
+    implementation Libs.AndroidX.Appcompat
+    implementation Libs.Kotlin.Coroutines
+
+    // hilt
+    implementation Libs.Google.Hilt
+    implementation Libs.Google.HiltNavigationCompose
+    kapt Libs.Google.HiltCompiler
+
+    // compose
+    implementation Libs.Compose.Ui
+    implementation Libs.Compose.Activity
+    implementation Libs.Compose.Material
+    implementation Libs.Compose.ToolingPreview
+    debugImplementation Libs.Compose.UiTooling
+
+    // testing
+    testImplementation Libs.Test.JUnit
+    testImplementation Libs.Test.Mockk
+}

@@ -1,0 +1,13 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "Compose Navigation"
+include ':demo'
+include ':composenav'
+include ':demo-core'
+include ':demo-settings'
+include ':demo-ui-commons'

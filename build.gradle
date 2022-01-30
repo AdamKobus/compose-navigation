@@ -1,0 +1,45 @@
+import com.adamkobus.compose.navigation.Libs
+
+apply plugin: "com.github.ben-manes.versions"
+
+buildscript {
+    ext {
+        // https://github.com/JLLeitschuh/ktlint-gradle/releases
+        ktlintPluginVersion = "10.2.1"
+
+        // https://github.com/detekt/detekt/releases
+        detektPluginVersion = "1.19.0"
+
+        // https://github.com/ben-manes/gradle-versions-plugin/releases
+        versionsPluginVersion = "0.41.0"
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Libs.KOTLIN_VERSION}"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:${Libs.HILT_VERSION}"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintPluginVersion"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektPluginVersion"
+        classpath "com.github.ben-manes:gradle-versions-plugin:$versionsPluginVersion"
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+allprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+        }
+    }
+}
+
+apply from: "gradle/android-setup.gradle"

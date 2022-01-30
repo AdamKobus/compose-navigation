@@ -1,0 +1,94 @@
+import com.adamkobus.compose.navigation.Libs
+
+def commitIndex = "git rev-list HEAD --count".execute().text.trim()
+def versionSuffix = rootProject.properties.getOrDefault("versionSuffix", "")
+
+ext {
+    projectVersionCode = commitIndex.toInteger()
+    projectVersionName = "1.0.$commitIndex$versionSuffix"
+}
+
+subprojects { subproject ->
+    pluginManager.withPlugin("kotlin-android") {
+        configureKotlinAndroid(subproject)
+    }
+
+    pluginManager.withPlugin("com.android.application") {
+        configureAndroidProject(subproject, true)
+    }
+
+    pluginManager.withPlugin("com.android.library") {
+        configureAndroidProject(subproject, false)
+    }
+}
+
+def configureAndroidProject(Project androidProject, boolean isApplication) {
+    androidProject.android {
+        compileSdkVersion 32
+
+        defaultConfig {
+            minSdkVersion 26
+            targetSdkVersion 32
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+            if (isApplication) {
+                versionCode projectVersionCode
+                versionName projectVersionName
+            }
+
+            vectorDrawables {
+                useSupportLibrary true
+            }
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_11
+            targetCompatibility JavaVersion.VERSION_11
+        }
+
+        buildFeatures {
+            compose true
+        }
+        composeOptions {
+            kotlinCompilerExtensionVersion Libs.COMPOSE_VERSION
+        }
+
+        packagingOptions {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
+        }
+    }
+}
+
+def configureKotlinAndroid(Project kotlinProject) {
+    kotlinProject.pluginManager.apply("org.jlleitschuh.gradle.ktlint")
+    kotlinProject.android {
+        kotlinOptions {
+            jvmTarget = '11'
+        }
+    }
+    kotlinProject.ktlint {
+        version = Libs.KTLINT_VERSION
+        outputColorName = "RED"
+        outputToConsole = true
+
+        reporters {
+            reporter "checkstyle"
+            reporter "plain"
+            reporter "sarif"
+        }
+        filter {
+            exclude("**/generated/**")
+        }
+    }
+    kotlinProject.pluginManager.apply("io.gitlab.arturbosch.detekt")
+    kotlinProject.detekt {
+        config = files("${rootProject.projectDir}/detekt/config/default.yml",
+                "${rootProject.projectDir}/detekt/config/custom.yml")
+        reports {
+            html.enabled = true
+            txt.enabled = true
+        }
+    }
+}
