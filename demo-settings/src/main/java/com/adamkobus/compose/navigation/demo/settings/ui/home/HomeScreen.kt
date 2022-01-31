@@ -15,7 +15,7 @@ import com.adamkobus.compose.navigation.demo.ui.Paddings
 
 @Composable
 internal fun HomeScreen() {
-    DemoAppBackground {
+    DemoAppBackground(topBar = true) {
         val vm = hiltViewModel<HomeScreenVM>()
         LifecycleAwareComponent(observer = vm)
         HomeScreenContent()

@@ -10,11 +10,11 @@ import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavActionConsumer
 import com.adamkobus.compose.navigation.data.NavAction
 import com.adamkobus.compose.navigation.demo.R
-import com.adamkobus.compose.navigation.demo.ui.Elevation
+import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarTitleState
 import com.adamkobus.compose.navigation.demo.ui.ext.onStartStop
-import com.adamkobus.compose.navigation.demo.ui.topbar.DemoColors
-import com.adamkobus.compose.navigation.demo.ui.topbar.TopBarStateSource
-import com.adamkobus.compose.navigation.demo.ui.topbar.backButton
 import com.adamkobus.compose.navigation.democore.data.DogInfo
 import com.adamkobus.compose.navigation.democore.model.DogsSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DogDetailsScreenVM @Inject constructor(
     private val dogsSource: DogsSource,
-    private val topBarState: TopBarStateSource,
+    private val topBarState: AppBarStateSource,
     private val navActionConsumer: NavActionConsumer
 ) : ViewModel(), LifecycleEventObserver {
 
@@ -35,6 +35,11 @@ class DogDetailsScreenVM @Inject constructor(
     private val dogId = MutableStateFlow<Int?>(null)
     private val _screenState = mutableStateOf<DogDetailsState>(DogDetailsState.Loading)
     val screenState: State<DogDetailsState> = _screenState
+
+    private val appBarState = AnimatedAppBarState(
+        titleState = AppBarTitleState(titleResId = R.string.dog_details_title),
+        iconState = AppBarIconState.back { onBackPressed() }
+    )
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         event.onStartStop(onStart = ::onStart, onStop = ::onStop)
@@ -61,12 +66,7 @@ class DogDetailsScreenVM @Inject constructor(
     }
 
     private fun setUpTopBar() {
-        topBarState.setUpTopBar {
-            titleResId = R.string.dog_details_title
-            background = DemoColors.PrimarySurface
-            elevation = Elevation.AppBar
-            backButton { onBackPressed() }
-        }
+        topBarState.offer(appBarState)
     }
 
     private fun onBackPressed() {

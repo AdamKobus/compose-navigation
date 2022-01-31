@@ -7,32 +7,33 @@ import androidx.lifecycle.ViewModel
 import com.adamkobus.compose.navigation.NavActionConsumer
 import com.adamkobus.compose.navigation.data.NavAction
 import com.adamkobus.compose.navigation.demo.settings.R
-import com.adamkobus.compose.navigation.demo.ui.Elevation
+import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarTitleState
 import com.adamkobus.compose.navigation.demo.ui.ext.onStart
-import com.adamkobus.compose.navigation.demo.ui.topbar.DemoColors
-import com.adamkobus.compose.navigation.demo.ui.topbar.TopBarStateSource
-import com.adamkobus.compose.navigation.demo.ui.topbar.backButton
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeScreenVM @Inject constructor(
     private val navActionConsumer: NavActionConsumer,
-    private val topBarStateSource: TopBarStateSource
+    private val appBarStateSource: AppBarStateSource
 ) : ViewModel(), LifecycleEventObserver {
+
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         event.onStart {
             updateTopBar()
         }
     }
 
+    private val appBarState = AnimatedAppBarState(
+        titleState = AppBarTitleState(titleResId = R.string.settings_title),
+        iconState = AppBarIconState.back { onBackClicked() }
+    )
+
     private fun updateTopBar() {
-        topBarStateSource.setUpTopBar {
-            titleResId = R.string.settings_title
-            background = DemoColors.PrimarySurface
-            elevation = Elevation.AppBar
-            backButton { onBackClicked() }
-        }
+        appBarStateSource.offer(appBarState)
     }
 
     private fun onBackClicked() {

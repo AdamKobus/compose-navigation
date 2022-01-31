@@ -10,11 +10,11 @@ import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavActionConsumer
 import com.adamkobus.compose.navigation.data.NavAction
 import com.adamkobus.compose.navigation.demo.R
-import com.adamkobus.compose.navigation.demo.ui.Elevation
+import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarTitleState
 import com.adamkobus.compose.navigation.demo.ui.ext.onStartStop
-import com.adamkobus.compose.navigation.demo.ui.topbar.DemoColors
-import com.adamkobus.compose.navigation.demo.ui.topbar.TopBarStateSource
-import com.adamkobus.compose.navigation.demo.ui.topbar.backButton
 import com.adamkobus.compose.navigation.democore.data.CatInfo
 import com.adamkobus.compose.navigation.democore.model.CatsSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,14 +27,23 @@ import javax.inject.Inject
 @HiltViewModel
 class CatDetailsScreenVM @Inject constructor(
     private val catsSource: CatsSource,
-    private val topBarState: TopBarStateSource,
     private val navActionConsumer: NavActionConsumer,
+    private val appBarStateSource: AppBarStateSource
 ) : ViewModel(), LifecycleEventObserver {
 
     private var catInfoRefreshJob: Job? = null
     private val catId = MutableStateFlow<Int?>(null)
     private val _screenState = mutableStateOf<CatDetailsState>(CatDetailsState.Loading)
     val screenState: State<CatDetailsState> = _screenState
+
+    private val appBarState = AnimatedAppBarState(
+        titleState = AppBarTitleState(titleResId = R.string.cat_details_title),
+        iconState = AppBarIconState.back { onBackPressed() }
+    )
+
+    private fun onBackPressed() {
+        navActionConsumer.offer(NavAction.Back)
+    }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         event.onStartStop(onStart = ::onStart, onStop = ::onStop)
@@ -61,16 +70,7 @@ class CatDetailsScreenVM @Inject constructor(
     }
 
     private fun setUpTopBar() {
-        topBarState.setUpTopBar {
-            titleResId = R.string.cat_details_title
-            background = DemoColors.PrimarySurface
-            elevation = Elevation.AppBar
-            backButton { onBackPressed() }
-        }
-    }
-
-    private fun onBackPressed() {
-        navActionConsumer.offer(NavAction.Back)
+        appBarStateSource.offer(appBarState)
     }
 
     private suspend fun onCatIdUpdated(id: Int?) {

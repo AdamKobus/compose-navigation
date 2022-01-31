@@ -21,4 +21,8 @@ interface INavDestination {
     val route: NavRoute
 
     operator fun plus(other: INavDestination): NavAction = NavAction(this, other)
+
+    infix fun to(other: INavDestination): NavAction {
+        return NavAction(this, other)
+    }
 }

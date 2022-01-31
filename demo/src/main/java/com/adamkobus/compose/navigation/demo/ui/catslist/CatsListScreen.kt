@@ -25,7 +25,7 @@ import com.adamkobus.compose.navigation.democore.data.CatInfo
 fun CatsListScreen() {
     val vm = hiltViewModel<CatsListVM>()
     LifecycleAwareComponent(observer = vm)
-    DemoAppBackground {
+    DemoAppBackground(topBar = true) {
         CatsListScreenContent(vm.listState.value, vm.interactions)
     }
 }

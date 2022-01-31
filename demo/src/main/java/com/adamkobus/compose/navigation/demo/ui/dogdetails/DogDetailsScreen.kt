@@ -28,7 +28,7 @@ fun DogDetailsScreen(dogId: Int) {
 
 @Composable
 fun DogDetailsScreenContent(screenState: DogDetailsState) {
-    DemoAppBackground {
+    DemoAppBackground(topBar = true) {
         when (screenState) {
             is DogDetailsState.Loading -> LoadingScreen()
             is DogDetailsState.Loaded -> DogDetails(screenState.dogInfo)

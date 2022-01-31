@@ -1,10 +1,7 @@
 package com.adamkobus.compose.navigation.demo.ui.catslist
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -14,10 +11,11 @@ import com.adamkobus.compose.navigation.NavActionConsumer
 import com.adamkobus.compose.navigation.demo.R
 import com.adamkobus.compose.navigation.demo.nav.FromCatsList
 import com.adamkobus.compose.navigation.demo.nav.FromGlobal
-import com.adamkobus.compose.navigation.demo.ui.Elevation
+import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarActionState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarTitleState
 import com.adamkobus.compose.navigation.demo.ui.ext.onStartStop
-import com.adamkobus.compose.navigation.demo.ui.topbar.DemoColors
-import com.adamkobus.compose.navigation.demo.ui.topbar.TopBarStateSource
 import com.adamkobus.compose.navigation.democore.model.CatsSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -27,12 +25,22 @@ import javax.inject.Inject
 @HiltViewModel
 class CatsListVM @Inject constructor(
     private val navActionConsumer: NavActionConsumer,
-    private val topBarStateSource: TopBarStateSource,
+    private val appBarStateSource: AppBarStateSource,
     private val catsSource: CatsSource
 ) : ViewModel(), LifecycleEventObserver {
 
     private val _listState = mutableStateOf<CatsListState>(CatsListState.Loading)
     val listState: State<CatsListState> = _listState
+
+    private val settingsAction = AppBarActionState.settings {
+        viewModelScope.launch {
+            navActionConsumer.offer(FromGlobal.ToSettings)
+        }
+    }
+    private val appBarState = AnimatedAppBarState(
+        titleState = AppBarTitleState(titleResId = R.string.cats_list_title),
+        actionsState = listOf(settingsAction)
+    )
 
     private var catsListRefreshJob: Job? = null
 
@@ -48,20 +56,16 @@ class CatsListVM @Inject constructor(
 
     private fun onStart() {
         cleanUp()
-        topBarStateSource.setUpTopBar {
-            titleResId = R.string.cats_list_title
-            elevation = Elevation.AppBar
-            background = DemoColors.PrimarySurface
-            action {
-                icon = Icons.Filled.Settings
-                onClick = { onSettingsSelected() }
-            }
-        }
+        setUpTopBar()
         catsListRefreshJob = viewModelScope.launch {
             catsSource.observeCats().collect {
                 _listState.value = CatsListState.Loaded(it)
             }
         }
+    }
+
+    private fun setUpTopBar() {
+        appBarStateSource.offer(appBarState)
     }
 
     private fun onStop() {
@@ -71,11 +75,5 @@ class CatsListVM @Inject constructor(
     private fun cleanUp() {
         catsListRefreshJob?.cancel()
         catsListRefreshJob = null
-    }
-
-    private fun onSettingsSelected() {
-        viewModelScope.launch {
-            navActionConsumer.offer(FromGlobal.ToSettings)
-        }
     }
 }

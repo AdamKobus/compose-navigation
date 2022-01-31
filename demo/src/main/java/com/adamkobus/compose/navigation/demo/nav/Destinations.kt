@@ -8,7 +8,7 @@ import com.adamkobus.compose.navigation.ext.getInt
 object Destinations {
 
     const val PARAM_CAT_ID = "catId"
-    const val PARAM_DOG_ID = "catId"
+    const val PARAM_DOG_ID = "dogId"
 
     val SplashScreen = NavDestination(AppGraph, "splashScreen")
 

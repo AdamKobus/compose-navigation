@@ -1,7 +1,5 @@
 package com.adamkobus.compose.navigation.demo.ui.dogslist
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.Lifecycle
@@ -13,10 +11,11 @@ import com.adamkobus.compose.navigation.NavActionConsumer
 import com.adamkobus.compose.navigation.demo.R
 import com.adamkobus.compose.navigation.demo.nav.FromDogsList
 import com.adamkobus.compose.navigation.demo.nav.FromGlobal
-import com.adamkobus.compose.navigation.demo.ui.Elevation
+import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarActionState
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
+import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarTitleState
 import com.adamkobus.compose.navigation.demo.ui.ext.onStartStop
-import com.adamkobus.compose.navigation.demo.ui.topbar.DemoColors
-import com.adamkobus.compose.navigation.demo.ui.topbar.TopBarStateSource
 import com.adamkobus.compose.navigation.democore.model.DogsSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -26,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DogsListVM @Inject constructor(
     private val navActionConsumer: NavActionConsumer,
-    private val topBarStateSource: TopBarStateSource,
+    private val appBarStateSource: AppBarStateSource,
     private val dogsSource: DogsSource
 ) : ViewModel(), LifecycleEventObserver {
 
@@ -37,8 +36,20 @@ class DogsListVM @Inject constructor(
 
     val interactions = DogsListInteractions(
         onDogsItemSelected = {
-            navActionConsumer.offer(FromDogsList.ToDogDetails(it.id))
+            viewModelScope.launch {
+                navActionConsumer.offer(FromDogsList.ToDogDetails(it.id))
+            }
         }
+    )
+
+    private val settingsAction = AppBarActionState.settings {
+        viewModelScope.launch {
+            navActionConsumer.offer(FromGlobal.ToSettings)
+        }
+    }
+    private val appBarState = AnimatedAppBarState(
+        titleState = AppBarTitleState(titleResId = R.string.dogs_list_title),
+        actionsState = listOf(settingsAction)
     )
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -47,20 +58,16 @@ class DogsListVM @Inject constructor(
 
     private fun onStart() {
         cleanUp()
-        topBarStateSource.setUpTopBar {
-            titleResId = R.string.dogs_list_title
-            elevation = Elevation.AppBar
-            background = DemoColors.PrimarySurface
-            action {
-                icon = Icons.Filled.Settings
-                onClick = { onSettingsSelected() }
-            }
-        }
+        setUpTopBar()
         dogsRefreshJob = viewModelScope.launch {
             dogsSource.observeDogs().collect {
                 _listState.value = DogsListState.Loaded(it)
             }
         }
+    }
+
+    private fun setUpTopBar() {
+        appBarStateSource.offer(appBarState)
     }
 
     private fun onStop() {
@@ -70,11 +77,5 @@ class DogsListVM @Inject constructor(
     private fun cleanUp() {
         dogsRefreshJob?.cancel()
         dogsRefreshJob = null
-    }
-
-    private fun onSettingsSelected() {
-        viewModelScope.launch {
-            navActionConsumer.offer(FromGlobal.ToSettings)
-        }
     }
 }
