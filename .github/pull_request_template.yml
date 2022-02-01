@@ -1,0 +1,27 @@
+### Changes
+
+_Describe what was added, modified or removed and for what purpose
+
+### Testing
+
+_Explain how can this change be tested it it's not clear based on unit tests_
+
+### Checklist
+
+#### General
+- [ ] PR targets the `develop` branch
+- [ ] PR is linked to the GitHub issue it resolves
+
+#### Source code and docs
+- [ ] Changelog is updated (fixes section for a bug, changes for anything that has been added / modified/ removed)
+- [ ] New code is covered by unit tests
+- [ ] Added ktdoc and updated README.md if API has changed
+- [ ] Made sure that unit tests pass
+- [ ] Made sure that `ktlintCheck` and `detekt` tasks produce no issues
+- [ ] Updated demo app if needed
+
+### Reviewer Checklist
+- [ ] Library builds
+- [ ] Demo app works
+- [ ] Changes work as expected
+- [ ] Changelog and documentation updates reflect the modification made in this PR

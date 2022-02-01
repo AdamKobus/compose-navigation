@@ -13,14 +13,14 @@ import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarHeight
 
 @Composable
 fun DemoAppBackground(
-    topBar: Boolean = false,
+    usesTopBar: Boolean = false,
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
-            .padding(top = if (topBar) AppBarHeight else 0.dp)
+            .padding(top = if (usesTopBar) AppBarHeight else 0.dp)
     ) {
         content()
     }

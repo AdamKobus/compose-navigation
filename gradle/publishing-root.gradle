@@ -1,0 +1,45 @@
+rootProject.ext["adamkobusSonatypeUsername"] = ""
+rootProject.ext["adamkobusSonatypePassword"] = ""
+rootProject.ext["adamkobusSonatypeStagingProfileId"] = ""
+
+def loadProperties(path) {
+    File propertiesFile = project.rootProject.file(path)
+
+    if (propertiesFile.exists()) {
+        Properties props = new Properties()
+        new FileInputStream(propertiesFile).withCloseable { is -> props.load(is) }
+        props.each { name, value -> rootProject.ext[name] = value }
+    }
+}
+
+loadProperties("local.properties")
+loadProperties("publishing.properties")
+
+rootProject.ext.readParam = { name ->
+    def value = properties.get(name)
+    if (value == null) {
+        value = rootProject.ext[name]
+    }
+    if (value == null) {
+        value = System.getenv().getOrDefault(name, "")
+    }
+    rootProject.ext[name] = value
+}
+
+readParam("adamkobusSonatypeUsername")
+readParam("adamkobusSonatypePassword")
+readParam("adamkobusSonatypeStagingProfileId")
+
+rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPHOT", "true")
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            stagingProfileId = adamkobusSonatypeStagingProfileId
+            username = adamkobusSonatypeUsername
+            password = adamkobusSonatypePassword
+        }
+    }
+}

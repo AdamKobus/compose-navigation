@@ -1,5 +1,6 @@
 import com.adamkobus.compose.navigation.Libs
 
+apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: "com.github.ben-manes.versions"
 
 buildscript {
@@ -12,6 +13,9 @@ buildscript {
 
         // https://github.com/ben-manes/gradle-versions-plugin/releases
         versionsPluginVersion = "0.41.0"
+
+        // https://github.com/gradle-nexus/publish-plugin/releases
+        publishPluginVersion = "1.1.0"
     }
 
     repositories {
@@ -27,6 +31,7 @@ buildscript {
         classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintPluginVersion"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektPluginVersion"
         classpath "com.github.ben-manes:gradle-versions-plugin:$versionsPluginVersion"
+        classpath "io.github.gradle-nexus:publish-plugin:$publishPluginVersion"
     }
 }
 
@@ -42,4 +47,6 @@ allprojects {
     }
 }
 
+apply from: "gradle/dependency-updates.gradle"
 apply from: "gradle/android-setup.gradle"
+apply from: "gradle/publishing-root.gradle"
