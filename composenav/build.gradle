@@ -35,3 +35,17 @@ dependencies {
     testImplementation Libs.Test.JUnit
     testImplementation Libs.Test.Mockk
 }
+
+def VERSION_BASE = "0.0.2"
+def VERSION_SUFFIX = ""
+if (rootProject.ext["snapshot"] == "true") {
+    VERSION_SUFFIX = "-snapshot"
+}
+
+ext {
+    PUBLISH_GROUP_ID = "com.adamkobus"
+    PUBLISH_ARTIFACT_ID = "compose-navigation"
+    PUBLISH_VERSION = "$VERSION_BASE$VERSION_SUFFIX"
+}
+
+apply from: "${rootProject.projectDir}/gradle/publishing-module.gradle"

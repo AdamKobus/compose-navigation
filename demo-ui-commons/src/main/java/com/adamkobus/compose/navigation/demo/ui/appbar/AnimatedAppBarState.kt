@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.adamkobus.compose.navigation.demo.ui.R
+import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarDefaults.DefaultStyle
 
 data class AnimatedAppBarState(
     val titleState: AppBarTitleState? = null,
@@ -20,11 +21,12 @@ data class AnimatedAppBarState(
 }
 
 data class AppBarTitleState(
+    val style: Int = DefaultStyle,
     @StringRes private val titleResId: Int? = null,
     private val title: String? = null
 ) {
     override fun equals(other: Any?): Boolean {
-        return other is AppBarTitleState && other.titleResId == titleResId && other.title == title
+        return other is AppBarTitleState && other.style == style && other.titleResId == titleResId && other.title == title
     }
 
     @Composable
@@ -44,6 +46,7 @@ class AppBarIconState(
     @StringRes val contentDescriptionResId: Int?,
     val onClick: (() -> Unit) = {},
     val iconId: Int = nextIconId,
+    val style: Int = AnimatedAppBarDefaults.DefaultStyle
 ) {
     override fun equals(other: Any?): Boolean {
         return other is AppBarIconState && other.iconId == iconId
