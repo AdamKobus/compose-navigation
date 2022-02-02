@@ -15,10 +15,10 @@ object SettingsGraph : NavGraph {
 fun NavGraphBuilder.settingsGraph() {
     navigation(
         route = SettingsGraph.name,
-        startDestination = Destinations.Home.route.buildRoute()
+        startDestination = Destinations.SettingsHome.route.buildRoute()
     ) {
 
-        composableDestination(Destinations.Home) {
+        composableDestination(Destinations.SettingsHome) {
             HomeScreen()
         }
     }

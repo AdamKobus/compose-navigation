@@ -4,6 +4,6 @@ val GlobalGraph = object : NavGraph {
     override val name: String = "global"
 }
 
-val GlobalDestination = NavDestination(GlobalGraph, "any")
+val GlobalDestination = navDestination(GlobalGraph, "any")
 
-val PopBackStackDestination = NavDestination(GlobalGraph, "back")
+val PopBackStackDestination = navDestination(GlobalGraph, "back")

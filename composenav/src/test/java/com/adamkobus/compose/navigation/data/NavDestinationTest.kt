@@ -13,7 +13,7 @@ class NavDestinationTest {
     fun `GIVEN using default route implementation WHEN route THEN proper route is returned`() {
         // given
         every { graph.name } returns "graph"
-        val testSubject = NavDestination(graph, "path")
+        val testSubject = navDestination(graph, "path")
 
         // when
         val obtained = testSubject.route.buildRoute()
