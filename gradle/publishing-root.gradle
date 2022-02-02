@@ -4,7 +4,7 @@ rootProject.ext["adamkobusSonatypeStagingProfileId"] = ""
 
 rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPHOT", "true")
 
-def VERSION_BASE = "0.0.3"
+def VERSION_BASE = "0.0.4"
 def VERSION_SUFFIX = ""
 if (rootProject.ext["snapshot"] == "true") {
     VERSION_SUFFIX = "-SNAPSHOT"

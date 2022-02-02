@@ -1,7 +1,7 @@
 package com.adamkobus.compose.navigation.demo.settings.nav
 
-import com.adamkobus.compose.navigation.data.NavDestination
+import com.adamkobus.compose.navigation.data.navDestination
 
 internal object Destinations {
-    val Home = NavDestination(SettingsGraph, "home")
+    val SettingsHome = navDestination(SettingsGraph, "home")
 }

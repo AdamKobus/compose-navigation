@@ -3,7 +3,7 @@ package com.adamkobus.compose.navigation.data
 /**
  * Creates a definition of a route representing a destination in your application.
  */
-class NavRoute private constructor(
+data class NavRoute constructor(
     private val parts: List<NavRoutePart>,
     private val separator: String
 ) {
@@ -56,34 +56,46 @@ class NavRoute private constructor(
         private val parts = initialParts.toMutableList()
         var separator = PART_SEPARATOR
 
-        constructor(graphName: String, pathName: String) : this(emptyList()) {
+        constructor(graphName: String) : this(emptyList()) {
             graphName(graphName)
-            if (pathName.isNotEmpty()) {
-                path(pathName)
-            }
         }
 
-        fun graphName(name: String) {
+        constructor(graphName: String, pathName: String) : this(emptyList()) {
+            graphName(graphName)
+            path(pathName)
+        }
+
+        private fun graphName(name: String) {
+            ensureNameNotEmpty(name)
             parts.add(NavRoutePart.GraphName(name))
         }
 
         fun path(name: String) {
-            ensureGraphNameAdded()
+            ensureNameNotEmpty(name)
             parts.add(NavRoutePart.Path(name))
         }
 
         fun param(name: String) {
-            ensureGraphNameAdded()
+            ensureNameNotEmpty(name)
             parts.add(NavRoutePart.Param(name))
         }
 
+        private fun ensureNameNotEmpty(name: String) {
+            if (name.isEmpty()) {
+                throw IllegalArgumentException("Name must not be empty")
+            }
+        }
+
         private fun ensureGraphNameAdded() {
-            if (parts.isEmpty()) {
+            if (parts.isEmpty() || parts[0] !is NavRoutePart.GraphName) {
                 throw IllegalStateException("Must add graphName as first part of the path")
             }
         }
 
-        fun build(): NavRoute = NavRoute(parts = parts, separator = separator)
+        fun build(): NavRoute {
+            ensureGraphNameAdded()
+            return NavRoute(parts = parts, separator = separator)
+        }
     }
 
     companion object {
@@ -91,8 +103,14 @@ class NavRoute private constructor(
     }
 }
 
-fun navRoute(graphName: String, name: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute {
-    val builder = NavRoute.Builder(graphName = graphName, pathName = name)
+fun navRoute(graphName: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute {
+    val builder = NavRoute.Builder(graphName = graphName)
+    builder.init()
+    return builder.build()
+}
+
+fun navRoute(graphName: String, path: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute {
+    val builder = NavRoute.Builder(graphName = graphName, pathName = path)
     builder.init()
     return builder.build()
 }
