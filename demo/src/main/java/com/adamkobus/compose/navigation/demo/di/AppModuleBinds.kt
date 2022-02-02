@@ -1,8 +1,6 @@
 package com.adamkobus.compose.navigation.demo.di
 
-import com.adamkobus.compose.navigation.NavActionProcessor
 import com.adamkobus.compose.navigation.NavActionVerifier
-import com.adamkobus.compose.navigation.demo.nav.AppGraphProcessor
 import com.adamkobus.compose.navigation.demo.nav.AppNavActionVerifier
 import dagger.Binds
 import dagger.Module
@@ -13,10 +11,6 @@ import dagger.multibindings.IntoSet
 @InstallIn(SingletonComponent::class)
 @Module
 interface AppModuleBinds {
-
-    @Binds
-    @IntoSet
-    fun bindsAppGraphProcessor(impl: AppGraphProcessor): NavActionProcessor
 
     @Binds
     @IntoSet

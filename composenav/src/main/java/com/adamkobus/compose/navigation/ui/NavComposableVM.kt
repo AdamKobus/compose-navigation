@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import com.adamkobus.compose.navigation.NavActionProcessor
 import com.adamkobus.compose.navigation.data.NavAction
+import com.adamkobus.compose.navigation.ext.navigate
 import com.adamkobus.compose.navigation.ext.onStartStop
 import com.adamkobus.compose.navigation.model.NavigationState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class NavComposableVM @Inject constructor(
-    private val processors: Set<@JvmSuppressWildcards NavActionProcessor>,
     private val navigationStateSource: NavigationState
 ) : ViewModel(), LifecycleEventObserver {
 
@@ -36,10 +35,11 @@ internal class NavComposableVM @Inject constructor(
     }
 
     private fun processAction(action: NavAction, navController: NavHostController) {
-        processors.forEach { processor ->
-            if (processor.process(action, navController)) return
-        }
-        throw IllegalArgumentException("Unexpected NavAction: $action")
+        action.navigateWithController?.let {
+            it(navController)
+        } ?: action.navigate?.let {
+            navController.navigate(action, it)
+        } ?: navController.navigate(action)
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
