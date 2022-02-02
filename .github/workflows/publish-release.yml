@@ -15,6 +15,11 @@ jobs:
           fetch-depth: 0
       - name: Set up JDK 11
         uses: actions/setup-java@v2
+        with:
+          java-version: 1.11
+
+      - name: Decrypt secrets
+        run: scripts/decrypt-secrets.sh "${{ secrets.SECRETS_PASSPHRASE }}"
 
       - name: Release project
         run: ./gradlew assembleRelease
@@ -26,3 +31,7 @@ jobs:
         run: ./gradlew publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository
         env:
           MAVEN_SNAPHOT: false
+
+      - name: Clean up secrets
+        if: always()
+        run: scripts/cleanup-secrets.sh

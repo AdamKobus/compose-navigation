@@ -6,7 +6,6 @@
 local.properties
 publishing.properties
 *.rev
-*.gpg
 
 # IntelliJ
 .idea/workspace.xml
