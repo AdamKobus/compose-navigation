@@ -2,6 +2,19 @@ rootProject.ext["adamkobusSonatypeUsername"] = ""
 rootProject.ext["adamkobusSonatypePassword"] = ""
 rootProject.ext["adamkobusSonatypeStagingProfileId"] = ""
 
+rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPHOT", "true")
+
+def VERSION_BASE = "0.0.3"
+def VERSION_SUFFIX = ""
+if (rootProject.ext["snapshot"] == "true") {
+    VERSION_SUFFIX = "-SNAPSHOT"
+}
+rootProject.ext {
+    PUBLISH_VERSION = "$VERSION_BASE$VERSION_SUFFIX"
+}
+
+println("Publishing with verison ${rootProject.ext.PUBLISH_VERSION}")
+
 def loadProperties(path) {
     File propertiesFile = project.rootProject.file(path)
 
@@ -11,9 +24,6 @@ def loadProperties(path) {
         props.each { name, value -> rootProject.ext[name] = value }
     }
 }
-
-loadProperties("local.properties")
-loadProperties("publishing.properties")
 
 rootProject.ext.readParam = { name ->
     def value = properties.get(name)
@@ -26,11 +36,12 @@ rootProject.ext.readParam = { name ->
     rootProject.ext[name] = value
 }
 
+loadProperties("local.properties")
+loadProperties("publishing.properties")
+
 readParam("adamkobusSonatypeUsername")
 readParam("adamkobusSonatypePassword")
 readParam("adamkobusSonatypeStagingProfileId")
-
-rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPHOT", "true")
 
 nexusPublishing {
     repositories {
@@ -40,6 +51,7 @@ nexusPublishing {
             stagingProfileId = adamkobusSonatypeStagingProfileId
             username = adamkobusSonatypeUsername
             password = adamkobusSonatypePassword
+            version = rootProject.ext.PUBLISH_VERSION
         }
     }
 }
