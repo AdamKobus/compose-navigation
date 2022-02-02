@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.0.5-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.0.6-SNAPSHOT"
 }
 ```
 
@@ -44,7 +44,7 @@ dependencies {
 
 - Navigation actions | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/Actions.kt)
   
-- Processing navigation actions | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/AppGraphProcessor.kt)
+- Processing navigation actions | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/Actions.kt)
   
 - Producing navigation actions in ViewModel | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/ui/welcome/WelcomeScreenVM.kt)
 
@@ -62,7 +62,7 @@ dependencies {
 
 ## Links
 
-- [Documentation](https://www.google.com/search?q=impatient+cat) | TBD (I'll work on wiki once all of the features are covered in the demo app, I promise)
+- [Documentation with examples](https://github.com/AdamKobus/compose-navigation/wiki/Compose-Navigation-Documentation)
 
 # License
 
