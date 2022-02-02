@@ -21,7 +21,7 @@ jobs:
           java-version: 1.11
 
       - name: Decrypt secrets
-        run: scripts/decrypt-secrets.sh "${{ secrets.SECRETS_PASSPHRASE }}" strict
+        run: scripts/decrypt-secrets.sh "${{ secrets.SECRETS_PASSPHRASE }}"
 
       - name: Build project
         run: ./gradlew clean assembleRelease
