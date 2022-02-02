@@ -1,7 +1,7 @@
 package com.adamkobus.compose.navigation.data
 
-val GlobalGraph = object : NavGraph {
-    override val name: String = "global"
+object GlobalGraph : NavGraph {
+    override val name: String = "__global__"
 }
 
 val GlobalDestination = navDestination(GlobalGraph, "any")

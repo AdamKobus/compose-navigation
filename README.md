@@ -1,11 +1,46 @@
 # Jetpack Compose Navigation
 
-Those are just my experiments with navigation handling in Jetpack Compose. 
-I'll probably publish it to Maven if it will prove to be useful.
+Set of utils to help with integrating Jetpack Compose and Jetpack's Navigation
+
+Right now it depends quite heavily on Hilt / Dagger to work. 
+I'm also using jetpack and accompanist from unstable channel, because their features make lots of stuff more convenient.
+I'll switch over to stable versions once updates are released.
+
+##### Please keep in mind that this is still in early stage. If you're willing to use it in your project, then please remember that the API is still not set in stone
+
+I'm doing refactors / changes almost every day currently, in hopes that I'll be able to simplify the API even more, so please keep that in mind :)
+
+## Releases
+
+Current releases can be found at [https://github.com/AdamKobus/compose-navigation/releases](https://github.com/AdamKobus/compose-navigation/releases)
+
+```groovy
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "com.adamkobus:compose-navigation:0.1.0" // not released yet
+}
+```
+
+## Snapshots
+
+You can find current releases at [Sonatype Snapshots Repository]("https://s01.oss.sonatype.org/content/repositories/snapshots/com/adamkobus/compose-navigation/")
+
+```groovy
+repositories {
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    implementation "com.adamkobus:compose-navigation:0.0.5-SNAPSHOT"
+}
+```
 
 ## Features
 
-- Navigation destinations | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/Destinations.kt) 
+- Navigation destinations | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/AppGraph.kt) 
 
 - Navigation actions | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/Actions.kt)
   
@@ -24,6 +59,10 @@ I'll probably publish it to Maven if it will prove to be useful.
 - Tracking current destination | Demo TBD with settings module
 
 - Support for `dialog` | TBD
+
+## Links
+
+- [Documentation](https://www.google.com/search?q=impatient+cat) | TBD (I'll work on wiki once all of the features are covered in the demo app, I promise)
 
 # License
 

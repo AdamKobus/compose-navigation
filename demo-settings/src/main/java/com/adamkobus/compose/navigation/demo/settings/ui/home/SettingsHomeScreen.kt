@@ -14,7 +14,7 @@ import com.adamkobus.compose.navigation.demo.ui.LifecycleAwareComponent
 import com.adamkobus.compose.navigation.demo.ui.Paddings
 
 @Composable
-internal fun HomeScreen() {
+internal fun SettingsHomeScreen() {
     DemoAppBackground(usesTopBar = true) {
         val vm = hiltViewModel<HomeScreenVM>()
         LifecycleAwareComponent(observer = vm)
@@ -24,7 +24,11 @@ internal fun HomeScreen() {
 
 @Composable
 fun HomeScreenContent() {
-    Box(modifier = Modifier.fillMaxSize().padding(Paddings.Screen)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(Paddings.Screen)
+    ) {
         Text(text = stringResource(id = R.string.settings_title))
     }
 }

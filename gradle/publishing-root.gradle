@@ -4,7 +4,7 @@ rootProject.ext["adamkobusSonatypeStagingProfileId"] = ""
 
 rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPHOT", "true")
 
-def VERSION_BASE = "0.0.4"
+def VERSION_BASE = "0.0.5"
 def VERSION_SUFFIX = ""
 if (rootProject.ext["snapshot"] == "true") {
     VERSION_SUFFIX = "-SNAPSHOT"
@@ -13,7 +13,7 @@ rootProject.ext {
     PUBLISH_VERSION = "$VERSION_BASE$VERSION_SUFFIX"
 }
 
-println("Publishing with verison ${rootProject.ext.PUBLISH_VERSION}")
+println("Verison: ${rootProject.ext.PUBLISH_VERSION}")
 
 def loadProperties(path) {
     File propertiesFile = project.rootProject.file(path)
