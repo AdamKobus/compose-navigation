@@ -8,12 +8,14 @@ import javax.inject.Inject
 class AppNavActionVerifier @Inject constructor() : NavActionVerifier {
     override fun isNavActionAllowed(currentDestination: INavDestination, action: NavAction): Boolean {
         return when (currentDestination) {
-            Destinations.CatDetails -> action.toDestination != Destinations.CatDetails
-            Destinations.DogDetails -> action.toDestination != Destinations.DogDetails
-            // otherwise allow all
-            // you could also do a global check like below, but I'm not sure if there are any edge cases related to this yet
-            // return currentDestination != action.toDestination
+            // prevents opening cat / dog details screen in case user clicked 2 list items.
+            AppGraph.CatDetails -> action.toDestination != AppGraph.CatDetails
+            AppGraph.DogDetails -> action.toDestination != AppGraph.DogDetails
             else -> true
         }
+        // You could also block all potential duplicates with conditions like below
+        // return currentDestination != action.toDestination
+        // return currentDestination == action.fromDestination
+        // Although special cases like Global actions would have to be taken into account.
     }
 }

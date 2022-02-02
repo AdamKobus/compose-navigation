@@ -20,4 +20,6 @@ interface INavDestination {
     infix fun to(other: INavDestination): NavAction {
         return NavAction(this, other)
     }
+
+    fun next(init: NavRoute.Builder.() -> Unit = {}): INavDestination
 }
