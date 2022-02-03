@@ -4,6 +4,8 @@
 
 ### Changes
 
-- Initial release
+# 0.1.0
 
-<!-- UNRELEASED END -->
+### Changes
+
+- Initial release

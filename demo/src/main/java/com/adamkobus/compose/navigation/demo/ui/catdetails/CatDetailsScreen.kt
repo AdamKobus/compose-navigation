@@ -27,7 +27,7 @@ fun CatDetailsScreen(catId: Int) {
 }
 
 @Composable
-fun CatDetailsScreenContent(screenState: CatDetailsState) {
+private fun CatDetailsScreenContent(screenState: CatDetailsState) {
     DemoAppBackground(usesTopBar = true) {
         when (screenState) {
             is CatDetailsState.Loading -> LoadingScreen()

@@ -6,10 +6,12 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.dialog
 import com.adamkobus.compose.navigation.data.INavDestination
 import com.adamkobus.compose.navigation.data.NavGraph
 import com.google.accompanist.navigation.animation.composable
@@ -64,5 +66,22 @@ fun NavGraphBuilder.composableNavigation(
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
         builder = builder
+    )
+}
+
+fun NavGraphBuilder.composableDialog(
+    destination: INavDestination,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    dialogProperties: DialogProperties = DialogProperties(),
+    content: @Composable (NavBackStackEntry) -> Unit
+
+) {
+    dialog(
+        route = destination.route.buildRoute(),
+        arguments = arguments,
+        deepLinks = deepLinks,
+        dialogProperties = dialogProperties,
+        content = content
     )
 }
