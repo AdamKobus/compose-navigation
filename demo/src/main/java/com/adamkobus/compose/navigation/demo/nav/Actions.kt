@@ -2,6 +2,7 @@ package com.adamkobus.compose.navigation.demo.nav
 
 import com.adamkobus.compose.navigation.data.GlobalDestination
 import com.adamkobus.compose.navigation.data.NavAction
+import com.adamkobus.compose.navigation.data.PopBackStackDestination
 import com.adamkobus.compose.navigation.demo.settings.nav.SettingsGraph
 
 sealed class FromSplash(action: NavAction) : NavAction(action) {
@@ -41,4 +42,10 @@ sealed class FromDogsList(action: NavAction) : NavAction(action) {
 
 sealed class FromGlobal(action: NavAction) : NavAction(action) {
     object ToSettings : FromGlobal(GlobalDestination to SettingsGraph)
+
+    object ToDemoDialog : FromGlobal(GlobalDestination to AppGraph.DemoDialog)
+}
+
+sealed class FromDemoDialog(action: NavAction) : NavAction(action) {
+    object Dismiss : FromDemoDialog(NavAction(AppGraph.DemoDialog, PopBackStackDestination, navigateWithController = { it.popBackStack() }))
 }

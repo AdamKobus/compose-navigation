@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.1.0" // not released yet
+    implementation "com.adamkobus:compose-navigation:0.1.0"
 }
 ```
 
@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.0.6-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.1.0-SNAPSHOT"
 }
 ```
 
@@ -58,7 +58,7 @@ dependencies {
 
 - Tracking current destination | Demo TBD with settings module
 
-- Support for `dialog` | TBD
+- Support for `dialog` | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/AppGraph.kt)
 
 ## Links
 
