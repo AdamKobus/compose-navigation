@@ -35,3 +35,10 @@ dependencies {
     testImplementation Libs.Test.JUnit
     testImplementation Libs.Test.Mockk
 }
+
+ext {
+    PUBLISH_GROUP_ID = "com.adamkobus"
+    PUBLISH_ARTIFACT_ID = "compose-navigation"
+}
+
+apply from: "${rootProject.projectDir}/gradle/publishing-module.gradle"

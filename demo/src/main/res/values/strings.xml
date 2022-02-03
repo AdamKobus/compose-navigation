@@ -16,7 +16,12 @@
     <!-- CatsListScreen -->
     <string name="dogs_list_title">Dogs</string>
 
-    <!-- CatDetailsScreen -->
+    <!-- DogDetailsScreen -->
     <string name="dog_details_title">Dog Details</string>
     <string name="dog_details_error">Failed to load dog details</string>
+    <string name="dog_details_open_dialog_button">Open Alert Dialog</string>
+
+    <!-- DemoDialog -->
+    <string name="demo_dialog_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
+    <string name="demo_dialog_close">OK</string>
 </resources>

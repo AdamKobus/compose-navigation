@@ -1,0 +1,57 @@
+rootProject.ext["adamkobusSonatypeUsername"] = ""
+rootProject.ext["adamkobusSonatypePassword"] = ""
+rootProject.ext["adamkobusSonatypeStagingProfileId"] = ""
+
+rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPHOT", "true")
+
+def VERSION_BASE = "0.1.0"
+def VERSION_SUFFIX = ""
+if (rootProject.ext["snapshot"] == "true") {
+    VERSION_SUFFIX = "-SNAPSHOT"
+}
+rootProject.ext {
+    PUBLISH_VERSION = "$VERSION_BASE$VERSION_SUFFIX"
+}
+
+println("Verison: ${rootProject.ext.PUBLISH_VERSION}")
+
+def loadProperties(path) {
+    File propertiesFile = project.rootProject.file(path)
+
+    if (propertiesFile.exists()) {
+        Properties props = new Properties()
+        new FileInputStream(propertiesFile).withCloseable { is -> props.load(is) }
+        props.each { name, value -> rootProject.ext[name] = value }
+    }
+}
+
+rootProject.ext.readParam = { name ->
+    def value = properties.get(name)
+    if (value == null) {
+        value = rootProject.ext[name]
+    }
+    if (value == null) {
+        value = System.getenv().getOrDefault(name, "")
+    }
+    rootProject.ext[name] = value
+}
+
+loadProperties("local.properties")
+loadProperties("publishing.properties")
+
+readParam("adamkobusSonatypeUsername")
+readParam("adamkobusSonatypePassword")
+readParam("adamkobusSonatypeStagingProfileId")
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            stagingProfileId = adamkobusSonatypeStagingProfileId
+            username = adamkobusSonatypeUsername
+            password = adamkobusSonatypePassword
+            version = rootProject.ext.PUBLISH_VERSION
+        }
+    }
+}

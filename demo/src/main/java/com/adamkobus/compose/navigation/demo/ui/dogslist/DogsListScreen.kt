@@ -26,7 +26,7 @@ import com.adamkobus.compose.navigation.democore.data.DogInfo
 fun DogsListScreen() {
     val vm = hiltViewModel<DogsListVM>()
     LifecycleAwareComponent(observer = vm)
-    DemoAppBackground(topBar = true) {
+    DemoAppBackground(usesTopBar = true) {
         DogsListScreenContent(vm.listState.value, vm.interactions)
     }
 }

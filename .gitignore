@@ -4,6 +4,8 @@
 
 # Local gradle settings
 local.properties
+publishing.properties
+*.rev
 
 # IntelliJ
 .idea/workspace.xml

@@ -2,24 +2,26 @@ package com.adamkobus.compose.navigation.demo.settings.nav
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.navigation
 import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.demo.settings.ui.home.HomeScreen
+import com.adamkobus.compose.navigation.demo.settings.ui.home.SettingsHomeScreen
 import com.adamkobus.compose.navigation.ext.composableDestination
+import com.adamkobus.compose.navigation.ext.composableNavigation
 
 object SettingsGraph : NavGraph {
     override val name: String = "settingsGraph"
+
+    val SettingsHome = navDestination("home")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.settingsGraph() {
-    navigation(
-        route = SettingsGraph.name,
-        startDestination = Destinations.Home.route.buildRoute()
+    composableNavigation(
+        graph = SettingsGraph,
+        startDestination = SettingsGraph.SettingsHome
     ) {
 
-        composableDestination(Destinations.Home) {
-            HomeScreen()
+        composableDestination(SettingsGraph.SettingsHome) {
+            SettingsHomeScreen()
         }
     }
 }

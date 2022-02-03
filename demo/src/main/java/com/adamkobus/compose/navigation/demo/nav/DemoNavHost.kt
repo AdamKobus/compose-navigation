@@ -3,18 +3,20 @@ package com.adamkobus.compose.navigation.demo.nav
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import com.adamkobus.compose.navigation.demo.settings.nav.settingsGraph
+import com.adamkobus.compose.navigation.ui.NavComposable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DemoNavHost(
-    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val navHostController = rememberAnimatedNavController()
+    NavComposable(navController = navHostController)
     AnimatedNavHost(
-        navController = navController,
+        navController = navHostController,
         startDestination = AppGraph.name,
         modifier = modifier
     ) {

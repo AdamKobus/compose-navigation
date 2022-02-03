@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavActionConsumer
 import com.adamkobus.compose.navigation.data.NavAction
 import com.adamkobus.compose.navigation.demo.R
+import com.adamkobus.compose.navigation.demo.nav.FromGlobal
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
@@ -39,6 +40,14 @@ class DogDetailsScreenVM @Inject constructor(
     private val appBarState = AnimatedAppBarState(
         titleState = AppBarTitleState(titleResId = R.string.dog_details_title),
         iconState = AppBarIconState.back { onBackPressed() }
+    )
+
+    val interactions = DogDetailsScreenInteractions(
+        onOpenDialogClicked = {
+            viewModelScope.launch {
+                navActionConsumer.offer(FromGlobal.ToDemoDialog)
+            }
+        }
     )
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
