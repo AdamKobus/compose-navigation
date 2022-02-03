@@ -32,7 +32,7 @@ jobs:
       - name: Publish to MavenCentral
         run: ./gradlew publishReleasePublicationToSonatypeRepository
         env:
-          MAVEN_SNAPHOT: true
+          MAVEN_SNAPSHOT: true
 
       - name: Clean up secrets
         if: always()
