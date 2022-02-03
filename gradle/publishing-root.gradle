@@ -2,7 +2,7 @@ rootProject.ext["adamkobusSonatypeUsername"] = ""
 rootProject.ext["adamkobusSonatypePassword"] = ""
 rootProject.ext["adamkobusSonatypeStagingProfileId"] = ""
 
-rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPHOT", "true")
+rootProject.ext["snapshot"] = System.getenv().getOrDefault("MAVEN_SNAPSHOT", "true")
 
 def VERSION_BASE = "0.1.0"
 def VERSION_SUFFIX = ""
