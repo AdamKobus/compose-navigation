@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- WelcomeScreen -->
+    <string name="welcome_hi">Hi!\nWhich ones do you like more?</string>
+    <string name="welcome_button_cats">Cats</string>
+    <string name="welcome_button_dogs">Dogs</string>
+</resources>

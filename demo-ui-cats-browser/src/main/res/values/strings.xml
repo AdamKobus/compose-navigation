@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- CatsListScreen -->
+    <string name="cats_list_title">Cats</string>
+
+    <!-- CatDetailsScreen -->
+    <string name="cat_details_title">Cat Details</string>
+    <string name="cat_details_error">Failed to load cat details</string>
+</resources>

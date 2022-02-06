@@ -15,27 +15,19 @@ android {
 
 dependencies {
     implementation project(':demo-core')
-    implementation project(':demo-ui-commons')
-    implementation project(':demo-settings')
-    implementation project(':composenav')
+    implementation project(':demo-common-ui')
+    implementation project(':demo-ui-cats-browser')
+    implementation project(':demo-ui-dogs-browser')
+    implementation project(':demo-ui-on-boarding')
+    implementation project(':demo-ui-settings')
 
-    implementation Libs.AndroidX.Core
-    implementation Libs.AndroidX.Appcompat
-    implementation Libs.Kotlin.Coroutines
     implementation Libs.Google.Material
 
     // hilt
     implementation Libs.Google.Hilt
-    implementation Libs.Google.HiltNavigationCompose
     kapt Libs.Google.HiltCompiler
 
     // compose
-    implementation Libs.Compose.Ui
-    implementation Libs.Compose.Activity
-    implementation Libs.Compose.Material
-    implementation Libs.Compose.ToolingPreview
-    debugImplementation Libs.Compose.UiTooling
-
     implementation Libs.Accompanist.NavigationAnimation
 
     // testing
