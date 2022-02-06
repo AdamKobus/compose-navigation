@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.adamkobus.compose.navigation.NavActionConsumer
-import com.adamkobus.compose.navigation.data.NavAction
+import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.demo.settings.R
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState

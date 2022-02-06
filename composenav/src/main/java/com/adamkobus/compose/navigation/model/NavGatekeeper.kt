@@ -1,8 +1,9 @@
 package com.adamkobus.compose.navigation.model
 
 import com.adamkobus.compose.navigation.NavActionVerifier
-import com.adamkobus.compose.navigation.data.INavDestination
-import com.adamkobus.compose.navigation.data.NavAction
+import com.adamkobus.compose.navigation.VerifyResult
+import com.adamkobus.compose.navigation.action.NavAction
+import com.adamkobus.compose.navigation.destination.INavDestination
 import javax.inject.Inject
 
 internal class NavGatekeeper @Inject constructor(
@@ -10,7 +11,7 @@ internal class NavGatekeeper @Inject constructor(
 ) {
     fun isNavActionAllowed(currentDestination: INavDestination, action: NavAction): Boolean {
         verifiers.forEach {
-            if (!it.isNavActionAllowed(currentDestination, action)) {
+            if (it.isNavActionAllowed(currentDestination, action) == VerifyResult.Discard) {
                 return false
             }
         }

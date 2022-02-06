@@ -1,70 +1,56 @@
 package com.adamkobus.compose.navigation.ui
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavHostController
-import com.adamkobus.compose.navigation.data.NavAction
-import com.adamkobus.compose.navigation.ext.navigate
-import com.adamkobus.compose.navigation.ext.onStartStop
-import com.adamkobus.compose.navigation.model.NavigationState
+import com.adamkobus.android.vm.LifecycleAwareViewModel
+import com.adamkobus.android.vm.ViewParam
+import com.adamkobus.compose.navigation.action.NavAction
+import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.model.NavigationProcessor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 internal class NavComposableVM @Inject constructor(
-    private val navigationStateSource: NavigationState
-) : ViewModel(), LifecycleEventObserver {
+    private val navigationProcessor: NavigationProcessor
+) : LifecycleAwareViewModel() {
 
-    private var observeNavActionAvailableJob: Job? = null
+    val graphsParam = ViewParam<List<NavGraph>>()
+    val pendingActionState = mutableStateOf<PendingActionState>(PendingActionState.Missing)
 
-    private val pendingNavActions = PendingNavActions()
-    val pendingActions = pendingNavActions.pendingActions
-
-    fun processNavActions(navController: NavHostController) {
-        viewModelScope.launch {
-            pendingNavActions.consumeActions().forEach {
-                processAction(it, navController)
+    init {
+        runOnCreateDestroy {
+            onCreate = {
+                graphsParam.observe().flatMapLatest {
+                    register(it)
+                }.collect {
+                    val completable = CompletableDeferred<Unit>()
+                    pendingActionState.value = PendingActionState.Present(it, completable)
+                    completable.await()
+                    pendingActionState.value = PendingActionState.Missing
+                }
+            }
+            onDestroy = {
+                unregister()
             }
         }
     }
 
-    private fun processAction(action: NavAction, navController: NavHostController) {
-        action.navigateWithController?.let {
-            it(navController)
-        } ?: action.navigate?.let {
-            navController.navigate(action, it)
-        } ?: navController.navigate(action)
+    private fun register(graphs: List<NavGraph>): Flow<NavAction> {
+        unregister()
+        return navigationProcessor.register(this, graphs)
     }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        event.onStartStop(onStart = this::onStart, onStop = this::onStop)
-    }
-
-    private fun onStart() {
-        cleanUp()
-        observeNavActionAvailableJob = viewModelScope.launch {
-            navigationStateSource.observePendingActions().collect {
-                pendingNavActions.offerActions(it)
-            }
-        }
-    }
-
-    private fun onStop() {
-        cleanUp()
-    }
-
-    private fun cleanUp() {
-        observeNavActionAvailableJob?.cancel()
-        observeNavActionAvailableJob = null
+    private fun unregister() {
+        navigationProcessor.unregister(this)
     }
 
     fun processBackStackEntry(entry: NavBackStackEntry?) {
-        navigationStateSource.onBackStackEntryUpdated(entry)
+        navigationProcessor.onBackStackEntryUpdated(entry)
     }
 }

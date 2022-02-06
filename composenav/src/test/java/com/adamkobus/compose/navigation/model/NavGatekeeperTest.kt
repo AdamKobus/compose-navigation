@@ -1,8 +1,9 @@
 package com.adamkobus.compose.navigation.model
 
 import com.adamkobus.compose.navigation.NavActionVerifier
-import com.adamkobus.compose.navigation.data.INavDestination
-import com.adamkobus.compose.navigation.data.NavAction
+import com.adamkobus.compose.navigation.VerifyResult
+import com.adamkobus.compose.navigation.action.NavigateAction
+import com.adamkobus.compose.navigation.destination.INavDestination
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertFalse
@@ -51,16 +52,16 @@ class NavGatekeeperTest {
 
     private fun createFailingVerifier(): NavActionVerifier =
         mockk<NavActionVerifier>().also {
-            every { it.isNavActionAllowed(any(), any()) } returns false
+            every { it.isNavActionAllowed(any(), any()) } returns VerifyResult.Discard
         }
 
     private fun createPassingVerifier(): NavActionVerifier =
         mockk<NavActionVerifier>().also {
-            every { it.isNavActionAllowed(any(), any()) } returns true
+            every { it.isNavActionAllowed(any(), any()) } returns VerifyResult.Allow
         }
 
     companion object {
         private val NAV_DESTINATION = mockk<INavDestination>()
-        private val NAV_ACTION = mockk<NavAction>()
+        private val NAV_ACTION = mockk<NavigateAction>()
     }
 }

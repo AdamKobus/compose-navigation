@@ -12,8 +12,8 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.dialog
-import com.adamkobus.compose.navigation.data.INavDestination
 import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.destination.INavDestination
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 
@@ -51,7 +51,6 @@ fun NavGraphBuilder.composableDestination(
 @ExperimentalAnimationApi
 fun NavGraphBuilder.composableNavigation(
     graph: NavGraph,
-    startDestination: INavDestination,
     enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
     exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
@@ -59,8 +58,8 @@ fun NavGraphBuilder.composableNavigation(
     builder: NavGraphBuilder.() -> Unit
 ) {
     navigation(
-        startDestination = startDestination.route.buildRoute(),
         route = graph.name,
+        startDestination = graph.startDestination().route.buildRoute(),
         enterTransition = enterTransition,
         exitTransition = exitTransition,
         popEnterTransition = popEnterTransition,

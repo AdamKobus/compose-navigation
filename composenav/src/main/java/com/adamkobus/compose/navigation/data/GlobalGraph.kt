@@ -1,9 +1,13 @@
 package com.adamkobus.compose.navigation.data
 
-object GlobalGraph : NavGraph {
-    override val name: String = "__global__"
+import com.adamkobus.compose.navigation.destination.NavDestination
+import com.adamkobus.compose.navigation.destination.popDestination
+
+object GlobalGraph : NavGraph("__global__") {
+
+    private val Root = navDestination("__root__")
+
+    override fun startDestination(): NavDestination = Root
+
+    val Back = popDestination(this)
 }
-
-val GlobalDestination = navDestination(GlobalGraph, "any")
-
-val PopBackStackDestination = navDestination(GlobalGraph, "back")

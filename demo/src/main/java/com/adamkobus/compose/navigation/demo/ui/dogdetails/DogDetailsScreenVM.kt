@@ -8,8 +8,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavActionConsumer
-import com.adamkobus.compose.navigation.data.NavAction
 import com.adamkobus.compose.navigation.demo.R
+import com.adamkobus.compose.navigation.demo.nav.FromDogDetails
 import com.adamkobus.compose.navigation.demo.nav.FromGlobal
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
@@ -79,7 +79,7 @@ class DogDetailsScreenVM @Inject constructor(
     }
 
     private fun onBackPressed() {
-        navActionConsumer.offer(NavAction.Back)
+        navActionConsumer.offer(FromDogDetails.Back)
     }
 
     private suspend fun onDogIdUpdated(id: Int?) {

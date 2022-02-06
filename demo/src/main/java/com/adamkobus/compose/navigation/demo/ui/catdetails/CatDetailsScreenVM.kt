@@ -8,8 +8,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavActionConsumer
-import com.adamkobus.compose.navigation.data.NavAction
 import com.adamkobus.compose.navigation.demo.R
+import com.adamkobus.compose.navigation.demo.nav.FromCatDetails
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
@@ -42,7 +42,7 @@ class CatDetailsScreenVM @Inject constructor(
     )
 
     private fun onBackPressed() {
-        navActionConsumer.offer(NavAction.Back)
+        navActionConsumer.offer(FromCatDetails.Back)
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
