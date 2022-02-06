@@ -31,6 +31,11 @@ object Libs {
      */
     const val KTLINT_VERSION = "0.43.2"
 
+    /**
+     * [Appcompat Releases](https://developer.android.com/jetpack/androidx/releases/appcompat#1.4.1)
+     */
+    const val APPCOMPAT_VERSION = "1.4.1"
+
     object Kotlin {
         const val Coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$KOTLIN_COROUTINES_VERSION"
     }
@@ -54,7 +59,7 @@ object Libs {
 
     object AndroidX {
         const val Core = "androidx.core:core-ktx:1.7.0"
-        const val Appcompat = "androidx.appcompat:appcompat:1.4.0"
+        const val Appcompat = "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
         const val LifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
     }
 

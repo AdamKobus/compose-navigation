@@ -1,0 +1,25 @@
+rootProject.ext.loadProperties = { path ->
+    File propertiesFile = project.rootProject.file(path)
+    if (propertiesFile.exists()) {
+        Properties props = new Properties()
+        new FileInputStream(propertiesFile).withCloseable { is -> props.load(is) }
+        props.each { name, value -> rootProject.ext[name] = value }
+    }
+}
+
+rootProject.ext.readParam = { name, defaultValue ->
+    def value = properties.get(name)
+    if (value == null && rootProject.ext.has(name)) {
+        value = rootProject.ext.get(name)
+    }
+    if (value == null) {
+        def envName = name.replace(".", "_").replaceAll(/([A-Z])/, /_$1/).toUpperCase().replace("__", "_")
+        value = System.getenv().getOrDefault(envName, defaultValue)
+    }
+    if (defaultValue.class == Boolean && value.class != Boolean) {
+        value = value.toBoolean()
+    }
+    rootProject.ext[name] = value
+}
+
+rootProject.loadProperties("local.properties")

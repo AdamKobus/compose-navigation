@@ -12,10 +12,13 @@ buildscript {
         detektPluginVersion = "1.19.0"
 
         // https://github.com/ben-manes/gradle-versions-plugin/releases
-        versionsPluginVersion = "0.41.0"
+        versionsPluginVersion = "0.42.0"
 
         // https://github.com/gradle-nexus/publish-plugin/releases
         publishPluginVersion = "1.1.0"
+
+        // https://developer.android.com/studio/releases/gradle-plugin
+        androidBuildtoolsPluginVersion = "7.1.1"
     }
 
     repositories {
@@ -25,7 +28,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath "com.android.tools.build:gradle:$androidBuildtoolsPluginVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Libs.KOTLIN_VERSION}"
         classpath "com.google.dagger:hilt-android-gradle-plugin:${Libs.HILT_VERSION}"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintPluginVersion"
@@ -33,6 +36,7 @@ buildscript {
         classpath "com.github.ben-manes:gradle-versions-plugin:$versionsPluginVersion"
         classpath "io.github.gradle-nexus:publish-plugin:$publishPluginVersion"
     }
+    rootProject.ext
 }
 
 task clean(type: Delete) {
@@ -47,6 +51,8 @@ allprojects {
     }
 }
 
+apply from: "gradle/utils.gradle"
+apply from: "gradle/version.gradle"
 apply from: "gradle/dependency-updates.gradle"
 apply from: "gradle/android-setup.gradle"
 apply from: "gradle/publishing-root.gradle"

@@ -3,6 +3,7 @@ package com.adamkobus.compose.navigation.demo.nav
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.navigation
 import com.adamkobus.compose.navigation.data.NavGraph
 import com.adamkobus.compose.navigation.demo.ui.catdetails.CatDetailsScreen
 import com.adamkobus.compose.navigation.demo.ui.catslist.CatsListScreen
