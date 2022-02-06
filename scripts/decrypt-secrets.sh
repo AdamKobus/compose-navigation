@@ -1,13 +1,15 @@
 #!/bin/bash -e
 
-ROOT_DIR=$(dirname $(dirname $(realpath "$0")))
+ABS_PATH=$(realpath "$0")
+SCRIPTS_DIR=$(dirname "$ABS_PATH")
+ROOT_DIR=$(dirname "$SCRIPTS_DIR")
 source "$ROOT_DIR/scripts/commons.sh"
 
 PASSPHRASE=$1
 
 if [ -z "$PASSPHRASE" ]; then
   echo "Must provide passphrase as first param"
-  exit -1
+  exit 1
 fi
 
 decryptSecret() {
@@ -18,5 +20,4 @@ decryptSecret() {
 }
 
 decryptSecret "$ENCRYPTED_SIGNING_KEY_PATH" "$SIGNING_KEY_PATH"
-decryptSecret "$ENCRYPTED_GRADLE_PROPERTIES_PATH" "$GRADLE_PROPERTIES_PATH"
 decryptSecret "$ENCRYPTED_PUBLISHING_PROPERTIES_PATH" "$PUBLISHING_PROPERTIES_PATH"

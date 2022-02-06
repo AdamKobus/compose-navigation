@@ -1,0 +1,13 @@
+def VERSION_BASE = "0.1.1"
+
+rootProject.readParam("mavenSnapshot", true)
+
+def VERSION_SUFFIX = ""
+if (rootProject.ext.mavenSnapshot) {
+    VERSION_SUFFIX = "-SNAPSHOT"
+}
+rootProject.ext {
+    PUBLISH_VERSION = "$VERSION_BASE$VERSION_SUFFIX"
+}
+
+println("Version: ${rootProject.PUBLISH_VERSION}")

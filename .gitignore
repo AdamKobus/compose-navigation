@@ -6,6 +6,7 @@
 local.properties
 publishing.properties
 *.rev
+signing.gpg
 
 # IntelliJ
 .idea/workspace.xml

@@ -23,13 +23,13 @@ jobs:
         run: scripts/decrypt-secrets.sh "${{ secrets.SECRETS_PASSPHRASE }}"
 
       - name: Release project
-        run: ./gradlew assembleRelease
+        run: ./gradlew clean :composenav:assembleRelease
 
       - name: Create source jar
-        run: ./gradlew androidSourcesJar
+        run: ./gradlew :composenav:androidSourcesJar
 
       - name: Publish to MavenCentral
-        run: ./gradlew publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository
+        run: ./gradlew :composenav:publishReleasePublicationToSonatypeRepository --max-workers 1 :composenav:closeAndReleaseSonatypeStagingRepository
         env:
           MAVEN_SNAPSHOT: false
 
