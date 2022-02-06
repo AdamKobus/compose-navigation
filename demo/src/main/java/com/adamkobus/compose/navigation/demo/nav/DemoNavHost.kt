@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.adamkobus.compose.navigation.demo.settings.nav.settingsGraph
+import com.adamkobus.compose.navigation.demo.ui.nav.AppGraph
 import com.adamkobus.compose.navigation.ui.NavComposable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -21,6 +22,9 @@ fun DemoNavHost(
         modifier = modifier
     ) {
         appGraph()
+        onBoardingGraph()
+        catsBrowserGraph()
+        dogsBrowserGraph()
         settingsGraph()
     }
 }

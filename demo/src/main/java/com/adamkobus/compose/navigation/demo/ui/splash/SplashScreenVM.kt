@@ -7,10 +7,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavActionConsumer
-import com.adamkobus.compose.navigation.demo.nav.FromSplash
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
 import com.adamkobus.compose.navigation.demo.ui.ext.onStart
+import com.adamkobus.compose.navigation.demo.ui.nav.FromSplash
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

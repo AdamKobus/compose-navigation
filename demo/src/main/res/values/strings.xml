@@ -1,27 +1,3 @@
 <resources>
     <string name="app_name">Dogs &amp; Cats</string>
-
-    <!-- WelcomeScreen -->
-    <string name="welcome_hi">Hi!\nWhich ones do you like more?</string>
-    <string name="welcome_button_cats">Cats</string>
-    <string name="welcome_button_dogs">Dogs</string>
-
-    <!-- CatsListScreen -->
-    <string name="cats_list_title">Cats</string>
-
-    <!-- CatDetailsScreen -->
-    <string name="cat_details_title">Cat Details</string>
-    <string name="cat_details_error">Failed to load cat details</string>
-
-    <!-- CatsListScreen -->
-    <string name="dogs_list_title">Dogs</string>
-
-    <!-- DogDetailsScreen -->
-    <string name="dog_details_title">Dog Details</string>
-    <string name="dog_details_error">Failed to load dog details</string>
-    <string name="dog_details_open_dialog_button">Open Alert Dialog</string>
-
-    <!-- DemoDialog -->
-    <string name="demo_dialog_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
-    <string name="demo_dialog_close">OK</string>
 </resources>

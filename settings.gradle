@@ -6,8 +6,11 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Compose Navigation"
-include ':demo'
 include ':composenav'
+include ':demo'
+include ':demo-common-ui'
 include ':demo-core'
-include ':demo-settings'
-include ':demo-ui-commons'
+include ':demo-ui-cats-browser'
+include ':demo-ui-dogs-browser'
+include ':demo-ui-on-boarding'
+include ':demo-ui-settings'

@@ -18,7 +18,7 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 
 /**
- * @see [composable]]
+ * @see [composable]
  */
 @Suppress("LongParameterList")
 @ExperimentalAnimationApi

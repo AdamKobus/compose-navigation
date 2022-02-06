@@ -1,0 +1,24 @@
+import com.adamkobus.compose.navigation.Libs
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+
+}
+
+dependencies {
+    implementation project(':demo-common-ui')
+
+    // hilt
+    implementation Libs.Google.Hilt
+    kapt Libs.Google.HiltCompiler
+
+    // testing
+    testImplementation Libs.Test.JUnit
+    testImplementation Libs.Test.Mockk
+}
