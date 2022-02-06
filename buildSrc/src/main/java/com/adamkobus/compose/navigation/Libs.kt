@@ -77,6 +77,13 @@ object Libs {
         const val HiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
     }
 
+    object AdamKobus {
+        /**
+         * [Lifecycle Aware ViewModel Releases](https://github.com/AdamKobus/lifecycle-aware-viewmodel/releases)
+         */
+        const val LifecycleAwareViewModel = "com.adamkobus:lifecycle-observer-viewmodel-ktx:1.0.0"
+    }
+
     object Test {
         /**
          * [JUnit4 Releases](https://github.com/junit-team/junit4/releases)

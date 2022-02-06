@@ -3,7 +3,6 @@ package com.adamkobus.compose.navigation.demo.nav
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.navigation
 import com.adamkobus.compose.navigation.data.NavGraph
 import com.adamkobus.compose.navigation.demo.ui.catdetails.CatDetailsScreen
 import com.adamkobus.compose.navigation.demo.ui.catslist.CatsListScreen
@@ -12,13 +11,14 @@ import com.adamkobus.compose.navigation.demo.ui.dogdetails.DogDetailsScreen
 import com.adamkobus.compose.navigation.demo.ui.dogslist.DogsListScreen
 import com.adamkobus.compose.navigation.demo.ui.splash.SplashScreen
 import com.adamkobus.compose.navigation.demo.ui.welcome.WelcomeScreen
+import com.adamkobus.compose.navigation.destination.NavDestination
 import com.adamkobus.compose.navigation.ext.composableDestination
 import com.adamkobus.compose.navigation.ext.composableDialog
 import com.adamkobus.compose.navigation.ext.composableNavigation
 import com.adamkobus.compose.navigation.ext.getInt
 
-object AppGraph : NavGraph {
-    override val name = "appGraph"
+object AppGraph : NavGraph("appGraph") {
+    override fun startDestination(): NavDestination = SplashScreen
 
     const val PARAM_CAT_ID = "catId"
     const val PARAM_DOG_ID = "dogId"
@@ -37,6 +37,8 @@ object AppGraph : NavGraph {
         param(PARAM_DOG_ID)
     }
     val DemoDialog = navDestination("demoDialog")
+
+    val Back = popDestination()
 }
 
 fun NavBackStackEntry.catId() = getInt(AppGraph.PARAM_CAT_ID)
@@ -44,10 +46,7 @@ fun NavBackStackEntry.dogId() = getInt(AppGraph.PARAM_DOG_ID)
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.appGraph() {
-    composableNavigation(
-        graph = AppGraph,
-        startDestination = AppGraph.SplashScreen
-    ) {
+    composableNavigation(AppGraph) {
 
         composableDestination(AppGraph.SplashScreen) {
             SplashScreen()

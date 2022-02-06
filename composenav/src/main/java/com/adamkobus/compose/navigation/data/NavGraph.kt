@@ -1,16 +1,39 @@
 package com.adamkobus.compose.navigation.data
 
-interface NavGraph : INavDestination {
-    val name: String
+import com.adamkobus.compose.navigation.action.NavigateAction
+import com.adamkobus.compose.navigation.action.PopAction
+import com.adamkobus.compose.navigation.destination.INavDestination
+import com.adamkobus.compose.navigation.destination.NavDestination
+import com.adamkobus.compose.navigation.destination.NavRoute
+import com.adamkobus.compose.navigation.destination.PopDestination
+import com.adamkobus.compose.navigation.destination.navDestination
+import com.adamkobus.compose.navigation.destination.navRoute
+import com.adamkobus.compose.navigation.destination.popDestination
 
-    fun navDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): INavDestination =
+abstract class NavGraph(val name: String) : INavDestination {
+
+    override val route: NavRoute = navRoute(name)
+
+    abstract fun startDestination(): NavDestination
+
+    fun navDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): NavDestination =
         navDestination(this, pathName = pathName, init = init)
+
+    fun popDestination(): PopDestination =
+        popDestination(this)
 
     override val graph: NavGraph
         get() = this
 
-    override val route: NavRoute
-        get() = navRoute(name)
+    operator fun plus(other: PopDestination): PopAction = to(other)
 
-    override fun next(init: NavRoute.Builder.() -> Unit): INavDestination = NavDestination(graph = graph, route = route.next(init = init))
+    infix fun to(other: PopDestination): PopAction = PopAction(this, other)
+
+    operator fun plus(other: NavDestination): NavigateAction = to(other)
+
+    infix fun to(other: NavDestination) = NavigateAction(this, other)
+
+    operator fun plus(other: NavGraph): NavigateAction = to(other)
+
+    infix fun to(other: NavGraph): NavigateAction = NavigateAction(this, other)
 }

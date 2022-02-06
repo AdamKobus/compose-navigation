@@ -1,4 +1,4 @@
-package com.adamkobus.compose.navigation.data
+package com.adamkobus.compose.navigation.destination
 
 /**
  * Creates a definition of a route representing a destination in your application.

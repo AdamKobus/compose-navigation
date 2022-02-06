@@ -1,4 +1,6 @@
-package com.adamkobus.compose.navigation.data
+package com.adamkobus.compose.navigation.destination
+
+import com.adamkobus.compose.navigation.data.NavGraph
 
 interface INavDestination {
 
@@ -14,12 +16,4 @@ interface INavDestination {
      * For more complex paths it should be overridden.
      */
     val route: NavRoute
-
-    operator fun plus(other: INavDestination): NavAction = NavAction(this, other)
-
-    infix fun to(other: INavDestination): NavAction {
-        return NavAction(this, other)
-    }
-
-    fun next(init: NavRoute.Builder.() -> Unit = {}): INavDestination
 }

@@ -1,5 +1,6 @@
 package com.adamkobus.compose.navigation.data
 
+import com.adamkobus.compose.navigation.destination.navDestination
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals

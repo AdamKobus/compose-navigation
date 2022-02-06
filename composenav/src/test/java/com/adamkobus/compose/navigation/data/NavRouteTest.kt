@@ -1,5 +1,6 @@
 package com.adamkobus.compose.navigation.data
 
+import com.adamkobus.compose.navigation.destination.navRoute
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
