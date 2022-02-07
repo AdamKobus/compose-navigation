@@ -1,6 +1,8 @@
 package com.adamkobus.compose.navigation.data
 
+import com.adamkobus.compose.navigation.destination.NavRoute
 import com.adamkobus.compose.navigation.destination.navRoute
+import com.adamkobus.compose.navigation.error.ReservedNameError
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -114,5 +116,62 @@ class NavRouteTest {
 
         // when
         testSubject.buildPath("aaa", "bbb", "ccc")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN reserved graph name WHEN navRoute THEN ReservedNameError is thrown`() {
+        navRoute("__reserved")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN reserved path name WHEN navRoute THEN ReservedNameError is thrown`() {
+        navRoute("proper", "__reserved")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN reserved param name WHEN navRoute THEN ReservedNameError is thrown`() {
+        navRoute("proper", "proper") {
+            param("__reserved")
+        }
+    }
+
+    @Test
+    fun `GIVEN using default builder with proper graph name WHEN init THEN no error`() {
+        NavRoute.Builder("proper")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN using default builder with reserved graph name WHEN init THEN ReservedNameError is thrown`() {
+        NavRoute.Builder("__reserved")
+    }
+
+    @Test
+    fun `GIVEN using default builder with proper path name WHEN init THEN no error`() {
+        NavRoute.Builder("properGraph", "proper")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN using default builder with reserved path name WHEN init THEN ReservedNameError is thrown`() {
+        NavRoute.Builder("properGraph", "__reserved")
+    }
+
+    @Test
+    fun `GIVEN using initialParts builder init WHEN adding proper path THEN no error`() {
+        NavRoute.Builder(emptyList()).path("proper")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN using initialParts builder init WHEN adding reserved path THEN ReservedNameError is thrown`() {
+        NavRoute.Builder(emptyList()).path("__reserved")
+    }
+
+    @Test
+    fun `GIVEN using initialParts builder init WHEN adding proper param THEN no error`() {
+        NavRoute.Builder(emptyList()).param("proper")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN using initialParts builder init WHEN adding reserved param THEN ReservedNameError is thrown`() {
+        NavRoute.Builder(emptyList()).param("__reserved")
     }
 }
