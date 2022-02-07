@@ -14,7 +14,7 @@ object DogsBrowserGraph : NavGraph("dogs") {
     val DogDetails = DogsList.next {
         param(PARAM_DOG_ID)
     }
-    val DemoDialog = navDestination("demoDialog")
+    val DemoDialog = dialogDestination("demoDialog")
     val Back = popDestination()
 }
 
