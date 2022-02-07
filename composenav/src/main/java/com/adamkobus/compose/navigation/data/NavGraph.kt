@@ -10,14 +10,19 @@ import com.adamkobus.compose.navigation.destination.navDestination
 import com.adamkobus.compose.navigation.destination.navRoute
 import com.adamkobus.compose.navigation.destination.popDestination
 
-abstract class NavGraph(val name: String) : INavDestination {
+abstract class NavGraph internal constructor(
+    val name: String,
+    private val reservedNameCheck: Boolean = true
+) : INavDestination {
 
-    override val route: NavRoute = navRoute(name)
+    constructor(name: String) : this(name, reservedNameCheck = true)
+
+    override val route: NavRoute = navRoute(name, reservedNamesCheck = reservedNameCheck)
 
     abstract fun startDestination(): NavDestination
 
     fun navDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): NavDestination =
-        navDestination(this, pathName = pathName, init = init)
+        navDestination(this, pathName = pathName, reservedNameCheck = reservedNameCheck, init = init)
 
     fun popDestination(): PopDestination =
         popDestination(this)

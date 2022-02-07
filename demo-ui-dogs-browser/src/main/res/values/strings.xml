@@ -10,5 +10,5 @@
 
     <!-- DemoDialog -->
     <string name="demo_dialog_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
-    <string name="demo_dialog_close">OK</string>
+    <string name="demo_dialog_close">I understand</string>
 </resources>

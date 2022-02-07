@@ -28,7 +28,12 @@ data class NavDestination(
     infix fun to(other: NavGraph): NavigateAction = NavigateAction(this, other)
 }
 
-internal fun navDestination(graph: NavGraph, pathName: String, init: NavRoute.Builder.() -> Unit = {}): NavDestination {
-    val route = navRoute(graphName = graph.name, path = pathName, init)
+internal fun navDestination(
+    graph: NavGraph,
+    pathName: String,
+    reservedNameCheck: Boolean = true,
+    init: NavRoute.Builder.() -> Unit = {}
+): NavDestination {
+    val route = navRoute(graphName = graph.name, path = pathName, reservedNamesCheck = reservedNameCheck, init)
     return NavDestination(graph, route)
 }

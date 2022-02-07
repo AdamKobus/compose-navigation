@@ -46,38 +46,55 @@ data class NavRoute constructor(
     /**
      * Starts building a new route using builder that is populated with [NavRoutePart]s from the [NavRoute] on which [next] was invoked.
      */
-    fun next(init: Builder.() -> Unit = {}): NavRoute {
-        val builder = Builder(parts)
+    fun next(init: Builder.() -> Unit = {}): NavRoute =
+        next(reservedNamesCheck = true, init)
+
+    internal fun next(reservedNamesCheck: Boolean = true, init: Builder.() -> Unit = {}): NavRoute {
+        val builder = Builder(parts, reservedNamesCheck = reservedNamesCheck)
         builder.init()
         return builder.build()
     }
 
-    class Builder internal constructor(initialParts: List<NavRoutePart>) {
+    class Builder internal constructor(initialParts: List<NavRoutePart>, private val reservedNamesCheck: Boolean) {
         private val parts = initialParts.toMutableList()
         var separator = PART_SEPARATOR
 
-        constructor(graphName: String) : this(emptyList()) {
+        constructor(initialParts: List<NavRoutePart>) : this(initialParts = initialParts, reservedNamesCheck = true)
+
+        constructor(graphName: String) : this(emptyList(), reservedNamesCheck = true) {
             graphName(graphName)
         }
 
-        constructor(graphName: String, pathName: String) : this(emptyList()) {
+        constructor(graphName: String, pathName: String) : this(emptyList(), reservedNamesCheck = true) {
+            graphName(graphName)
+            path(pathName)
+        }
+
+        internal constructor(graphName: String, reservedNamesCheck: Boolean) : this(emptyList(), reservedNamesCheck = reservedNamesCheck) {
+            graphName(graphName)
+        }
+
+        internal constructor(graphName: String, pathName: String, reservedNamesCheck: Boolean) : this(
+            emptyList(),
+            reservedNamesCheck = reservedNamesCheck
+        ) {
             graphName(graphName)
             path(pathName)
         }
 
         private fun graphName(name: String) {
             ensureNameNotEmpty(name)
-            parts.add(NavRoutePart.GraphName(name))
+            parts.add(NavRoutePart.GraphName(name, reservedNamesCheck = reservedNamesCheck))
         }
 
         fun path(name: String) {
             ensureNameNotEmpty(name)
-            parts.add(NavRoutePart.Path(name))
+            parts.add(NavRoutePart.Path(name, reservedNamesCheck = reservedNamesCheck))
         }
 
         fun param(name: String) {
             ensureNameNotEmpty(name)
-            parts.add(NavRoutePart.Param(name))
+            parts.add(NavRoutePart.Param(name, reservedNamesCheck = reservedNamesCheck))
         }
 
         private fun ensureNameNotEmpty(name: String) {
@@ -103,56 +120,29 @@ data class NavRoute constructor(
     }
 }
 
-fun navRoute(graphName: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute {
-    val builder = NavRoute.Builder(graphName = graphName)
+fun navRoute(graphName: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute =
+    navRoute(graphName = graphName, reservedNamesCheck = true, init = init)
+
+internal fun navRoute(
+    graphName: String,
+    reservedNamesCheck: Boolean = true,
+    init: NavRoute.Builder.() -> Unit = {}
+): NavRoute {
+    val builder = NavRoute.Builder(graphName = graphName, reservedNamesCheck = reservedNamesCheck)
     builder.init()
     return builder.build()
 }
 
-fun navRoute(graphName: String, path: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute {
-    val builder = NavRoute.Builder(graphName = graphName, pathName = path)
+fun navRoute(graphName: String, path: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute =
+    navRoute(graphName = graphName, path = path, reservedNamesCheck = true, init = init)
+
+internal fun navRoute(
+    graphName: String,
+    path: String,
+    reservedNamesCheck: Boolean = true,
+    init: NavRoute.Builder.() -> Unit = {}
+): NavRoute {
+    val builder = NavRoute.Builder(graphName = graphName, pathName = path, reservedNamesCheck = reservedNamesCheck)
     builder.init()
     return builder.build()
-}
-
-sealed class NavRoutePart {
-
-    class GraphName(val name: String) : NavRoutePart() {
-        override fun toString(): String = name
-
-        override fun equals(other: Any?): Boolean {
-            return other is GraphName && other.name == name
-        }
-
-        override fun hashCode(): Int {
-            return name.hashCode()
-        }
-    }
-
-    class Path(val name: String) : NavRoutePart() {
-        override fun toString(): String = name
-
-        override fun equals(other: Any?): Boolean {
-            return other is Path && other.name == name
-        }
-
-        override fun hashCode(): Int {
-            return name.hashCode()
-        }
-    }
-
-    /**
-     * Defined a part of the route that will be substituted with param value during path building
-     */
-    class Param(val paramName: String) : NavRoutePart() {
-        override fun toString(): String = "{$paramName}"
-
-        override fun equals(other: Any?): Boolean {
-            return other is Param && other.paramName == paramName
-        }
-
-        override fun hashCode(): Int {
-            return paramName.hashCode()
-        }
-    }
 }

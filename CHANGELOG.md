@@ -24,6 +24,9 @@
 - Added `NavDestinationManager` - it provides information about current destination
 - Added `ComposeNavigation` which should be used to configure the library and get access to its state
 - Moved documentation to [docs](docs)
+- Names starting with double underscore (i.e. '__myGraph') are now reserved for internal usage. 
+  Trying to declare graph, path or param name like this will now result in `ReservedNameError` being thrown. 
+  This behaviour can be disabled using `ComposeNavigation.disableRestrictedNamesCheck()`
 
 # 0.1.0
 
