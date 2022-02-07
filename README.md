@@ -62,7 +62,7 @@ dependencies {
 
 ## Links
 
-- [Documentation with examples](https://github.com/AdamKobus/compose-navigation/wiki/Compose-Navigation-Documentation)
+- [Documentation with examples](docs)
 
 # License
 

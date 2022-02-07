@@ -23,6 +23,7 @@
 - Added `NavLogger`
 - Added `NavDestinationManager` - it provides information about current destination
 - Added `ComposeNavigation` which should be used to configure the library and get access to its state
+- Moved documentation to [docs](docs)
 
 # 0.1.0
 
