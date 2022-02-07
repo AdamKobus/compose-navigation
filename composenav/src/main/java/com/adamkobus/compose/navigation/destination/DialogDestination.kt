@@ -4,12 +4,10 @@ import com.adamkobus.compose.navigation.action.NavigateAction
 import com.adamkobus.compose.navigation.action.PopAction
 import com.adamkobus.compose.navigation.data.NavGraph
 
-data class NavDestination(
+data class DialogDestination(
     override val graph: NavGraph,
     override val route: NavRoute
 ) : INavDestination {
-
-    fun next(init: NavRoute.Builder.() -> Unit) = NavDestination(graph = graph, route = route.next(init = init))
 
     operator fun plus(other: PopDestination): PopAction = to(other)
 
@@ -26,18 +24,14 @@ data class NavDestination(
     operator fun plus(other: DialogDestination) = NavigateAction(this, other)
 
     infix fun to(other: DialogDestination) = NavigateAction(this, other)
-
-    override fun toString(): String {
-        return route.buildRoute()
-    }
 }
 
-internal fun navDestination(
+internal fun dialogDestination(
     graph: NavGraph,
     pathName: String,
     reservedNameCheck: Boolean = true,
     init: NavRoute.Builder.() -> Unit = {}
-): NavDestination {
+): DialogDestination {
     val route = navRoute(graphName = graph.name, path = pathName, reservedNamesCheck = reservedNameCheck, init)
-    return NavDestination(graph, route)
+    return DialogDestination(graph, route)
 }

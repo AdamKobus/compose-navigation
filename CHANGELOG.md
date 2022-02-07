@@ -27,6 +27,8 @@
 - Names starting with double underscore (i.e. '__myGraph') are now reserved for internal usage. 
   Trying to declare graph, path or param name like this will now result in `ReservedNameError` being thrown. 
   This behaviour can be disabled using `ComposeNavigation.disableRestrictedNamesCheck()`
+- Added `DialogDestination`
+- `NavGrpah.dialogDestination` now requires destination of type `DialogDestination`
 
 # 0.1.0
 
