@@ -38,11 +38,11 @@ class NavDestinationManager internal constructor() {
     }
 
     internal fun addDestinationsFromAction(action: NavAction) {
-        registerDestination(action.fromDestination)
-        registerDestination(action.toDestination)
+        addToKnownDestinations(action.fromDestination)
+        addToKnownDestinations(action.toDestination)
     }
 
-    private fun registerDestination(destination: INavDestination) {
+    internal fun addToKnownDestinations(destination: INavDestination) {
         if (destination is NavGraph) {
             val startDestination = destination.startDestination()
             addKnownDestination(startDestination.route.buildRoute(), startDestination)

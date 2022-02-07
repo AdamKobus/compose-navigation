@@ -2,6 +2,9 @@
 
 ### Fixes
 
+- [#26](https://github.com/AdamKobus/compose-navigation/issues/26) `NavDestinationManager.currentDestination` change to the first visible
+  screen happens instantly on app launch now.
+  
 ### Changes
 
 - Updated dependencies
@@ -9,7 +12,7 @@
 - Improved the current destination evaluation code
 - Prepared the code for handling nested / multiple NavHosts
 - `INavAction` now has 2 different implementations: `NavigateAction` and `PopAction`
-- `INavDestination` now has 3 different implementations: `NavGraph`, `NavDestination` and `PopDestination`. This makes it easy to determine 
+- `INavDestination` now has 3 different implementations: `NavGraph`, `NavDestination` and `PopDestination`. This makes it easy to determine
   which type of action should be performed.
 - `NavActionWrapper` is now an abstract class so that there is less boilerplate code in NavActions declarations using sealed classes.
 - `NavGraph` is now an abstract class that requires `name` to be passed in constructor
