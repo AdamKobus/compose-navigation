@@ -75,4 +75,8 @@ class NavigateAction(
         result = 31 * result + (navigateWithController?.hashCode() ?: 0)
         return result
     }
+
+    override fun toString(): String {
+        return "${super.toString()} [${params.joinToString(", ")}]"
+    }
 }

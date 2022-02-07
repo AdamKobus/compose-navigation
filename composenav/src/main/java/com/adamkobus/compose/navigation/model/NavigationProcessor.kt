@@ -1,18 +1,16 @@
 package com.adamkobus.compose.navigation.model
 
 import androidx.navigation.NavBackStackEntry
+import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.data.GlobalGraph
 import com.adamkobus.compose.navigation.data.NavGraph
 import com.adamkobus.compose.navigation.destination.INavDestination
-import com.adamkobus.compose.navigation.destination.NavDestination
-import com.adamkobus.compose.navigation.destination.PopDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,13 +23,14 @@ internal class NavigationProcessor @Inject constructor(
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val actionBuffer = MutableSharedFlow<NavAction>()
 
-    private val _currentDestination = MutableStateFlow<INavDestination?>(null)
-    private var undecognizedDestinationRoute: String? = null
+    private val destinationManager: NavDestinationManager
+        get() = ComposeNavigation.getNavDestinationManager()
 
-    val currentDestination: INavDestination?
-        get() = _currentDestination.value
+    private val currentDestination: INavDestination?
+        get() = destinationManager.currentDestination
 
-    private val knownDestinations = mutableMapOf<String, INavDestination>()
+    private val logger: NavLogger
+        get() = ComposeNavigation.getLogger()
 
     init {
         scope.launch {
@@ -52,59 +51,31 @@ internal class NavigationProcessor @Inject constructor(
     }
 
     private suspend fun processAction(action: NavAction) {
-        log("processing $action started")
+        destinationManager.addDestinationsFromAction(action)
+
+        logger.v("Started processing: $action | Current destination: $currentDestination")
+        if (action.toDestination is GlobalGraph) {
+            logger.w("Discarded: $action | Navigating to GlobalGraph is not allowed")
+            return
+        }
         val isActionAllowed = currentDestination?.let {
             navGatekeeper.isNavActionAllowed(it, action)
         } ?: true
         if (!isActionAllowed) {
-            log("$action discarded")
+            logger.v("Action discarded by verifier: $action | Current destination: $currentDestination")
             return
         }
-        registerDestination(action.fromDestination)
-        registerDestination(action.toDestination)
 
-        if (action.toDestination !is PopDestination && action.toDestination.graph != GlobalGraph) {
-            _currentDestination.value = action.toDestination
+        if (actionDispatcher.dispatchAction(action = action)) {
+            logger.v("Action delivered: $action | Current destination: $currentDestination")
+            destinationManager.onActionAccepted(action)
+        } else {
+            logger.w("Failed to deliver action: $action | Current destination: $currentDestination")
         }
-        actionDispatcher.dispatchAction(action = action)
-        log("processing $action finished")
-    }
-
-    private fun registerDestination(destination: INavDestination) {
-        if (destination is NavGraph) {
-            val startDestination = destination.startDestination()
-            addKnownDestination(startDestination.route.buildRoute(), startDestination)
-        } else if (destination is NavDestination) {
-            addKnownDestination(destination.route.buildRoute(), destination)
-            val startDestination = destination.graph.startDestination()
-            addKnownDestination(startDestination.route.buildRoute(), startDestination)
-        }
-    }
-
-    private fun addKnownDestination(route: String, destination: INavDestination) {
-        knownDestinations.putIfAbsent(route, destination)
-        if (route == undecognizedDestinationRoute) {
-            undecognizedDestinationRoute = null
-            _currentDestination.value = destination
-        }
-    }
-
-    @Suppress("UnusedPrivateMember")
-    private fun log(message: String) {
-        // TODO add logger
     }
 
     fun onBackStackEntryUpdated(entry: NavBackStackEntry?) {
         val route = entry?.destination?.route
-        if (route == null) {
-            _currentDestination.value = null
-        } else {
-            knownDestinations[route]?.let {
-                undecognizedDestinationRoute = null
-                _currentDestination.value = it
-            } ?: run {
-                undecognizedDestinationRoute = route
-            }
-        }
+        destinationManager.onRouteUpdated(route)
     }
 }
