@@ -36,4 +36,8 @@ abstract class NavGraph(val name: String) : INavDestination {
     operator fun plus(other: NavGraph): NavigateAction = to(other)
 
     infix fun to(other: NavGraph): NavigateAction = NavigateAction(this, other)
+
+    override fun toString(): String {
+        return "Graph($name) ${startDestination()}"
+    }
 }

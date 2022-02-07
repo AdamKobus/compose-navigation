@@ -36,15 +36,18 @@ internal class PendingActionDispatcher @Inject constructor() {
         }
     }
 
-    suspend fun dispatchAction(action: NavAction) {
+    suspend fun dispatchAction(action: NavAction): Boolean {
         val consumer = synchronized(consumers) {
             consumers.find { it.graphs.isEmpty() || it.graphs.contains(action.fromDestination.graph) }
         }
+        var ret = false
         consumer?.let {
             withContext(it.scope.coroutineContext) {
                 it.consumerFlow.emit(action)
+                ret = true
             }
         }
+        return ret
     }
 }
 
