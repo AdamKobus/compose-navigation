@@ -18,6 +18,7 @@ dependencies {
     api Libs.AndroidX.Core
     api Libs.AndroidX.Appcompat
     api Libs.Kotlin.Coroutines
+    api Libs.AdamKobus.LifecycleAwareViewModel
 
     // hilt
     implementation Libs.Google.Hilt

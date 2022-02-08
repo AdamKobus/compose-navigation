@@ -26,7 +26,7 @@ internal class NavigationProcessor @Inject constructor(
     private val destinationManager: NavDestinationManager
         get() = ComposeNavigation.getNavDestinationManager()
 
-    private val currentDestination: INavDestination?
+    internal val currentDestination: INavDestination?
         get() = destinationManager.currentDestination
 
     private val logger: NavLogger
@@ -53,7 +53,7 @@ internal class NavigationProcessor @Inject constructor(
     private suspend fun processAction(action: NavAction) {
         destinationManager.addDestinationsFromAction(action)
 
-        logger.v("Started processing: $action | Current destination: $currentDestination")
+        logger.v("Started processing: $action")
         if (action.toDestination is GlobalGraph) {
             logger.w("Discarded: $action | Navigating to GlobalGraph is not allowed")
             return
@@ -62,15 +62,15 @@ internal class NavigationProcessor @Inject constructor(
             navGatekeeper.isNavActionAllowed(it, action)
         } ?: true
         if (!isActionAllowed) {
-            logger.v("Action discarded by verifier: $action | Current destination: $currentDestination")
+            logger.v("Action discarded by verifier: $action")
             return
         }
 
         if (actionDispatcher.dispatchAction(action = action)) {
-            logger.v("Action delivered: $action | Current destination: $currentDestination")
+            logger.v("Action delivered: $action")
             destinationManager.onActionAccepted(action)
         } else {
-            logger.w("Failed to deliver action: $action | Current destination: $currentDestination")
+            logger.w("Failed to deliver action: $action")
         }
     }
 
