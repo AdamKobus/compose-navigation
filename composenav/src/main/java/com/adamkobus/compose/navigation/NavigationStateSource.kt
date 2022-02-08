@@ -1,10 +1,10 @@
 package com.adamkobus.compose.navigation
 
-import com.adamkobus.compose.navigation.destination.INavDestination
+import com.adamkobus.compose.navigation.destination.CurrentDestination
 import kotlinx.coroutines.flow.Flow
 
 interface NavigationStateSource {
-    val currentDestination: INavDestination?
+    val currentDestination: CurrentDestination
 
-    fun observeCurrentDestination(): Flow<INavDestination?>
+    fun observeCurrentDestination(): Flow<CurrentDestination>
 }

@@ -1,13 +1,14 @@
 package com.adamkobus.compose.navigation.model
 
+import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.data.GlobalGraph
 import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
-import com.adamkobus.compose.navigation.destination.PopDestination
+import com.adamkobus.compose.navigation.destination.UnknownDestination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -17,14 +18,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
  */
 internal class NavDestinationManager : NavigationStateSource {
 
-    private val _currentDestination = MutableStateFlow<INavDestination?>(null)
-    override val currentDestination: INavDestination?
+    private val _currentDestination = MutableStateFlow(CurrentDestination(null, emptyList()))
+    override val currentDestination: CurrentDestination
         get() = _currentDestination.value
 
-    override fun observeCurrentDestination(): Flow<INavDestination?> = _currentDestination
+    override fun observeCurrentDestination(): Flow<CurrentDestination> = _currentDestination
 
     private val knownDestinations = mutableMapOf<String, INavDestination>()
-    private var unrecognizedDestinationRoute: String? = null
 
     private val logger: NavLogger
         get() = ComposeNavigation.getLogger()
@@ -47,45 +47,39 @@ internal class NavDestinationManager : NavigationStateSource {
         if (destination is NavGraph) {
             val startDestination = destination.startDestination()
             addKnownDestination(startDestination.route.buildRoute(), startDestination)
+            addKnownDestination(destination.route.buildRoute(), destination)
         } else if (destination is NavDestination) {
             addKnownDestination(destination.route.buildRoute(), destination)
             val startDestination = destination.graph.startDestination()
             addKnownDestination(startDestination.route.buildRoute(), startDestination)
+            addKnownDestination(destination.graph.route.buildRoute(), destination.graph)
         }
     }
 
     private fun addKnownDestination(route: String, destination: INavDestination) {
         synchronized(knownDestinations) {
             knownDestinations.putIfAbsent(route, destination)
-            if (route == unrecognizedDestinationRoute) {
-                unrecognizedDestinationRoute = null
-                updateCurrentDestination(destination)
-            }
         }
     }
 
-    internal fun onActionAccepted(action: NavAction) {
-        if (action.toDestination is NavGraph) {
-            updateCurrentDestination(action.toDestination.startDestination())
-        } else if (action.toDestination !is PopDestination && action.toDestination.graph != GlobalGraph) {
-            updateCurrentDestination(action.toDestination)
-        }
-    }
-
-    internal fun onRouteUpdated(route: String?) {
-        if (route == null) {
-            updateCurrentDestination(null)
+    internal fun onBackStackUpdated(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
+        if (entry == null) {
+            updateCurrentDestination(CurrentDestination(null, emptyList()))
         } else {
-            knownDestinations[route]?.let {
-                unrecognizedDestinationRoute = null
-                updateCurrentDestination(it)
-            } ?: run {
-                unrecognizedDestinationRoute = route
-            }
+            val currentDest = resolveRouteToDestination(entry.destination.route)
+            val backStack = backQueue.map {
+                resolveRouteToDestination(it.destination.route)
+            }.filterNotNull()
+            updateCurrentDestination(CurrentDestination(currentDest, backStack))
         }
     }
 
-    private fun updateCurrentDestination(destination: INavDestination?) {
+    private fun resolveRouteToDestination(route: String?): INavDestination? =
+        route?.let {
+            knownDestinations[route] ?: UnknownDestination(it)
+        }
+
+    private fun updateCurrentDestination(destination: CurrentDestination) {
         if (_currentDestination.value != destination) {
             _currentDestination.value = destination
             logger.d("Current destination changed to $destination")

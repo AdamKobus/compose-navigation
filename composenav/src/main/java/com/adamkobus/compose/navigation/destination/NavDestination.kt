@@ -28,7 +28,7 @@ data class NavDestination(
     infix fun to(other: DialogDestination) = NavigateAction(this, other)
 
     override fun toString(): String {
-        return route.buildRoute()
+        return "Destination(${route.buildRoute()})"
     }
 }
 

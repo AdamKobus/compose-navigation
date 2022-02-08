@@ -31,6 +31,6 @@ fun NavComposable(
     }
     val currentBackStackEntry = navController.currentBackStackEntryFlow.collectAsState(initial = null)
     LaunchedEffect(key1 = currentBackStackEntry.value) {
-        vm.processBackStackEntry(currentBackStackEntry.value)
+        vm.processBackStackEntry(currentBackStackEntry.value, navController.backQueue)
     }
 }

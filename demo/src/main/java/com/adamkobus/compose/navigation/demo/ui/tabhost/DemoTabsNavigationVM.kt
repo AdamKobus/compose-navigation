@@ -7,7 +7,7 @@ import com.adamkobus.compose.navigation.NavActionConsumer
 import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.demo.ui.nav.CatsBrowserGraph
 import com.adamkobus.compose.navigation.demo.ui.nav.DogsBrowserGraph
-import com.adamkobus.compose.navigation.destination.INavDestination
+import com.adamkobus.compose.navigation.destination.CurrentDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -49,7 +49,8 @@ class DemoTabsNavigationVM @Inject constructor(
         }
     }
 
-    private fun processNavigationUpdate(destination: INavDestination?) {
+    private fun processNavigationUpdate(currentDestination: CurrentDestination) {
+        val destination = currentDestination.destination
         if (destination in CATS_DESTINATIONS) {
             onCatActive()
         } else if (destination in DOGS_DESTINATIONS) {
@@ -74,13 +75,14 @@ class DemoTabsNavigationVM @Inject constructor(
     }
 
     private fun processTabSelection(tabData: DemoTabData) {
+        // TODO replace with intent
         when (tabData) {
-            DemoTabs.Cats -> if (navigationStateSource.currentDestination in CATS_DESTINATIONS) {
+            DemoTabs.Cats -> if (navigationStateSource.currentDestination.destination in CATS_DESTINATIONS) {
                 navActionConsumer.offer(DemoTabHostActions.ToCatsRoot)
             } else {
                 navActionConsumer.offer(DemoTabHostActions.FromGlobalToCats)
             }
-            DemoTabs.Dogs -> if (navigationStateSource.currentDestination in DOGS_DESTINATIONS) {
+            DemoTabs.Dogs -> if (navigationStateSource.currentDestination.destination in DOGS_DESTINATIONS) {
                 navActionConsumer.offer(DemoTabHostActions.ToDogsRoot)
             } else {
                 navActionConsumer.offer(DemoTabHostActions.FromGlobalToDogs)
