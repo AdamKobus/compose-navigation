@@ -23,8 +23,7 @@ fun DemoNavHost(
     ) {
         appGraph()
         onBoardingGraph()
-        catsBrowserGraph()
-        dogsBrowserGraph()
+        petsGraph()
         settingsGraph()
     }
 }

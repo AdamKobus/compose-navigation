@@ -81,7 +81,7 @@ object Libs {
         /**
          * [Lifecycle Aware ViewModel Releases](https://github.com/AdamKobus/lifecycle-aware-viewmodel/releases)
          */
-        const val LifecycleAwareViewModel = "com.adamkobus:lifecycle-observer-viewmodel-ktx:1.0.0"
+        const val LifecycleAwareViewModel = "com.adamkobus:lifecycle-observer-viewmodel-ktx:1.0.1"
     }
 
     object Test {

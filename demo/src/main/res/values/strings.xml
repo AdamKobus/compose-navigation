@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Dogs &amp; Cats</string>
+
+    <!-- Tab host -->
+    <string name="tab_cats">Cats</string>
+    <string name="tab_dogs">Dogs</string>
 </resources>

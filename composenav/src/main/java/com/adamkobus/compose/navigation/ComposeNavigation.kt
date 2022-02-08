@@ -48,12 +48,16 @@ object ComposeNavigation {
         return this
     }
 
-    fun getNavDestinationManager(): NavDestinationManager {
+    fun getNavigationStateSource(): NavigationStateSource {
         return destinationManager
     }
 
     fun getLogger(): NavLogger {
         return navLogger
+    }
+
+    internal fun getNavDestinationManager(): NavDestinationManager {
+        return destinationManager
     }
 
     internal fun getReservedNamesHandler(): ReservedNamesHandler = reservedNames

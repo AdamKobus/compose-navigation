@@ -21,7 +21,7 @@ abstract class NavGraph internal constructor(
 
     override val route: NavRoute = navRoute(name, reservedNamesCheck = reservedNameCheck)
 
-    abstract fun startDestination(): NavDestination
+    abstract fun startDestination(): INavDestination
 
     fun navDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): NavDestination =
         navDestination(this, pathName = pathName, reservedNameCheck = reservedNameCheck, init = init)

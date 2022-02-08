@@ -1,6 +1,7 @@
 package com.adamkobus.compose.navigation.model
 
 import com.adamkobus.compose.navigation.ComposeNavigation
+import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.data.GlobalGraph
 import com.adamkobus.compose.navigation.data.NavGraph
@@ -14,13 +15,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * This manager tracks any visited destination. Based on this, it builds a database of destinations and updates the [currentDestination].
  * It depends on NavComposable to work properly.
  */
-class NavDestinationManager internal constructor() {
+internal class NavDestinationManager : NavigationStateSource {
 
     private val _currentDestination = MutableStateFlow<INavDestination?>(null)
-    val currentDestination: INavDestination?
+    override val currentDestination: INavDestination?
         get() = _currentDestination.value
 
-    fun observeCurrentDestination(): Flow<INavDestination?> = _currentDestination
+    override fun observeCurrentDestination(): Flow<INavDestination?> = _currentDestination
 
     private val knownDestinations = mutableMapOf<String, INavDestination>()
     private var unrecognizedDestinationRoute: String? = null
