@@ -48,6 +48,6 @@ abstract class NavGraph internal constructor(
     infix fun to(other: NavGraph): NavigateAction = NavigateAction(this, other)
 
     override fun toString(): String {
-        return "Graph($name) ${startDestination()}"
+        return "Graph($name)"
     }
 }

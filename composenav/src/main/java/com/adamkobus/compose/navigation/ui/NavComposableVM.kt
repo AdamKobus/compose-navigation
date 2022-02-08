@@ -50,7 +50,7 @@ internal class NavComposableVM @Inject constructor(
         navigationProcessor.unregister(this)
     }
 
-    fun processBackStackEntry(entry: NavBackStackEntry?) {
-        navigationProcessor.onBackStackEntryUpdated(entry)
+    fun processBackStackEntry(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
+        navigationProcessor.onBackStackEntryUpdated(entry, backQueue)
     }
 }

@@ -5,7 +5,8 @@ import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.data.GlobalGraph
 import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.destination.INavDestination
+import com.adamkobus.compose.navigation.destination.CurrentDestination
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,10 +24,12 @@ internal class NavigationProcessor @Inject constructor(
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val actionBuffer = MutableSharedFlow<NavAction>()
 
+    private var onActionPerformed: CompletableDeferred<Unit>? = null
+
     private val destinationManager: NavDestinationManager
         get() = ComposeNavigation.getNavDestinationManager()
 
-    internal val currentDestination: INavDestination?
+    private val currentDestination: CurrentDestination
         get() = destinationManager.currentDestination
 
     private val logger: NavLogger
@@ -58,24 +61,24 @@ internal class NavigationProcessor @Inject constructor(
             logger.w("Discarded: $action | Navigating to GlobalGraph is not allowed")
             return
         }
-        val isActionAllowed = currentDestination?.let {
-            navGatekeeper.isNavActionAllowed(it, action)
-        } ?: true
+        val isActionAllowed = navGatekeeper.isNavActionAllowed(currentDestination, action)
         if (!isActionAllowed) {
             logger.v("Action discarded by verifier: $action")
             return
         }
-
+        onActionPerformed = CompletableDeferred()
         if (actionDispatcher.dispatchAction(action = action)) {
             logger.v("Action delivered: $action")
-            destinationManager.onActionAccepted(action)
+            onActionPerformed?.await()
+            logger.v("Stopped processing: $action")
         } else {
             logger.w("Failed to deliver action: $action")
         }
     }
 
-    fun onBackStackEntryUpdated(entry: NavBackStackEntry?) {
-        val route = entry?.destination?.route
-        destinationManager.onRouteUpdated(route)
+    fun onBackStackEntryUpdated(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
+        destinationManager.onBackStackUpdated(entry, backQueue)
+        onActionPerformed?.complete(Unit)
+        onActionPerformed = null
     }
 }

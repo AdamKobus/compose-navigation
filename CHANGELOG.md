@@ -21,7 +21,7 @@
 - `NavComposable` now accepts `vararg observedGraphs: NavGraph`. If any NavGraph is provided, then received actions will be filtered only to
   those with `fromDestination` belonging to provided graph(s)
 - Added `NavLogger`
-- Added `NavDestinationManager` - it provides information about current destination
+- Added `NavDestinationManager` - it provides information about current destination and back stack queue
 - Added `ComposeNavigation` which should be used to configure the library and get access to its state
 - Moved documentation to [docs](docs)
 - Names starting with double underscore (i.e. '__myGraph') are now reserved for internal usage. 
