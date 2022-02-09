@@ -3,6 +3,7 @@ package com.adamkobus.compose.navigation
 import android.util.Log
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
 import com.adamkobus.compose.navigation.model.NavDestinationManager
+import com.adamkobus.compose.navigation.model.NavGatekeeper
 import com.adamkobus.compose.navigation.model.NavLogLevel
 import com.adamkobus.compose.navigation.model.NavLogger
 import com.adamkobus.compose.navigation.model.NavLoggerImpl
@@ -25,6 +26,7 @@ object ComposeNavigation {
     private val destinationManager = NavDestinationManager()
     private val reservedNames = ReservedNamesHandler()
     private val navIntentResolvingManager = NavIntentResolvingManager()
+    private val navGatekeeper = NavGatekeeper()
 
     init {
         reset()
@@ -34,6 +36,7 @@ object ComposeNavigation {
         reservedNames.enabled = DEFAULT_RESERVED_NAMES_ENABLED
         navLogger = DEFAULT_LOGGER
         logLevel = DEFAULT_LOG_LEVEL
+        navGatekeeper.reset()
     }
 
     fun setLogger(logger: NavLogger): ComposeNavigation {
@@ -50,6 +53,13 @@ object ComposeNavigation {
 
     fun addNavIntentResolvers(vararg resolvers: NavIntentResolver): ComposeNavigation {
         navIntentResolvingManager.register(*resolvers)
+        return this
+    }
+
+    fun addNavActionVerifiers(vararg verifier: NavActionVerifier): ComposeNavigation {
+        verifier.forEach {
+            navGatekeeper.addVerifier(it)
+        }
         return this
     }
 
@@ -73,4 +83,6 @@ object ComposeNavigation {
     internal fun getReservedNamesHandler(): ReservedNamesHandler = reservedNames
 
     internal fun getNavIntentResolvingManager(): NavIntentResolvingManager = navIntentResolvingManager
+
+    internal fun getNavGatekeeper(): NavGatekeeper = navGatekeeper
 }
