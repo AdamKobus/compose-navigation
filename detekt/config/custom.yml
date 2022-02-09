@@ -21,6 +21,13 @@ style:
     active: true
     ignoreAnnotated:
       - 'Module'
+  ReturnCount:
+    active: true
+    max: 3
+    excludedFunctions: 'equals'
+    excludeLabeled: false
+    excludeReturnFromLambda: true
+    excludeGuardClauses: false
 
 complexity:
   TooManyFunctions:

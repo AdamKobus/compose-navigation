@@ -1,5 +1,7 @@
 package com.adamkobus.compose.navigation.destination
 
+import com.adamkobus.compose.navigation.action.NavigateAction
+import com.adamkobus.compose.navigation.action.PopAction
 import com.adamkobus.compose.navigation.data.NavGraph
 
 interface INavDestination {
@@ -16,4 +18,10 @@ interface INavDestination {
      * For more complex paths it should be overridden.
      */
     val route: NavRoute
+
+    fun next(init: NavRoute.Builder.() -> Unit) = NavDestination(graph = graph, route = route.next(init = init))
+
+    infix fun pop(other: PopDestination): PopAction = PopAction(this, other)
+
+    infix fun goTo(other: INavDestination) = NavigateAction(this, other)
 }

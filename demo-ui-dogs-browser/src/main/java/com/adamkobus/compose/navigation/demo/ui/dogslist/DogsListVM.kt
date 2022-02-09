@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarActionState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DogsListVM @Inject constructor(
-    private val navActionConsumer: NavActionConsumer,
+    private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource,
     private val dogsSource: DogsSource
 ) : ViewModel(), LifecycleEventObserver {
@@ -36,14 +36,14 @@ class DogsListVM @Inject constructor(
     val interactions = DogsListInteractions(
         onDogsItemSelected = {
             viewModelScope.launch {
-                navActionConsumer.offer(FromDogsList.ToDogDetails(it.id))
+                navigationConsumer.offer(FromDogsList.ToDogDetails(it.id))
             }
         }
     )
 
     private val settingsAction = AppBarActionState.settings {
         viewModelScope.launch {
-            navActionConsumer.offer(FromDogsList.ToSettings)
+            navigationConsumer.offer(FromDogsList.ToSettings)
         }
     }
     private val appBarState = AnimatedAppBarState(

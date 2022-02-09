@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
@@ -28,7 +28,7 @@ import javax.inject.Inject
 class DogDetailsScreenVM @Inject constructor(
     private val dogsSource: DogsSource,
     private val topBarState: AppBarStateSource,
-    private val navActionConsumer: NavActionConsumer
+    private val navigationConsumer: NavigationConsumer
 ) : ViewModel(), LifecycleEventObserver {
 
     private var dogInfoRefreshJob: Job? = null
@@ -44,7 +44,7 @@ class DogDetailsScreenVM @Inject constructor(
     val interactions = DogDetailsScreenInteractions(
         onOpenDialogClicked = {
             viewModelScope.launch {
-                navActionConsumer.offer(FromDogDetails.ToDemoDialog)
+                navigationConsumer.offer(FromDogDetails.ToDemoDialog)
             }
         }
     )
@@ -78,7 +78,7 @@ class DogDetailsScreenVM @Inject constructor(
     }
 
     private fun onBackPressed() {
-        navActionConsumer.offer(FromDogDetails.Back)
+        navigationConsumer.offer(FromDogDetails.Back)
     }
 
     private suspend fun onDogIdUpdated(id: Int?) {

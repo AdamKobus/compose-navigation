@@ -1,12 +1,16 @@
 package com.adamkobus.compose.navigation
 
 import android.util.Log
+import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
 import com.adamkobus.compose.navigation.model.NavDestinationManager
 import com.adamkobus.compose.navigation.model.NavLogLevel
 import com.adamkobus.compose.navigation.model.NavLogger
 import com.adamkobus.compose.navigation.model.NavLoggerImpl
 import com.adamkobus.compose.navigation.model.ReservedNamesHandler
 
+/**
+ * Provides methods to configure Compose Navigation library.
+ */
 object ComposeNavigation {
 
     @NavLogLevel
@@ -20,6 +24,7 @@ object ComposeNavigation {
     private var navLogger: NavLogger = DEFAULT_LOGGER
     private val destinationManager = NavDestinationManager()
     private val reservedNames = ReservedNamesHandler()
+    private val navIntentResolvingManager = NavIntentResolvingManager()
 
     init {
         reset()
@@ -43,6 +48,11 @@ object ComposeNavigation {
         return this
     }
 
+    fun addNavIntentResolvers(vararg resolvers: NavIntentResolver): ComposeNavigation {
+        navIntentResolvingManager.register(*resolvers)
+        return this
+    }
+
     fun disableRestrictedNamesCheck(): ComposeNavigation {
         reservedNames.enabled = false
         return this
@@ -61,4 +71,6 @@ object ComposeNavigation {
     }
 
     internal fun getReservedNamesHandler(): ReservedNamesHandler = reservedNames
+
+    internal fun getNavIntentResolvingManager(): NavIntentResolvingManager = navIntentResolvingManager
 }

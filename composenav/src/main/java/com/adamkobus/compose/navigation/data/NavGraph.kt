@@ -1,7 +1,5 @@
 package com.adamkobus.compose.navigation.data
 
-import com.adamkobus.compose.navigation.action.NavigateAction
-import com.adamkobus.compose.navigation.action.PopAction
 import com.adamkobus.compose.navigation.destination.DialogDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
@@ -11,6 +9,8 @@ import com.adamkobus.compose.navigation.destination.dialogDestination
 import com.adamkobus.compose.navigation.destination.navDestination
 import com.adamkobus.compose.navigation.destination.navRoute
 import com.adamkobus.compose.navigation.destination.popDestination
+import com.adamkobus.compose.navigation.intent.NavIntent
+import com.adamkobus.compose.navigation.intent.navIntent
 
 abstract class NavGraph internal constructor(
     val name: String,
@@ -32,20 +32,11 @@ abstract class NavGraph internal constructor(
     fun popDestination(): PopDestination =
         popDestination(this)
 
+    fun navIntent(pathName: String): NavIntent =
+        navIntent(this, pathName, reservedNameCheck = reservedNameCheck)
+
     override val graph: NavGraph
         get() = this
-
-    operator fun plus(other: PopDestination): PopAction = to(other)
-
-    infix fun to(other: PopDestination): PopAction = PopAction(this, other)
-
-    operator fun plus(other: NavDestination): NavigateAction = to(other)
-
-    infix fun to(other: NavDestination) = NavigateAction(this, other)
-
-    operator fun plus(other: NavGraph): NavigateAction = to(other)
-
-    infix fun to(other: NavGraph): NavigateAction = NavigateAction(this, other)
 
     override fun toString(): String {
         return "Graph($name)"

@@ -15,7 +15,7 @@ interface NavActionVerifier {
 
     /**
      * @param currentDestination Represents the destination displayed to the user at the moment of performing this check
-     * @param action Action that was produced via [NavActionConsumer.offer]
+     * @param action Action that was produced via [NavigationConsumer.offer]
      *
      * @return [VerifyResult.Discard] if [action] should be discarded.
      * [VerifyResult.Allow] should be returned if this [NavActionVerifier] doesn't want to block the [action]

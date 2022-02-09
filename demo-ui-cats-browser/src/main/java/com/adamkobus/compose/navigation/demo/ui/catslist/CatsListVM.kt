@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarActionState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CatsListVM @Inject constructor(
-    private val navActionConsumer: NavActionConsumer,
+    private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource,
     private val catsSource: CatsSource
 ) : ViewModel(), LifecycleEventObserver {
@@ -33,7 +33,7 @@ class CatsListVM @Inject constructor(
 
     private val settingsAction = AppBarActionState.settings {
         viewModelScope.launch {
-            navActionConsumer.offer(FromCatsList.ToSettings)
+            navigationConsumer.offer(FromCatsList.ToSettings)
         }
     }
     private val appBarState = AnimatedAppBarState(
@@ -45,7 +45,7 @@ class CatsListVM @Inject constructor(
 
     val interactions = CatsListInteractions(
         onCatListItemSelected = {
-            navActionConsumer.offer(FromCatsList.ToCatDetails(it.id))
+            navigationConsumer.offer(FromCatsList.ToCatDetails(it.id))
         }
     )
 

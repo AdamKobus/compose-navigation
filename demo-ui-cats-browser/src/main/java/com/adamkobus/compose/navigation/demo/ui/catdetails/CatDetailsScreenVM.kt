@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CatDetailsScreenVM @Inject constructor(
     private val catsSource: CatsSource,
-    private val navActionConsumer: NavActionConsumer,
+    private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource
 ) : ViewModel(), LifecycleEventObserver {
 
@@ -42,7 +42,7 @@ class CatDetailsScreenVM @Inject constructor(
     )
 
     private fun onBackPressed() {
-        navActionConsumer.offer(FromCatDetails.Back)
+        navigationConsumer.offer(FromCatDetails.Back)
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
