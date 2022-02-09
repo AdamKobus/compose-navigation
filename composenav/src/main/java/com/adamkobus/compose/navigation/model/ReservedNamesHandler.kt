@@ -33,6 +33,15 @@ internal class ReservedNamesHandler {
         }
     }
 
+    fun checkIntentName(name: String) {
+        if (enabled && name.startsWith(RESERVED_NAME_PREFIX)) {
+            throw ReservedNameError(
+                "Intent names starting with $RESERVED_NAME_PREFIX are reserved " +
+                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()"
+            )
+        }
+    }
+
     companion object {
         private const val RESERVED_NAME_PREFIX = "__"
     }

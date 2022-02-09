@@ -29,6 +29,16 @@
   This behaviour can be disabled using `ComposeNavigation.disableRestrictedNamesCheck()`
 - Added `DialogDestination`
 - `NavGrpah.dialogDestination` now requires destination of type `DialogDestination`
+- `NavActionConsumer` interface name was changed to `NavigationConsumer`
+- Removed all `+` operators and changed the name of `to` infix function to `goTo` and `pop`.
+  Using `to` was annoying sometimes because Kotlin would try to interpret it as map in some circumstances.
+- Added `NavIntent`, `NavIntentResolver` and `ResolveResult`
+- ComposeNavigation now has `addNavIntentResolvers()` method which you can use to register your own `NavIntentResolver`s 
+- Added `TabBarIntentResolver` - an implementation of `NavIntentResolver` which handles many edge cases related to tab bar navigation.
+- `NavAction` now has `asResult` method which produces `ResolveResult` - a class that indicates the processing result by `NavIntentResolver`
+- All of the infix functions related to building `NavigateAction` and `PopAction` were moved to `INavDestination` class. 
+  `PopDestination` throws `UnsupportedOperationException` if you attempt to use them with `PopDestination` as receiver.
+- Fixed a bug where `DialogDestination` would not be added to back stack as known destination.
 
 # 0.1.0
 

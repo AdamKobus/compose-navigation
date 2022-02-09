@@ -90,6 +90,33 @@ class ReservedNamesHandlerTest {
     }
 
     @Test
+    fun `GIVEN disabled WHEN reserved intent name THEN no error`() {
+        // given
+        testSubject.enabled = false
+
+        // when
+        testSubject.checkIntentName("__reserved")
+    }
+
+    @Test(expected = ReservedNameError::class)
+    fun `GIVEN enabled WHEN reserved intent name THEN ReservedNameError is thrown`() {
+        // given
+        testSubject.enabled = true
+
+        // when
+        testSubject.checkIntentName("__reserved")
+    }
+
+    @Test
+    fun `GIVEN enabled WHEN proper intent name THEN no error`() {
+        // given
+        testSubject.enabled = true
+
+        // when
+        testSubject.checkIntentName("proper")
+    }
+
+    @Test
     fun `GIVEN default state THEN enabled is true`() {
         assertTrue(testSubject.enabled)
     }

@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
 import com.adamkobus.compose.navigation.demo.ui.ext.onStart
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @SuppressLint("CustomSplashScreen")
 @HiltViewModel
 class SplashScreenVM @Inject constructor(
-    private val navActionConsumer: NavActionConsumer,
+    private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource
 ) : ViewModel(), LifecycleEventObserver {
 
@@ -28,7 +28,7 @@ class SplashScreenVM @Inject constructor(
     init {
         viewModelScope.launch {
             delay(MOCK_DELAY_MS)
-            navActionConsumer.offer(FromSplash.ToWelcome)
+            navigationConsumer.offer(FromSplash.ToWelcome)
         }
     }
 

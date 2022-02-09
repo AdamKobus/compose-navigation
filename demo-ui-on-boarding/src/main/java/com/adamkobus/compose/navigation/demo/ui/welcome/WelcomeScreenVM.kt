@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
 import com.adamkobus.compose.navigation.demo.ui.ext.onStart
@@ -14,16 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WelcomeScreenVM @Inject constructor(
-    private val navActionConsumer: NavActionConsumer,
+    private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource
 ) : ViewModel(), LifecycleEventObserver {
 
     val interactions = WelcomeScreenInteractions(
         onDogsSelected = {
-            navActionConsumer.offer(FromWelcome.ToDogsList)
+            navigationConsumer.offer(FromWelcome.ToDogsList)
         },
         onCatsSelected = {
-            navActionConsumer.offer(FromWelcome.ToCatsList)
+            navigationConsumer.offer(FromWelcome.ToCatsList)
         }
     )
 

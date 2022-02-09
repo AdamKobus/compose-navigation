@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeScreenVM @Inject constructor(
-    private val navActionConsumer: NavActionConsumer,
+    private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource
 ) : ViewModel(), LifecycleEventObserver {
 
@@ -37,6 +37,6 @@ internal class HomeScreenVM @Inject constructor(
     }
 
     private fun onBackClicked() {
-        navActionConsumer.offer(FromSettingsHome.Back)
+        navigationConsumer.offer(FromSettingsHome.Back)
     }
 }

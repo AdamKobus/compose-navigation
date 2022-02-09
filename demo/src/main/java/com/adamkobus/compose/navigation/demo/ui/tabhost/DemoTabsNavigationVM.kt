@@ -3,9 +3,10 @@ package com.adamkobus.compose.navigation.demo.ui.tabhost
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.adamkobus.android.vm.LifecycleAwareViewModel
-import com.adamkobus.compose.navigation.NavActionConsumer
+import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.demo.ui.nav.CatsBrowserGraph
+import com.adamkobus.compose.navigation.demo.ui.nav.DemoIntents
 import com.adamkobus.compose.navigation.demo.ui.nav.DogsBrowserGraph
 import com.adamkobus.compose.navigation.destination.CurrentDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DemoTabsNavigationVM @Inject constructor(
     private val navigationStateSource: NavigationStateSource,
-    private val navActionConsumer: NavActionConsumer
+    private val navigationConsumer: NavigationConsumer
 ) : LifecycleAwareViewModel() {
 
     private val currentTabHostType = mutableStateOf(TabHostType.NONE)
@@ -75,18 +76,9 @@ class DemoTabsNavigationVM @Inject constructor(
     }
 
     private fun processTabSelection(tabData: DemoTabData) {
-        // TODO replace with intent
         when (tabData) {
-            DemoTabs.Cats -> if (navigationStateSource.currentDestination.destination in CATS_DESTINATIONS) {
-                navActionConsumer.offer(DemoTabHostActions.ToCatsRoot)
-            } else {
-                navActionConsumer.offer(DemoTabHostActions.FromGlobalToCats)
-            }
-            DemoTabs.Dogs -> if (navigationStateSource.currentDestination.destination in DOGS_DESTINATIONS) {
-                navActionConsumer.offer(DemoTabHostActions.ToDogsRoot)
-            } else {
-                navActionConsumer.offer(DemoTabHostActions.FromGlobalToDogs)
-            }
+            DemoTabs.Cats -> navigationConsumer.offer(DemoIntents.OpenCatsBrowser)
+            DemoTabs.Dogs -> navigationConsumer.offer(DemoIntents.OpenDogsBrowser)
         }
     }
 

@@ -10,7 +10,7 @@ object CatsBrowserGraph : NavGraph("cats") {
 
     override fun startDestination(): NavDestination = CatsList
 
-    val CatsList = AppGraph.navDestination("catsList")
+    val CatsList = navDestination("catsList")
     val CatDetails = CatsList.next {
         param(PARAM_CAT_ID)
     }

@@ -2,6 +2,7 @@ package com.adamkobus.compose.navigation.action
 
 import androidx.navigation.NavHostController
 import com.adamkobus.compose.navigation.data.GlobalGraph
+import com.adamkobus.compose.navigation.data.ResolveResult
 import com.adamkobus.compose.navigation.destination.INavDestination
 
 abstract class NavAction(
@@ -21,6 +22,8 @@ abstract class NavAction(
         return result
     }
 
+    fun asResult(): ResolveResult = ResolveResult.Action(this)
+
     override fun toString(): String {
         return "NavAction ${fromDestination.route.buildRoute()} -> ${toDestination.route.buildRoute()}"
     }
@@ -33,6 +36,6 @@ abstract class NavAction(
          * It is advised that you create your own back actions with source destination different than Global.
          * Using Global source destination limits the usefulness of the information you receive in NavActionVerifier.
          */
-        val Back = GlobalGraph + GlobalGraph.Back
+        val Back = GlobalGraph goTo GlobalGraph.Back
     }
 }
