@@ -20,7 +20,6 @@ import javax.inject.Singleton
 
 @Singleton
 internal class NavigationProcessor @Inject constructor(
-    private val navGatekeeper: NavGatekeeper,
     private val actionDispatcher: PendingActionDispatcher
 ) {
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -39,6 +38,9 @@ internal class NavigationProcessor @Inject constructor(
 
     private val logger: NavLogger
         get() = ComposeNavigation.getLogger()
+
+    private val navGatekeeper: NavGatekeeper
+        get() = ComposeNavigation.getNavGatekeeper()
 
     init {
         scope.launch {

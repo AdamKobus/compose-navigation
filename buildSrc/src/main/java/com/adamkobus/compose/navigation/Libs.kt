@@ -2,24 +2,24 @@ package com.adamkobus.compose.navigation
 
 object Libs {
     /**
-     * [Kotlin Releases](https://kotlinlang.org/docs/releases.html#release-details)
-     */
-    const val KOTLIN_VERSION = "1.6.0"
-
-    /**
-     * [Kotlint Coroutines Releases](https://github.com/Kotlin/kotlinx.coroutines/releases)
-     */
-    const val KOTLIN_COROUTINES_VERSION = "1.6.0"
-
-    /**
      * [Jetpack Compose Releases](https://developer.android.com/jetpack/androidx/versions/all-channel)
      */
     const val COMPOSE_VERSION = "1.1.0-rc01"
 
     /**
+     * [Kotlin Releases](https://kotlinlang.org/docs/releases.html#release-details)
+     */
+    const val KOTLIN_VERSION = "1.6.0"
+
+    /**
      * [Accompanist Version](https://github.com/google/accompanist/releases)
      */
     const val ACCOMPANIST_VERSION = "0.22.0-rc"
+
+    /**
+     * [Kotlint Coroutines Releases](https://github.com/Kotlin/kotlinx.coroutines/releases)
+     */
+    const val KOTLIN_COROUTINES_VERSION = "1.6.0"
 
     /**
      * [Hilt Releases](https://github.com/google/dagger/releases)
