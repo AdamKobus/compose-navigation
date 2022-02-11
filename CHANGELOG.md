@@ -23,7 +23,7 @@
 - Added `NavLogger`
 - Added `NavDestinationManager` - it provides information about current destination and back stack queue
 - Added `ComposeNavigation` which should be used to configure the library and get access to its state
-- Moved documentation to [docs](docs)
+- Moved documentation to [docs](docs/README.md)
 - Names starting with double underscore (i.e. '__myGraph') are now reserved for internal usage. 
   Trying to declare graph, path or param name like this will now result in `ReservedNameError` being thrown. 
   This behaviour can be disabled using `ComposeNavigation.disableRestrictedNamesCheck()`
@@ -38,6 +38,8 @@
   `PopDestination` throws `UnsupportedOperationException` if you attempt to use them with `PopDestination` as receiver.
 - Removed dependency on Hilt. `ComposeNavigation` object is now responsible for providing all of the dependencies.
 - Added `NavOptionsBuilder.popUpTo` extensions
+- Updated Jetpack compose to `1.2.0-alpha03`
+- Updated Accompanist to `0.24.2-alpha`
 
 # 0.1.0
 

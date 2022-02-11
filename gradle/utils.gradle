@@ -14,9 +14,9 @@ rootProject.ext.readParam = { name, defaultValue ->
     }
     if (value == null) {
         def envName = name.replace(".", "_").replaceAll(/([A-Z])/, /_$1/).toUpperCase().replace("__", "_")
-        value = System.getenv().getOrDefault(envName, defaultValue)
+        value = System.getenv().getOrDefault(envName, defaultValue.toString())
     }
-    if (defaultValue.class == Boolean && value.class != Boolean) {
+    if (Boolean.isInstance(defaultValue) && !Boolean.isInstance(value)) {
         value = value.toBoolean()
     }
     rootProject.ext[name] = value

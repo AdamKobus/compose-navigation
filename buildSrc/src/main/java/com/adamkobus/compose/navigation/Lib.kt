@@ -4,17 +4,17 @@ object Lib {
     /**
      * [Jetpack Compose Releases](https://developer.android.com/jetpack/androidx/versions/all-channel)
      */
-    const val COMPOSE_VERSION = "1.1.0-rc01"
+    const val COMPOSE_VERSION = "1.2.0-alpha03"
 
     /**
      * [Kotlin Releases](https://kotlinlang.org/docs/releases.html#release-details)
      */
-    const val KOTLIN_VERSION = "1.6.0"
+    const val KOTLIN_VERSION = "1.6.10"
 
     /**
      * [Accompanist Version](https://github.com/google/accompanist/releases)
      */
-    const val ACCOMPANIST_VERSION = "0.22.0-rc"
+    const val ACCOMPANIST_VERSION = "0.24.2-alpha"
 
     /**
      * [Kotlint Coroutines Releases](https://github.com/Kotlin/kotlinx.coroutines/releases)
@@ -96,6 +96,6 @@ object Lib {
          */
         const val Mockk = "io.mockk:mockk:1.12.2"
 
-        const val CoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$KOTLIN_VERSION"
+        const val CoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$KOTLIN_COROUTINES_VERSION"
     }
 }
