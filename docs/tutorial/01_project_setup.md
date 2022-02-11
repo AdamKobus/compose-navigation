@@ -15,7 +15,7 @@ After those changes, root `build.gradle` should look similar to this:
 ```groovy
 buildscript {
     ext {
-        compose_version = '1.1.0-rc01'
+        compose_version = '1.2.0-alpha03'
         hilt_version = "2.40.5"
         android_plugin_version = "7.1.0"
     }
@@ -26,7 +26,7 @@ buildscript {
 plugins {
     id 'com.android.application' version "$android_plugin_version" apply false
     id 'com.android.library' version "$android_plugin_version" apply false
-    id 'org.jetbrains.kotlin.android' version '1.6.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
 }
 
 task clean(type: Delete) {
@@ -47,18 +47,18 @@ plugins {
 }
 
 android {
-    (...)
+    // (...)
 }
 
 
 dependencies {
     implementation "com.adamkobus:compose-navigation:0.2.0" // change to actual version you want to use.
-    implementation "com.google.accompanist:accompanist-navigation-animation:0.22.0-rc"
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.24.2-alpha"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    (...) // remaining dependencies are left unchanged
+    // (...) remaining dependencies are left unchanged
 }
 
 ```

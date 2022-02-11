@@ -18,7 +18,7 @@ buildscript {
         publishPluginVersion = "1.1.0"
 
         // https://developer.android.com/studio/releases/gradle-plugin
-        androidBuildtoolsPluginVersion = "7.0.4"
+        androidBuildtoolsPluginVersion = "7.1.0"
     }
 
     repositories {
