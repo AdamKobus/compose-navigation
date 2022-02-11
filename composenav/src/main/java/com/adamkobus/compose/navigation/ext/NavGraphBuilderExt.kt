@@ -14,8 +14,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.dialog
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.destination.DialogDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
+import com.adamkobus.compose.navigation.destination.NavDestination
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 
@@ -78,7 +78,7 @@ fun NavGraphBuilder.composableNavigation(
  * @see dialog
  */
 fun NavGraphBuilder.composableDialog(
-    destination: DialogDestination,
+    destination: NavDestination,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     dialogProperties: DialogProperties = DialogProperties(),

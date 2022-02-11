@@ -5,9 +5,9 @@
 The goal of this tutorial is to walk you through the steps needed to integrate Compose Navigation into your application.
 It will also explain how to achieve basic navigation using it. 
 
-More advanced examples can be found in [Use cases documentation](../usecases)
+More advanced examples can be found in [Use cases documentation](../usecases/README.md)
 
-You can find completed tutorial project [here](../tutorial/)
+You can find completed tutorial project [here](../../tutorial)
 
 # [Let's start!](01_project_setup.md)
 
@@ -37,8 +37,16 @@ This step describes how to pass arguments between destinations.
 
 Explains how to implement back navigation while maintaining the stable state of the navigation in the app.
 
-### [7. Abstracting navigation actions with NavIntent](TBD)
+### [7. Displaying a dialog](07_displaying_dialog.md)
+
+In this step we will display a simple dialog on button click.
+
+### [8. Abstracting navigation actions with NavIntent](TBD)
 
 Sometimes a component in your application might want to navigate somehwere, but it doesn't know how to do that. This tutorial step will show you how to do that using `NavIntent`s
+
+### [9. Checking the result of navigation action or intent](09_checking_the_result_of_nav.md)
+
+Demonstrates how to suspend your coroutine until navigation happens, or it is rejected, and how to check the result of navigation action.
 
 ### [Back to documentation](../README.md)

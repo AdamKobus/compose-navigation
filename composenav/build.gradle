@@ -4,7 +4,6 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -18,11 +17,6 @@ dependencies {
     implementation Libs.Google.Material
     implementation Libs.AdamKobus.LifecycleAwareViewModel
 
-    // hilt
-    implementation Libs.Google.Hilt
-    implementation Libs.Google.HiltNavigationCompose
-    kapt Libs.Google.HiltCompiler
-
     // compose
     implementation Libs.Compose.Ui
     implementation Libs.Compose.Activity
@@ -35,6 +29,7 @@ dependencies {
     // testing
     testImplementation Libs.Test.JUnit
     testImplementation Libs.Test.Mockk
+    testImplementation Libs.Test.CoroutinesTest
 }
 
 ext {

@@ -6,14 +6,17 @@ import com.adamkobus.compose.navigation.data.ResolveResult
 import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.error.NavIntentCycleDetectedError
 import com.adamkobus.compose.navigation.error.NavIntentMappingTooDeepError
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.slot
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class NavIntentResolvingManagerTest {
 
     private val actionProducingResolver: NavIntentResolver = mockk()
@@ -28,14 +31,14 @@ class NavIntentResolvingManagerTest {
     @Before
     fun setUp() {
         val slot = slot<NavIntent>()
-        every { actionProducingResolver.resolve(capture(slot), any()) } answers {
+        coEvery { actionProducingResolver.resolve(capture(slot), any()) } coAnswers {
             if (slot.captured == actionProducingIntent) {
                 ResolveResult.Action(producedAction)
             } else {
                 ResolveResult.None
             }
         }
-        every { intentProducingResolver.resolve(capture(slot), any()) } answers {
+        coEvery { intentProducingResolver.resolve(capture(slot), any()) } coAnswers {
             val mapped = if (slot.captured == firstIntent) {
                 secondIntent
             } else if (slot.captured == secondIntent) {
@@ -49,7 +52,7 @@ class NavIntentResolvingManagerTest {
                 ResolveResult.Intent(it)
             } ?: ResolveResult.None
         }
-        every { cycleProducingResolver.resolve(capture(slot), any()) } answers {
+        coEvery { cycleProducingResolver.resolve(capture(slot), any()) } coAnswers {
             val mapped = if (slot.captured == firstIntent) {
                 secondIntent
             } else if (slot.captured == secondIntent) {
@@ -66,7 +69,7 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test
-    fun `GIVEN only one resolver registered WHEN resolve intent that directly produces action THEN action is returned`() {
+    fun `GIVEN only one resolver registered WHEN resolve intent that directly produces action THEN action is returned`() = runTest {
         // given
         testSubject.register(actionProducingResolver)
 
@@ -78,7 +81,7 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test
-    fun `GIVEN multiple resolvers registered WHEN resolve intent that directly produces action THEN action is returned`() {
+    fun `GIVEN multiple resolvers registered WHEN resolve intent that directly produces action THEN action is returned`() = runTest {
         // given
         testSubject.register(intentProducingResolver, actionProducingResolver)
 
@@ -90,7 +93,7 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test
-    fun `GIVEN unknown intent WHEN resolve THEN null is returned`() {
+    fun `GIVEN unknown intent WHEN resolve THEN null is returned`() = runTest {
         // given
         testSubject.register(intentProducingResolver, actionProducingResolver)
 
@@ -102,7 +105,7 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test
-    fun `GIVEN finding actions requires multiple resolves WHEN resolve THEN action is returned`() {
+    fun `GIVEN finding actions requires multiple resolves WHEN resolve THEN action is returned`() = runTest {
         // given
         testSubject.register(intentProducingResolver, actionProducingResolver)
 
@@ -114,7 +117,7 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test(expected = NavIntentCycleDetectedError::class)
-    fun `GIVEN resolver produces cycle WHEN resolve THEN NavIntentCycleDetectedError thrown`() {
+    fun `GIVEN resolver produces cycle WHEN resolve THEN NavIntentCycleDetectedError thrown`() = runTest {
         // given
         testSubject.register(cycleProducingResolver)
 
@@ -123,7 +126,7 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test(expected = NavIntentMappingTooDeepError::class)
-    fun `GIVEN too many mappings required WHEN resolve THEN NavIntentMappingTooDeepError thrown`() {
+    fun `GIVEN too many mappings required WHEN resolve THEN NavIntentMappingTooDeepError thrown`() = runTest {
         // given
         val firstIntent = createChain(51)
 
@@ -132,7 +135,7 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test
-    fun `GIVEN mappings number just at the depth limit WHEN resolve THEN no error`() {
+    fun `GIVEN mappings number just at the depth limit WHEN resolve THEN no error`() = runTest {
         // given
         val firstIntent = createChain(50)
 
@@ -148,7 +151,7 @@ class NavIntentResolvingManagerTest {
             val original = previousIntent
             val nextIntent = NavIntent("$i")
             val resolver: NavIntentResolver = mockk()
-            every { resolver.resolve(capture(slot), any()) } answers {
+            coEvery { resolver.resolve(capture(slot), any()) } coAnswers {
                 if (slot.captured == original) ResolveResult.Intent(nextIntent) else ResolveResult.None
             }
             testSubject.register(resolver)

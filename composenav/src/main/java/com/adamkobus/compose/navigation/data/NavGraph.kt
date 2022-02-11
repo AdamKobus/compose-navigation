@@ -1,11 +1,9 @@
 package com.adamkobus.compose.navigation.data
 
-import com.adamkobus.compose.navigation.destination.DialogDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
 import com.adamkobus.compose.navigation.destination.NavRoute
 import com.adamkobus.compose.navigation.destination.PopDestination
-import com.adamkobus.compose.navigation.destination.dialogDestination
 import com.adamkobus.compose.navigation.destination.navDestination
 import com.adamkobus.compose.navigation.destination.navRoute
 import com.adamkobus.compose.navigation.destination.popDestination
@@ -25,9 +23,6 @@ abstract class NavGraph internal constructor(
 
     fun navDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): NavDestination =
         navDestination(this, pathName = pathName, reservedNameCheck = reservedNameCheck, init = init)
-
-    fun dialogDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): DialogDestination =
-        dialogDestination(this, pathName = pathName, reservedNameCheck = reservedNameCheck, init = init)
 
     fun popDestination(): PopDestination =
         popDestination(this)

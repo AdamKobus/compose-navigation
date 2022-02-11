@@ -13,15 +13,15 @@ internal class NavGatekeeper(
         addAll(initialVerifiers)
     }
 
-    fun isNavActionAllowed(currentDestination: CurrentDestination, action: NavAction): Boolean {
+    fun isNavActionAllowed(currentDestination: CurrentDestination, action: NavAction): NavActionVerifier? {
         synchronized(verifiers) {
             verifiers.forEach {
                 if (it.isNavActionAllowed(currentDestination, action) == VerifyResult.Discard) {
-                    return false
+                    return it
                 }
             }
         }
-        return true
+        return null
     }
 
     fun addVerifier(verifier: NavActionVerifier) {

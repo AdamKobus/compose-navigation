@@ -4,21 +4,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.NavBackStackEntry
 import com.adamkobus.android.vm.LifecycleAwareViewModel
 import com.adamkobus.android.vm.ViewParam
+import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.data.NavGraph
 import com.adamkobus.compose.navigation.model.NavigationProcessor
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
-import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
-internal class NavComposableVM @Inject constructor(
+internal class NavComposableVM : LifecycleAwareViewModel() {
+
     private val navigationProcessor: NavigationProcessor
-) : LifecycleAwareViewModel() {
+        get() = ComposeNavigation.getNavigationProcessor()
 
     val graphsParam = ViewParam<List<NavGraph>>()
     val pendingActionState = mutableStateOf<PendingActionState>(PendingActionState.Missing)

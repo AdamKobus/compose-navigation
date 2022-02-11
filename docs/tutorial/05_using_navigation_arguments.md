@@ -13,10 +13,9 @@ fun DetailScreen(itemId: Int) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            .padding(16.dp)
     ) {
-        Text(text = "Opened item with id $itemId")
+        Text(text = "Opened item with id $itemId", modifier = Modifier.align(Alignment.Center))
     }
 }
 ```

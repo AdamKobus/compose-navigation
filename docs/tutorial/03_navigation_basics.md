@@ -10,7 +10,7 @@ Let's start by declaring two addictional screens:
 ```kotlin
 @Composable
 fun ImageScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Icon(
             imageVector = Icons.Filled.ThumbUp,
             contentDescription = "app icon",

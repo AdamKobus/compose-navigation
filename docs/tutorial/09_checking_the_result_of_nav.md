@@ -1,31 +1,23 @@
-package com.adamkobus.compose.navigation.tutorial.ui.imagescreen
+### [Back to tutorials list](README.md)
 
-import android.os.SystemClock
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.adamkobus.compose.navigation.ComposeNavigation
-import com.adamkobus.compose.navigation.tutorial.nav.TutorialNavActions
-import kotlinx.coroutines.launch
+# 9. Checking the result of navigation action or intent
 
-@Suppress("MagicNumber")
+We used `NavigationConsumer` quite a lot so far, but we didn't touch on its blocking methods yet. Those provide a way to learn the result of the navigation and block the calling coroutine until the back stack actually updates.
+
+One important thing to know is that the action is considered completed regardless how the back stack changes. For now at least, the sole event of back stack updating is considered a success.
+
+We will experiment with blocking methods in `ImageScreen`. We will do navigation inside the view this time, without adding a ViewModel:
+
+> `.nav.TutorialNavActions.kt`
+```kotlin
+object TutorialNavActions {
+    (...)
+    val FromImageToDialog = TutorialGraph.Image goTo TutorialGraph.DetailDialog arg 1
+}
+```
+
+> `.ui.imagescreen.ImageScreen.kt`
+```kotlin
 @Composable
 fun ImageScreen() {
     Box(
@@ -38,6 +30,8 @@ fun ImageScreen() {
             contentDescription = "app icon",
             modifier = Modifier.align(Alignment.Center)
         )
+
+        // new code below
 
         val scope = rememberCoroutineScope()
         val textEntries = remember { mutableStateOf(emptyList<String>()) }
@@ -66,3 +60,12 @@ fun ImageScreen() {
         }
     }
 }
+```
+
+And here is the result:
+
+![Checking the result of nav action](assets/09_result.gif)
+
+As you can see, in case of double click, the invalid action has been rejected almost instantly. That's because no actual interaction with `NavHostController` happens in such case.
+
+### [Back to tutorials list](README.md)

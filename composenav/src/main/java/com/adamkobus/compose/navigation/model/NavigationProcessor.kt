@@ -3,8 +3,10 @@ package com.adamkobus.compose.navigation.model
 import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.NavAction
+import com.adamkobus.compose.navigation.data.DiscardReason
 import com.adamkobus.compose.navigation.data.GlobalGraph
 import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.data.NavigationResult
 import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
@@ -15,13 +17,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-internal class NavigationProcessor @Inject constructor(
-    private val actionDispatcher: PendingActionDispatcher
-) {
+internal class NavigationProcessor {
+
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val actionBuffer = MutableSharedFlow<ProcessorTask>()
 
@@ -42,6 +40,9 @@ internal class NavigationProcessor @Inject constructor(
     private val navGatekeeper: NavGatekeeper
         get() = ComposeNavigation.getNavGatekeeper()
 
+    private val actionDispatcher: PendingActionDispatcher
+        get() = ComposeNavigation.getPendingActionDispatcher()
+
     init {
         scope.launch {
             actionBuffer.collect {
@@ -54,54 +55,59 @@ internal class NavigationProcessor @Inject constructor(
 
     fun unregister(graphsOwner: Any) = actionDispatcher.unregister(graphsOwner)
 
-    fun postNavAction(navAction: NavAction) {
+    fun postNavAction(navAction: NavAction, onTaskCompleted: CompletableDeferred<NavigationResult>? = null) {
         scope.launch {
-            actionBuffer.emit(ProcessorTask.Action(navAction))
+            actionBuffer.emit(ProcessorTask.Action(navAction, onTaskCompleted))
         }
     }
 
-    fun postNavIntent(intent: NavIntent) {
+    fun postNavIntent(intent: NavIntent, onTaskCompleted: CompletableDeferred<NavigationResult>? = null) {
         scope.launch {
-            actionBuffer.emit(ProcessorTask.Intent(intent))
+            actionBuffer.emit(ProcessorTask.Intent(intent, onTaskCompleted))
         }
     }
 
     private suspend fun processTask(task: ProcessorTask) {
-        when (task) {
+        val result = when (task) {
             is ProcessorTask.Action -> processAction(task.navAction)
             is ProcessorTask.Intent -> processIntent(task.navIntent)
         }
+        task.onTaskCompleted?.complete(result)
     }
 
-    private suspend fun processIntent(navIntent: NavIntent) {
+    private suspend fun processIntent(navIntent: NavIntent): NavigationResult {
         val action = navIntentResolver.resolve(navIntent, currentDestination)
-        if (action == null) {
-            logger.w("Intent $navIntent discarded, because it was not mapped to any action")
+        return if (action == null) {
+            logger.w("Intent $navIntent was discarded, because it was not mapped to any action")
+            NavigationResult.Discarded(DiscardReason.NotMapped)
         } else {
             processAction(action)
         }
     }
 
-    private suspend fun processAction(action: NavAction) {
+    @Suppress("ReturnCount") // TODO clean up
+    private suspend fun processAction(action: NavAction): NavigationResult {
         destinationManager.addDestinationsFromAction(action)
 
         logger.v("Started processing: $action")
         if (action.toDestination is GlobalGraph) {
-            logger.w("Discarded: $action | Navigating to GlobalGraph is not allowed")
-            return
+            logger.e("Discarded: $action | Navigating to GlobalGraph is not allowed")
+            return NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
-        val isActionAllowed = navGatekeeper.isNavActionAllowed(currentDestination, action)
-        if (!isActionAllowed) {
+        val rejectingVerifier = navGatekeeper.isNavActionAllowed(currentDestination, action)
+        if (rejectingVerifier != null) {
             logger.v("Action discarded by verifier: $action")
-            return
+            return NavigationResult.Discarded(DiscardReason.RejectedByVerifier(rejectingVerifier))
         }
         onActionPerformed = CompletableDeferred()
         if (actionDispatcher.dispatchAction(action = action)) {
             logger.v("Action delivered: $action")
             onActionPerformed?.await()
             logger.v("Stopped processing: $action")
+            return NavigationResult.Accepted
         } else {
             logger.w("Failed to deliver action: $action")
+            return NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
     }
 
@@ -112,9 +118,9 @@ internal class NavigationProcessor @Inject constructor(
     }
 }
 
-private sealed class ProcessorTask {
+private sealed class ProcessorTask(val onTaskCompleted: CompletableDeferred<NavigationResult>?) {
 
-    class Action(val navAction: NavAction) : ProcessorTask() {
+    class Action(val navAction: NavAction, onTaskCompleted: CompletableDeferred<NavigationResult>?) : ProcessorTask(onTaskCompleted) {
         override fun equals(other: Any?): Boolean {
             return other is Action && other.navAction == navAction
         }
@@ -124,7 +130,7 @@ private sealed class ProcessorTask {
         }
     }
 
-    class Intent(val navIntent: NavIntent) : ProcessorTask() {
+    class Intent(val navIntent: NavIntent, onTaskCompleted: CompletableDeferred<NavigationResult>?) : ProcessorTask(onTaskCompleted) {
         override fun equals(other: Any?): Boolean {
             return other is Intent && other.navIntent == navIntent
         }

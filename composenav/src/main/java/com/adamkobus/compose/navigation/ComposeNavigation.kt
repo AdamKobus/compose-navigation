@@ -7,7 +7,12 @@ import com.adamkobus.compose.navigation.model.NavGatekeeper
 import com.adamkobus.compose.navigation.model.NavLogLevel
 import com.adamkobus.compose.navigation.model.NavLogger
 import com.adamkobus.compose.navigation.model.NavLoggerImpl
+import com.adamkobus.compose.navigation.model.NavigationConsumerImpl
+import com.adamkobus.compose.navigation.model.NavigationProcessor
+import com.adamkobus.compose.navigation.model.PendingActionDispatcher
 import com.adamkobus.compose.navigation.model.ReservedNamesHandler
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 /**
  * Provides methods to configure Compose Navigation library.
@@ -27,6 +32,12 @@ object ComposeNavigation {
     private val reservedNames = ReservedNamesHandler()
     private val navIntentResolvingManager = NavIntentResolvingManager()
     private val navGatekeeper = NavGatekeeper()
+    private var mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+
+    // singleton
+    private val pendingActionDispatcher = PendingActionDispatcher()
+    private val navigationProcessor = NavigationProcessor()
+    private val navigationConsumer: NavigationConsumer = NavigationConsumerImpl()
 
     init {
         reset()
@@ -37,6 +48,7 @@ object ComposeNavigation {
         navLogger = DEFAULT_LOGGER
         logLevel = DEFAULT_LOG_LEVEL
         navGatekeeper.reset()
+        mainDispatcher = Dispatchers.Main
     }
 
     fun setLogger(logger: NavLogger): ComposeNavigation {
@@ -76,6 +88,15 @@ object ComposeNavigation {
         return navLogger
     }
 
+    fun setMainDispatcher(dispatcher: CoroutineDispatcher): ComposeNavigation {
+        mainDispatcher = dispatcher
+        return ComposeNavigation
+    }
+
+    fun getNavigationConsumer(): NavigationConsumer {
+        return navigationConsumer
+    }
+
     internal fun getNavDestinationManager(): NavDestinationManager {
         return destinationManager
     }
@@ -85,4 +106,10 @@ object ComposeNavigation {
     internal fun getNavIntentResolvingManager(): NavIntentResolvingManager = navIntentResolvingManager
 
     internal fun getNavGatekeeper(): NavGatekeeper = navGatekeeper
+
+    internal fun getMainDispatcher(): CoroutineDispatcher = mainDispatcher
+
+    internal fun getPendingActionDispatcher() = pendingActionDispatcher
+
+    internal fun getNavigationProcessor() = navigationProcessor
 }
