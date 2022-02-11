@@ -6,8 +6,8 @@ import com.adamkobus.compose.navigation.action.NavigateAction
 import com.adamkobus.compose.navigation.destination.CurrentDestination
 import io.mockk.every
 import io.mockk.mockk
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
+import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.assertNull
 import org.junit.Test
 
 class NavGatekeeperTest {
@@ -22,7 +22,7 @@ class NavGatekeeperTest {
         val obtained = testSubject.isNavActionAllowed(NAV_DESTINATION, NAV_ACTION)
 
         // then
-        assertFalse(obtained)
+        assertNotNull(obtained)
     }
 
     @Test
@@ -34,11 +34,11 @@ class NavGatekeeperTest {
         val obtained = testSubject.isNavActionAllowed(NAV_DESTINATION, NAV_ACTION)
 
         // then
-        assertTrue(obtained)
+        assertNull(obtained)
     }
 
     @Test
-    fun `GIVEN all verifiers return true WHEN isNavActionAllowed THEN returns true`() {
+    fun `GIVEN all verifiers return true WHEN isNavActionAllowed THEN returns null`() {
         // given
         val verifiers = setOf(createPassingVerifier(), createPassingVerifier())
         val testSubject = NavGatekeeper(verifiers)
@@ -47,7 +47,7 @@ class NavGatekeeperTest {
         val obtained = testSubject.isNavActionAllowed(NAV_DESTINATION, NAV_ACTION)
 
         // then
-        assertTrue(obtained)
+        assertNull(obtained)
     }
 
     private fun createFailingVerifier(): NavActionVerifier =

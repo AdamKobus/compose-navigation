@@ -61,6 +61,7 @@ object Libs {
         const val Core = "androidx.core:core-ktx:1.7.0"
         const val Appcompat = "androidx.appcompat:appcompat:$APPCOMPAT_VERSION"
         const val LifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
+        const val LifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     }
 
     object Google {

@@ -27,8 +27,6 @@
 - Names starting with double underscore (i.e. '__myGraph') are now reserved for internal usage. 
   Trying to declare graph, path or param name like this will now result in `ReservedNameError` being thrown. 
   This behaviour can be disabled using `ComposeNavigation.disableRestrictedNamesCheck()`
-- Added `DialogDestination`
-- `NavGrpah.dialogDestination` now requires destination of type `DialogDestination`
 - `NavActionConsumer` interface name was changed to `NavigationConsumer`
 - Removed all `+` operators and changed the name of `to` infix function to `goTo` and `pop`.
   Using `to` was annoying sometimes because Kotlin would try to interpret it as map in some circumstances.
@@ -38,7 +36,7 @@
 - `NavAction` now has `asResult` method which produces `ResolveResult` - a class that indicates the processing result by `NavIntentResolver`
 - All of the infix functions related to building `NavigateAction` and `PopAction` were moved to `INavDestination` class. 
   `PopDestination` throws `UnsupportedOperationException` if you attempt to use them with `PopDestination` as receiver.
-- Fixed a bug where `DialogDestination` would not be added to back stack as known destination.
+- Removed dependency on Hilt. `ComposeNavigation` object is now responsible for providing all of the dependencies.
 
 # 0.1.0
 

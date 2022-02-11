@@ -6,7 +6,6 @@ import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.data.NavGraph
 import com.adamkobus.compose.navigation.destination.CurrentDestination
-import com.adamkobus.compose.navigation.destination.DialogDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
 import com.adamkobus.compose.navigation.destination.UnknownDestination
@@ -49,7 +48,7 @@ internal class NavDestinationManager : NavigationStateSource {
             val startDestination = destination.startDestination()
             addKnownDestination(startDestination.route.buildRoute(), startDestination)
             addKnownDestination(destination.route.buildRoute(), destination)
-        } else if (destination is NavDestination || destination is DialogDestination) {
+        } else if (destination is NavDestination) {
             addKnownDestination(destination.route.buildRoute(), destination)
             val startDestination = destination.graph.startDestination()
             addKnownDestination(startDestination.route.buildRoute(), startDestination)

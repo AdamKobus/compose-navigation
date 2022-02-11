@@ -1,19 +1,19 @@
 package com.adamkobus.compose.navigation.model
 
+import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.data.NavGraph
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-internal class PendingActionDispatcher @Inject constructor() {
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+internal class PendingActionDispatcher {
+    private val dispatcher: CoroutineDispatcher
+        get() = ComposeNavigation.getMainDispatcher()
     private val consumers = mutableListOf<PendingActionConsumer>()
 
     fun register(owner: Any, graphs: List<NavGraph>): Flow<NavAction> {

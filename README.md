@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.1.10-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.1.11-SNAPSHOT"
 }
 ```
 
@@ -62,7 +62,7 @@ dependencies {
 
 ## Links
 
-- [Documentation with examples](docs)
+- [Documentation with examples](docs/README.md)
 
 # License
 

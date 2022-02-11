@@ -84,6 +84,19 @@ Remember to register `TutorialApplication` in `AndroidManifest.xml` by adding:
         android:name=".TutorialApplication"
 ```
 
+Since we are using Hilt, we can provide `NavigationConsumer` using it. To do that, add `NavigationModule` class in `.nav` package:
+
+> `.nav.NavigationModule.kt`
+```kotlin
+@InstallIn(SingletonComponent::class)
+@Module
+object NavigationModule {
+
+    @Provides
+    fun providesNavigationConsumer(): NavigationConsumer = ComposeNavigation.getNavigationConsumer()
+}
+```
+
 The last thing to do before we can jump into creating screens, is registering `MainActivity` as an entry point for Hilt:
 
 > `.MainActivity.kt`

@@ -48,7 +48,7 @@ open class TabBarIntentResolver(
 
     private val allGraphs = tabsMapping.values.toSet()
 
-    override fun resolve(intent: NavIntent, currentDestination: CurrentDestination): ResolveResult {
+    override suspend fun resolve(intent: NavIntent, currentDestination: CurrentDestination): ResolveResult {
         if (intent == popToTabHostIntent) {
             return handlePopIntent(currentDestination)
         }
