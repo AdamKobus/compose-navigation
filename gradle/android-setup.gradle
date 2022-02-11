@@ -1,4 +1,4 @@
-import com.adamkobus.compose.navigation.Libs
+import com.adamkobus.compose.navigation.Lib
 
 def commitIndex = "git rev-list HEAD --count".execute().text.trim()
 def versionSuffix = rootProject.properties.getOrDefault("versionSuffix", "")
@@ -50,7 +50,7 @@ def configureAndroidProject(Project androidProject, boolean isApplication) {
             compose true
         }
         composeOptions {
-            kotlinCompilerExtensionVersion Libs.COMPOSE_VERSION
+            kotlinCompilerExtensionVersion Lib.COMPOSE_VERSION
         }
 
         packagingOptions {
@@ -69,7 +69,7 @@ def configureKotlinAndroid(Project kotlinProject) {
         }
     }
     kotlinProject.ktlint {
-        version = Libs.KTLINT_VERSION
+        version = Lib.KTLINT_VERSION
         outputColorName = "RED"
         outputToConsole = true
 

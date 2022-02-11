@@ -97,7 +97,7 @@ object NavigationModule {
 }
 ```
 
-The last thing to do before we can jump into creating screens, is registering `MainActivity` as an entry point for Hilt:
+The the last thing we have to do before we can jump into creating screens is registering `MainActivity` as an entry point for Hilt:
 
 > `.MainActivity.kt`
 ```kotlin

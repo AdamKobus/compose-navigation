@@ -2,9 +2,9 @@
 
 # 5. Launching new destination with arguments
 
-In this step we will open a detail view from the `ListScreen` and pass the id of the clicked item as launch argument to the opened detail screen.
+In this step we will open a detail view from the `ListScreen` and pass the id of the clicked item as a launch argument to the opened detail screen.
 
-As usual, let's start by creating a new screen in `.ui.detailscreen` package:
+Let's start by creating a new screen in `.ui.detailscreen` package:
 
 > `.ui.detailscreen.DetailScreen.kt`:
 ```kotlin
@@ -21,7 +21,8 @@ fun DetailScreen(itemId: Int) {
 ```
 
 Now we need to add a special destination for this screen to `TutorialGraph`. You have 2 options here:
-1. using `next` on already declared destination to build on top of it. This is helpful if you want to avoid repeating same common parts of the paths.
+1. using `next` on already declared destination to build on top of it. 
+   This is helpful if you want to avoid repeating same common parts of the paths.
 2. creating a destination from scratch
 
 > `.nav.TutorialGraph.kt`
@@ -29,7 +30,7 @@ Now we need to add a special destination for this screen to `TutorialGraph`. You
 object TutorialGraph : NavGraph("tutorialGraph") {
     const val PARAM_ITEM_ID = "itemId"
 
-    (...)
+    // (...)
 
     val List = navDestination("list")
 
@@ -38,7 +39,7 @@ object TutorialGraph : NavGraph("tutorialGraph") {
         param(PARAM_ITEM_ID)
     }
 
-    or
+    // or
     
     // Option 2: will create "detail/{itemId}" destination
     val Detail = navDestination("detail") {
@@ -46,13 +47,13 @@ object TutorialGraph : NavGraph("tutorialGraph") {
     }
 }
 
-// I recommend adding extensions like this for more convenient param value access
+// I recommend adding extensions like this for more convenient access to param's value
 fun NavBackStackEntry.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.tutorialGraph() {
     composableNavigation(TutorialGraph) {
-       (...)
+       // (...)
        
         composableDestination(TutorialGraph.Detail) { navBackStackEntry ->
             DetailScreen(itemId = navBackStackEntry.getItemId()) // getItemId() is the extension we declared above
@@ -66,7 +67,7 @@ Now all that's left is defining navigation action in `TutorialNavActions` and ha
 > `.nav.TutorialNavActions.kt`
 ```kotlin
 object TutorialNavActions {
-    (...)
+    // (...)
     fun fromListToDetail(itemId: Int) = TutorialGraph.List goTo TutorialGraph.Detail arg itemId
 }
 ```

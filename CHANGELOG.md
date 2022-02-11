@@ -37,6 +37,7 @@
 - All of the infix functions related to building `NavigateAction` and `PopAction` were moved to `INavDestination` class. 
   `PopDestination` throws `UnsupportedOperationException` if you attempt to use them with `PopDestination` as receiver.
 - Removed dependency on Hilt. `ComposeNavigation` object is now responsible for providing all of the dependencies.
+- Added `NavOptionsBuilder.popUpTo` extensions
 
 # 0.1.0
 

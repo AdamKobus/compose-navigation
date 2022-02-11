@@ -6,18 +6,6 @@ We will start by creating a `WelcomeScreen` composable and its `ViewModel` in `.
 
 > `.ui.welcome.WelcomeScreen.kt`
 ```kotlin
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-
 @Composable
 fun WelcomeScreen() {
     val vm: WelcomeScreenVM = hiltViewModel()
@@ -96,13 +84,6 @@ For the graph above, an extension would look like this:
 
 > `nav.TutorialGraph.kt`
 ```kotlin
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.navigation.NavGraphBuilder
-import com.adamkobus.compose.navigation.ext.composableDestination
-import com.adamkobus.compose.navigation.ext.composableNavigation
-
-(...)
-
 @ExperimentalAnimationApi // 1
 fun NavGraphBuilder.tutorialGraph() {
     composableNavigation(TutorialGraph) { // 2

@@ -1,4 +1,4 @@
-import com.adamkobus.compose.navigation.Libs
+import com.adamkobus.compose.navigation.Lib
 
 apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: "com.github.ben-manes.versions"
@@ -29,8 +29,8 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:$androidBuildtoolsPluginVersion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Libs.KOTLIN_VERSION}"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:${Libs.HILT_VERSION}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Lib.KOTLIN_VERSION}"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:${Lib.HILT_VERSION}"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintPluginVersion"
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektPluginVersion"
         classpath "com.github.ben-manes:gradle-versions-plugin:$versionsPluginVersion"

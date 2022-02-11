@@ -1,4 +1,4 @@
-import com.adamkobus.compose.navigation.Libs
+import com.adamkobus.compose.navigation.Lib
 
 plugins {
     id 'com.android.library'
@@ -15,10 +15,10 @@ dependencies {
     implementation project(':demo-common-ui')
 
     // hilt
-    implementation Libs.Google.Hilt
-    kapt Libs.Google.HiltCompiler
+    implementation Lib.Google.Hilt
+    kapt Lib.Google.HiltCompiler
 
     // testing
-    testImplementation Libs.Test.JUnit
-    testImplementation Libs.Test.Mockk
+    testImplementation Lib.Test.JUnit
+    testImplementation Lib.Test.Mockk
 }

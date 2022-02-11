@@ -18,7 +18,7 @@ Then we need to add a destination to `TutorialGraph`:
 > `.nav.TutorialGraph.kt`
 ```kotlin
 object TutorialGraph : NavGraph("tutorialGraph") {
-    (...)
+    // (...)
     val DetailDialog = Detail.next { 
         path("dialog")
     }
@@ -27,7 +27,7 @@ object TutorialGraph : NavGraph("tutorialGraph") {
 @ExperimentalAnimationApi
 fun NavGraphBuilder.tutorialGraph() {
     composableNavigation(TutorialGraph) {
-        (...)
+        // (...)
         composableDialog(TutorialGraph.DetailDialog) { navBackStackEntry ->
             DetailScreenDialog(itemId = navBackStackEntry.getItemId())
         }
@@ -39,7 +39,7 @@ With destination in place, we can define new navigation action:
 > `.nav.TutorialNavActions.kt`
 ```kotlin
 object TutorialNavActions {
-    (...)
+    // (...)
     fun fromDetailToDialog(itemId: Int) = TutorialGraph.Detail goTo TutorialGraph.DetailDialog arg itemId
 }
 ```
@@ -50,8 +50,8 @@ And now the only thing that's left is updating `DetailScreen` by adding new butt
 @Composable
 fun DetailScreen(itemId: Int) {
     val vm: DetailScreenVM = hiltViewModel()
-    Box(
-        (...)
+    Box {
+        // (...)
         Button(
             onClick = { vm.interactions.onOpenDialogClicked(itemId) },
             modifier = Modifier.align(Alignment.BottomCenter)
@@ -66,7 +66,7 @@ class DetailScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer
 ) : ViewModel() {
     val interactions = DetailScreenInteractions(
-        (...)
+        // (...)
         onOpenDialogClicked = { itemId ->
             navigationConsumer.offer(TutorialNavActions.fromDetailToDialog(itemId))
         }
@@ -74,7 +74,7 @@ class DetailScreenVM @Inject constructor(
 }
 
 data class DetailScreenInteractions(
-    (...)
+    // (...)
     val onOpenDialogClicked: (Int) -> Unit
 )
 ```
