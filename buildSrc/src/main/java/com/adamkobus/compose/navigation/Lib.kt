@@ -1,6 +1,6 @@
 package com.adamkobus.compose.navigation
 
-object Libs {
+object Lib {
     /**
      * [Jetpack Compose Releases](https://developer.android.com/jetpack/androidx/versions/all-channel)
      */

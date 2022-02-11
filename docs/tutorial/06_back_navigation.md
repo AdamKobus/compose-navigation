@@ -37,7 +37,7 @@ fun DetailScreen(itemId: Int) {
         IconButton(onClick = vm.interactions.onBackClicked) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
         }
-        Text(text = "Opened item with id $itemId", modifier = Modifier.align(Alignment.Center))
+        Text(text = "Displaying item with id $itemId", modifier = Modifier.align(Alignment.Center))
     }
 }
 
@@ -57,8 +57,8 @@ data class DetailScreenInteractions(
 )
 ```
 
-
-
-It might seem like a lot of work to just perform back navigation. The payoff is that that the navigation action verifier we [added earlier](04_nav_verifier.md) will be able to check if pop action originates from proper destination and prevent it from executing if it doesn't.
+It might seem like a lot of work to just perform back navigation. 
+The payoff is that that the navigation action verifier we [added earlier](04_nav_verifier.md) will be able to check if the pop action 
+originates from proper destination and prevent it from executing if it doesn't.
 
 ### [Back to tutorials list](README.md)

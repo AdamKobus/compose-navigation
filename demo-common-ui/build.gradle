@@ -1,4 +1,4 @@
-import com.adamkobus.compose.navigation.Libs
+import com.adamkobus.compose.navigation.Lib
 
 plugins {
     id 'com.android.library'
@@ -15,24 +15,24 @@ dependencies {
     api project(':demo-core')
     api project(':composenav')
 
-    api Libs.AndroidX.Core
-    api Libs.AndroidX.Appcompat
-    api Libs.Kotlin.Coroutines
-    api Libs.AdamKobus.LifecycleAwareViewModel
+    api Lib.AndroidX.Core
+    api Lib.AndroidX.Appcompat
+    api Lib.Kotlin.Coroutines
+    api Lib.AdamKobus.LifecycleAwareViewModel
 
     // hilt
-    implementation Libs.Google.Hilt
-    api Libs.Google.HiltNavigationCompose
-    kapt Libs.Google.HiltCompiler
+    implementation Lib.Google.Hilt
+    api Lib.Google.HiltNavigationCompose
+    kapt Lib.Google.HiltCompiler
 
     // compose
-    api Libs.Compose.Ui
-    api Libs.Compose.Activity
-    api Libs.Compose.Material
-    api Libs.Compose.ToolingPreview
-    debugApi Libs.Compose.UiTooling
+    api Lib.Compose.Ui
+    api Lib.Compose.Activity
+    api Lib.Compose.Material
+    api Lib.Compose.ToolingPreview
+    debugApi Lib.Compose.UiTooling
 
     // testing
-    testImplementation Libs.Test.JUnit
-    testImplementation Libs.Test.Mockk
+    testImplementation Lib.Test.JUnit
+    testImplementation Lib.Test.Mockk
 }

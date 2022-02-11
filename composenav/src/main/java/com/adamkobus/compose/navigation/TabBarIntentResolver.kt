@@ -7,6 +7,7 @@ import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.data.NavGraph
 import com.adamkobus.compose.navigation.data.ResolveResult
 import com.adamkobus.compose.navigation.destination.CurrentDestination
+import com.adamkobus.compose.navigation.ext.popUpTo
 import com.adamkobus.compose.navigation.intent.NavIntent
 
 /**
@@ -76,7 +77,7 @@ open class TabBarIntentResolver(
         // tab item's starting destination is already in back stack and we can pop back to it
         if (graphStartDestination in currentDestination.backStack) {
             return currentDest goTo graphStartDestination navigate {
-                popUpTo(graphStartDestination.route.buildRoute())
+                popUpTo(graphStartDestination)
                 launchSingleTop = true
             }
         }
@@ -84,7 +85,7 @@ open class TabBarIntentResolver(
         // we know we're in tab host based on the back stack, but the graph of different tab is being displayed
         // in such situation we will pop to the root of the tab host and save state based on [tabStateSavingBehaviour]
         return currentDest goTo mappedGraph navigate {
-            popUpTo(tabsRootGraph.route.buildRoute()) {
+            popUpTo(tabsRootGraph) {
                 saveState = tabStateSavingBehaviour == SAVE_ALL ||
                     (tabStateSavingBehaviour == SAVE_START_DESTINATION && currentDest == currentDest.graph.startDestination())
             }
@@ -97,7 +98,7 @@ open class TabBarIntentResolver(
         val currentDest = currentDestination.destination ?: return ResolveResult.None
         currentDestination.backStack.findLast { it.graph in allGraphs }?.let {
             val ret = currentDest goTo it navigate {
-                popUpTo(it.route.buildRoute())
+                popUpTo(it)
                 launchSingleTop = true
             }
             return ret.asResult()

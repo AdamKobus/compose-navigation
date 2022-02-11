@@ -11,7 +11,7 @@ We will experiment with blocking methods in `ImageScreen`. We will do navigation
 > `.nav.TutorialNavActions.kt`
 ```kotlin
 object TutorialNavActions {
-    (...)
+    // (...)
     val FromImageToDialog = TutorialGraph.Image goTo TutorialGraph.DetailDialog arg 1
 }
 ```

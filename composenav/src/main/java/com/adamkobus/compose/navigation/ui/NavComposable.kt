@@ -2,9 +2,9 @@ package com.adamkobus.compose.navigation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.adamkobus.compose.navigation.data.NavGraph
 
 /**
@@ -29,7 +29,7 @@ fun NavComposable(
             pendingAction.complete()
         }
     }
-    val currentBackStackEntry = navController.currentBackStackEntryFlow.collectAsState(initial = null)
+    val currentBackStackEntry = navController.currentBackStackEntryAsState()
     LaunchedEffect(key1 = currentBackStackEntry.value) {
         vm.processBackStackEntry(currentBackStackEntry.value, navController.backQueue)
     }

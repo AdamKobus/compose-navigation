@@ -1,4 +1,4 @@
-import com.adamkobus.compose.navigation.Libs
+import com.adamkobus.compose.navigation.Lib
 
 plugins {
     id 'com.android.application'
@@ -12,27 +12,27 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion Libs.COMPOSE_VERSION
+        kotlinCompilerExtensionVersion Lib.COMPOSE_VERSION
     }
 }
 
 dependencies {
     implementation project(':composenav')
 
-    implementation Libs.AndroidX.Core
-    implementation Libs.AndroidX.Appcompat
-    implementation Libs.Kotlin.Coroutines
+    implementation Lib.AndroidX.Core
+    implementation Lib.AndroidX.Appcompat
+    implementation Lib.Kotlin.Coroutines
 
     // hilt
-    implementation Libs.Google.Hilt
-    implementation Libs.Google.HiltNavigationCompose
-    kapt Libs.Google.HiltCompiler
+    implementation Lib.Google.Hilt
+    implementation Lib.Google.HiltNavigationCompose
+    kapt Lib.Google.HiltCompiler
 
     // compose
-    implementation Libs.Compose.Ui
-    implementation Libs.Compose.Activity
-    implementation Libs.Compose.Material
-    implementation Libs.Compose.ToolingPreview
-    debugImplementation Libs.Compose.UiTooling
-    implementation Libs.Accompanist.NavigationAnimation
+    implementation Lib.Compose.Ui
+    implementation Lib.Compose.Activity
+    implementation Lib.Compose.Material
+    implementation Lib.Compose.ToolingPreview
+    debugImplementation Lib.Compose.UiTooling
+    implementation Lib.Accompanist.NavigationAnimation
 }

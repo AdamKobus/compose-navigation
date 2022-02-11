@@ -128,7 +128,7 @@ class WelcomeScreenVM @Inject constructor(
 
 1. This is a util from Compose Navigation library. Its purpose is to queue offered actions and intents for further processing.
 
-Now just launch the app and see the effect for yourself. You should be able to launch `ImageScreen` and `ListScren` by clicking the buttons.
+Now you should be able to launch `ImageScreen` and `ListScren` by clicking the buttons.
 
 One thing you might've noticed is that double clicking the "Show me an image!" button opens the `ImageScreen` twice. 
 
@@ -146,15 +146,11 @@ object TutorialNavActions {
 }
 ```
 
-This is not always an optimal solution though, as in some apps it's perfectly fine to open same kind of destination twice, but with different param. 
-
-Also, this doesn't solve different issue. If you hold both buttons and release them at the same time, then both `ImageScreen` and `ListScreen` will be put into back stack:
+Even though it will work, it doesn't solve a different issue. If you hold both buttons and release them at the same time, then both `ImageScreen` and `ListScreen` will be put into back stack:
 
 ![Broken back stack](assets/03_broken_back_stack.gif)
 
-This is something that `launchSingleTop = true` cannot fix, but I think that you already suspect that this is something Compose Navigation can help you deal with.
-
-> and that would be a correct assumption
+In the next step we will learn how to fix it.
 
 ### Next: [4. Preventing navigation from happening with NavActionVerifier](04_nav_verifier.md)
 
