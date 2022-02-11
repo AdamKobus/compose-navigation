@@ -34,31 +34,83 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.1.13-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.1.14-SNAPSHOT"
 }
 ```
 
-## Features
-
-- Navigation destinations | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/AppGraph.kt) 
-
-- Navigation actions | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/Actions.kt)
+## Main features
   
-- Processing navigation actions | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/Actions.kt)
+### Producing navigation actions in ViewModel
+
+This library allows you to produce navigation actions from anywhere, including `ViewModel`. 
+Just use `ComposeNavigation.getNavigationConsumer.offer(<action or intent>)`
+
+### Blocking navigation methods
+
+`NavigationConsumer` has suspend versions of its `offer` methods. 
+Thanks to this, you can block your coroutine until backstack actually changes.
+
+### Navigation actions and graphs definitions that are easy to read
+
+Example graph:
+```kotlin
+private const val PARAM_IMAGE_ID = "imageId"
+
+object MyGraph : NavGraph("myGraph") {
   
-- Producing navigation actions in ViewModel | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/ui/welcome/WelcomeScreenVM.kt)
+    override fun startDestination() = Home
 
-- NavGraphBuilder extension | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/AppGraph.kt)
+    val Home = navDestination("home")
+    val ImagePreview = Home.next {
+        param(PARAM_IMAGE_ID)
+    }
+    val Alert = navDestination("alertDialog")
+    val Back = popDestination()
+}
 
-- Multi-module project support | [Demo](demo-settings/src/main/java/com/adamkobus/compose/navigation/demo/settings/nav/SettingsGraph.kt)
+@ExperimentalAnimationApi
+fun NavGraphBuilder.myGraph() { 
+    composableNavigation(MyGraph) {
+        composableDestination(MyGraph.Home) { HomeScreen() }
+        composableDestination(MyGraph.ImagePreview) { entry -> ImagePreviewScreen(entry.getInt(PARAM_IMAGE_ID)) }
+        composableDialog(MyGraph.Alert) { HomeAlert() }
+    }
+}
+```
 
-- Detecting and dismissing duplicate navigation actions | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/AppNavActionVerifier.kt)
+And actions:
+```kotlin
+sealed class FromHome(action: NavAction) : NavActionWrapper(action) {
+    class ToImagePreview(imageId: Int) : FromHome(MyGraph.Home goTo MyGraph.ImagePreview arg imageId)
+    object ToAlert : FromHome(MyGraph.Home goTo MyGraph.Alert)
+}
 
-- NavAction operator overloads for more convenient actions declaration | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/Actions.kt)
+val FromImagePreviewNavigateBack = MyGraph.ImagePreview pop Back
+```
 
-- Tracking current destination | Demo TBD with settings module
+### Discarding navigation actions
 
-- Support for `dialog` | [Demo](demo/src/main/java/com/adamkobus/compose/navigation/demo/nav/AppGraph.kt)
+With `NavActionVerifier` you can discard `NavActions` that don't meet you criteria.
+
+```kotlin
+object AppNavActionVerifier : NavActionVerifier {
+    override fun isNavActionAllowed(currentDestination: CurrentDestination, action: NavAction): VerifyResult {
+        return if (currentDestination.destination == action.fromDestination) {
+            VerifyResult.Allow
+        } else {
+            VerifyResult.Discard
+        }
+    }
+}
+```
+
+### Navigation action abstraction with navigation intents
+
+`NavIntent` and `NavIntentResolver` can be used to:
+- abstract the navigation between feature modules to keep them independent
+- open a dev menu while keeping no hard references to it anywhere in your production code
+- handle complex navigation like bottom tab bar 
+  (see [TabBarIntentResolver](composenav/src/main/java/com/adamkobus/compose/navigation/TabBarIntentResolver.kt))
 
 ## Links
 
