@@ -115,4 +115,4 @@ Now that Hilt is configured and dependencies are in place, we can start adding a
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
-[NavigationConsumer]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-navigation-consumer/index.md
+[NavigationConsumer]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-navigation-consumer/index.md

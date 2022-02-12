@@ -162,6 +162,6 @@ In the next step we will learn how to fix it.
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
-[NavAction]: ../../docs/components/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
-[NavigateAction]: ../../docs/components/composenav/com.adamkobus.compose.navigation.action/-navigate-action/index.md
-[INavDestination.goTo(INavDestination)]: ../../docs/components/composenav/com.adamkobus.compose.navigation.destination/-i-nav-destination/index.md
+[NavAction]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
+[NavigateAction]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.action/-navigate-action/index.md
+[INavDestination.goTo(INavDestination)]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-i-nav-destination/index.md
