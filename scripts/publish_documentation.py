@@ -27,6 +27,7 @@ class Reference(object):
         self.name = name
         self.path = path
         self.pattern = re.compile(r'(?![^\[\]]*\])(`?)({}(\.[a-zA-Z0-9_\(\)]+)?)(`?)(?=[\[\s\.])'.format(self.name))
+        self.existing_entry_pattern = re.compile(r'(\[{}(\.[a-zA-Z0-9_\(\)]+)?\])'.format(self.name))
 
     def __str__(self):
         return self.name
@@ -64,7 +65,7 @@ class DocFile(object):
         updated_lines.append('{}\n\n'.format(GENERATED_TAG))
         for entry in self.refs.keys():
             log('Reference {}: {}'.format(entry, self.refs[entry]))
-            updated_lines.append('[{}]: {}\n'.format(entry, self.refs[entry]))
+            updated_lines.append('{}: {}\n'.format(entry, self.refs[entry]))
         if COMMIT:
             with open(self.path, 'w+', encoding='utf-8') as f:
                 for line in updated_lines:
@@ -74,11 +75,12 @@ class DocFile(object):
         ret = line
         for entry in references:
             ret = entry.pattern.sub(r'[\2]', ret)
-            if entry.pattern.search(line):
+            search_result = entry.existing_entry_pattern.search(ret)
+            if search_result:
                 entry_path = entry.path
                 if entry_path.startswith('/'):
                     entry_path = entry_path[1:]
-                self.refs[entry.name] = self.doc_prefix + entry_path
+                self.refs[str(search_result.groups(1)[0])] = self.doc_prefix + entry_path
         return ret
 
 def log(message):
