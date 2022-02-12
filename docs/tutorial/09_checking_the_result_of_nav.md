@@ -75,3 +75,4 @@ That's because no actual interaction with `NavHostController` happens in such ca
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
+[NavigationConsumer]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-navigation-consumer/index.md

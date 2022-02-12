@@ -69,3 +69,8 @@ Now let's focus on other features of this library.
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
+[NavActionVerifier]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-nav-action-verifier/index.md
+[VerifyResult]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-verify-result/index.md
+[NavAction.fromDestination]: ../../docs/components/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
+[ComposeNavigation]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-compose-navigation/index.md
+[GlobalGraph]: ../../docs/components/composenav/com.adamkobus.compose.navigation.data/-global-graph/index.md
