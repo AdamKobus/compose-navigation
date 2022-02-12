@@ -12,6 +12,11 @@ object Lib {
     const val KOTLIN_VERSION = "1.6.10"
 
     /**
+     * [Dokka Releases](https://github.com/Kotlin/dokka/releases)
+     */
+    const val DOKKA_VERSION = "1.6.10"
+
+    /**
      * [Accompanist Version](https://github.com/google/accompanist/releases)
      */
     const val ACCOMPANIST_VERSION = "0.24.2-alpha"

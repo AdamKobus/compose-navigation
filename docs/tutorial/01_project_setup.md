@@ -84,7 +84,7 @@ Remember to register `TutorialApplication` in `AndroidManifest.xml` by adding:
         android:name=".TutorialApplication"
 ```
 
-Since we are using Hilt, we can provide `NavigationConsumer` using it. To do that, add `NavigationModule` class in `.nav` package:
+Since we are using Hilt, we can provide [NavigationConsumer] using it. To do that, add `NavigationModule` class in `.nav` package:
 
 > `.nav.NavigationModule.kt`
 ```kotlin
@@ -112,3 +112,6 @@ Now that Hilt is configured and dependencies are in place, we can start adding a
 ### Next: [2. Displaying your first screen with NavGraph](02_first_graph.md)
 
 ### [Back to tutorials list](README.md)
+
+<!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
+

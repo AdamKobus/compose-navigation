@@ -9,7 +9,7 @@ internal class NavIntentResolvingManager {
 
     private val resolvers = mutableListOf<NavIntentResolver>()
 
-    fun register(vararg resolvers: NavIntentResolver) {
+    fun register(resolvers: Collection<NavIntentResolver>) {
         this.resolvers.addAll(resolvers)
     }
 

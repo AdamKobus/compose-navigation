@@ -1,6 +1,6 @@
 ### [Back to tutorials list](README.md)
 
-# 4. Preventing navigation from happening with NavActionVerifier
+# 4. Preventing navigation from happening with [NavActionVerifier]
 
 In the [previous step](03_navigation_basics.md) we created an application that has 2 buttons, each opening a different screen. 
 The problem to be solved now is how to prevent both screens from opening at once if the user clicks both buttons at the same time:
@@ -8,23 +8,23 @@ The problem to be solved now is how to prevent both screens from opening at once
 ![Broken back stack](assets/03_broken_back_stack.gif)
 
 Compose Navigation library main purpose was to provide tools to control navigation and make it more predictable. 
-One of those tools is `NavActionVerifier`. 
+One of those tools is [NavActionVerifier].
 
 This interface comes with only single method:
 ```kotlin
 fun isNavActionAllowed(currentDestination: CurrentDestination, action: NavAction): VerifyResult
 ```
 
-VerifyResult is an enum with `Allow` and `Discard` values. If this is not already obvious, 
-implementations of `NavActionVerifier` should analyze the current state of the backstack 
+[VerifyResult] is an enum with `Allow` and `Discard` values. If this is not already obvious, 
+implementations of [NavActionVerifier] should analyze the current state of the backstack 
 in the context of the processed `action` and return whether the `action` should be `Allow`ed to be processed or `Discard`ed.
 
-The simplest verifier you can make is the one that compares the `currentDestination.destination` with the `NavAction.fromDestination` 
+The simplest verifier you can make is the one that compares the `currentDestination.destination` with the [NavAction.fromDestination] 
 and discards the action if those destinations don't match.
 
-Let's do that by creating `TutorialNavActionVerifier` in `.nav` package and registering it in `ComposeNavigation` in the app's `onCreate`:
+Let's do that by creating `Tutorial[NavActionVerifier] in `.nav` package and registering it in [ComposeNavigation] in the app's `onCreate`:
 
-> `.nav.TutorialNavActionVerifier.kt`:
+> `.nav.Tutorial[NavActionVerifier].kt`:
 ```kotlin
 object TutorialNavActionVerifier : NavActionVerifier {
     override fun isNavActionAllowed(currentDestination: CurrentDestination, action: NavAction): VerifyResult {
@@ -50,8 +50,8 @@ class TutorialApplication : Application() {
 }
 ```
 
-1. It's good idea to exclude actions originating from `GlobalGraph` from such check. 
-   Overall, using `GlobalGraph` should be avoided exactly because it makes navigation unpredictable. 
+1. It's good idea to exclude actions originating from [GlobalGraph] from such check. 
+   Overall, using [GlobalGraph] should be avoided exactly because it makes navigation unpredictable. 
    Instead I recommend using `NavIntent`s which are covered later in this tutorial.
 2. The actual check is happening here. The way it resolves the issue described in the intro, 
    is that the current destination in the app must change before Compose Navigation library starts processing another action. 
@@ -66,3 +66,6 @@ Now let's focus on other features of this library.
 ### Next: [5. Launching new destination with arguments](05_using_navigation_arguments.md)
 
 ### [Back to tutorials list](README.md)
+
+<!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
+

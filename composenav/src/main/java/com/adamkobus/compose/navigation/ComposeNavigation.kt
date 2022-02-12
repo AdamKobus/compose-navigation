@@ -2,11 +2,11 @@ package com.adamkobus.compose.navigation
 
 import android.util.Log
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
+import com.adamkobus.compose.navigation.logger.NavLogLevel
+import com.adamkobus.compose.navigation.logger.NavLogger
+import com.adamkobus.compose.navigation.logger.NavLoggerImpl
 import com.adamkobus.compose.navigation.model.NavDestinationManager
 import com.adamkobus.compose.navigation.model.NavGatekeeper
-import com.adamkobus.compose.navigation.model.NavLogLevel
-import com.adamkobus.compose.navigation.model.NavLogger
-import com.adamkobus.compose.navigation.model.NavLoggerImpl
 import com.adamkobus.compose.navigation.model.NavigationConsumerImpl
 import com.adamkobus.compose.navigation.model.NavigationProcessor
 import com.adamkobus.compose.navigation.model.PendingActionDispatcher
@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 /**
- * Provides methods to configure Compose Navigation library.
+ * Provides methods to configure and interact with Compose Navigation library.
  */
 object ComposeNavigation {
 
@@ -51,25 +51,41 @@ object ComposeNavigation {
         mainDispatcher = Dispatchers.Main
     }
 
+    /**
+     * Changes the logger used by all [ComposeNavigation] components to [logger]
+     *
+     * @param [ComposeNavigation] will start using this [NavLogger] from this point.
+     */
     fun setLogger(logger: NavLogger): ComposeNavigation {
         this.navLogger = logger
         logger.setLogLevel(logLevel)
         return this
     }
 
+    /**
+     * Tells the logger to use this log level. It's up to the logger itself to honor this setting or ignore it.
+     * @param level Log level to use by compose navigation library. This setting is cached and any logger provided via [setLogger]
+     * method is asked to use it.
+     *
+     * @see [NavLogLevel]
+     */
     fun setLogLevel(@NavLogLevel level: Int): ComposeNavigation {
         this.logLevel = level
         navLogger.setLogLevel(level)
         return this
     }
 
-    fun addNavIntentResolvers(vararg resolvers: NavIntentResolver): ComposeNavigation {
-        navIntentResolvingManager.register(*resolvers)
+    fun addNavIntentResolvers(vararg resolvers: NavIntentResolver): ComposeNavigation = addNavIntentResolvers(resolvers.toList())
+
+    fun addNavIntentResolvers(resolvers: Collection<NavIntentResolver>): ComposeNavigation {
+        navIntentResolvingManager.register(resolvers)
         return this
     }
 
-    fun addNavActionVerifiers(vararg verifier: NavActionVerifier): ComposeNavigation {
-        verifier.forEach {
+    fun addNavActionVerifiers(vararg verifiers: NavActionVerifier): ComposeNavigation = addNavActionVerifiers(verifiers.toList())
+
+    fun addNavActionVerifiers(verifiers: Collection<NavActionVerifier>): ComposeNavigation {
+        verifiers.forEach {
             navGatekeeper.addVerifier(it)
         }
         return this
@@ -88,11 +104,20 @@ object ComposeNavigation {
         return navLogger
     }
 
+    /**
+     * Compose Navigation library interacts with NavHostController on main thread. This is achieved using [Dispatchers.Main] dispatcher.
+     * This method allows you to change the dispatcher to your own.
+     */
     fun setMainDispatcher(dispatcher: CoroutineDispatcher): ComposeNavigation {
         mainDispatcher = dispatcher
         return ComposeNavigation
     }
 
+    /**
+     * Provides an instance of [NavigationConsumer] - a class that accepts your navigation actions or intents.
+     *
+     * @see [NavigationConsumer]
+     */
     fun getNavigationConsumer(): NavigationConsumer {
         return navigationConsumer
     }

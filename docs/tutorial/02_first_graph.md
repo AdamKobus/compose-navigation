@@ -1,6 +1,6 @@
 ### [Back to tutorials list](README.md)
 
-# 2. Displaying your first screen with NavGraph
+# 2. Displaying your first screen with [NavGraph]
 
 We will start by creating a `WelcomeScreen` composable and its `ViewModel` in `.ui.welcome` package:
 
@@ -59,9 +59,11 @@ data class WelcomeScreenInteractions(
 }
 ```
 
-`WelcomeScreenPreview` should render two buttons stacked one above the other if all went well. We will use those buttons later for navigation.
+`WelcomeScreenPreview` should render two buttons stacked one above the other if all went well. 
+We will use those buttons later for navigation.
 
-For now we will focus on displaying the screen we just created. To do that, create `.nav` package and put `TutorialGraph.kt` in it with following content:
+For now we will focus on displaying the screen we just created. 
+To do that, create `.nav` package and put `TutorialGraph.kt` in it with following content:
 
 > `.nav.TutorialGraph.kt`
 ```kotlin
@@ -78,7 +80,8 @@ object TutorialGraph : NavGraph("tutorialGraph") { // 1
 2. Graphs must have starting points. It can be either a destination or another graph
 3. We declared a new destination in the app. Ideally, every screen in your app should have its own destination declared like this
 
-You could use those definitions to declare Jetpack's navigation graph directly in `NavHost`, but I recommend doing this through an extension. It declutters `NavHost` and makes it easier to find out which screen belongs to which graph.
+You could use those definitions to declare Jetpack's navigation graph directly in `NavHost`, 
+but I recommend doing this through an extension, as it makes the `NavHost` easier to read.
 
 For the graph above, an extension would look like this:
 
@@ -115,7 +118,8 @@ All that's left now putting it all together in `MainActivity`. Replace the conte
 ```
 
 1. `rememberAnimatedNavController()` is part of [Accompanist Navigation Animation]
-2. This is a component from Compose Navigation library. Its purpose is to consume pending navigation actions and deliver them to `navHostController`
+2. This is a component from Compose Navigation library. 
+   Its purpose is to consume pending navigation actions and deliver them to `navHostController`
 3. startDestination of controller determines where the user will land at the application launch. 
 4. We're using the extension we wrote earlier to declare a navigation graph inside `NavHost`
 
@@ -128,3 +132,6 @@ Now just launch the app and marvel at the beauty of what we created:
 ### [Back to tutorials list](README.md)
 
 [Accompanist Navigation Animation]: https://google.github.io/accompanist/navigation-animation/
+
+<!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
+
