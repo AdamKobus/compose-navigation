@@ -39,30 +39,3 @@ ext {
 }
 
 apply from: "${rootProject.projectDir}/gradle/publishing-module.gradle"
-
-dokkaGfm.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-            reportUndocumented.set(true)
-        }
-    }
-}
-
-tasks.register("removeDocumentation", Delete.class) {
-    setGroup("documentation")
-    delete "${project.buildDir}/dokka"
-}
-
-tasks.register("createDocumentation") {
-    setGroup("documentation")
-    dependsOn("removeDocumentation", "dokkaGfm")
-    mustRunAfter("removeDocumentation")
-}
-
-tasks.register("publishDocumentation", Exec.class) {
-    setGroup("documentation")
-    dependsOn("createDocumentation")
-    workingDir "${rootProject.projectDir}"
-    commandLine 'python', 'scripts/publish_documentation.py', '-c'
-}

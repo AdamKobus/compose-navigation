@@ -23,7 +23,7 @@ Shows how to display first screen using Compose Navigation.
 
 ### [3. Navigation basics using NavAction](03_navigation_basics.md)
 
-Describes how to navigate to a different screen using `NavAction`s
+Describes how to navigate to a different screen using [NavAction]s
 
 ### [4. Preventing navigation from happening with NavActionVerifier](04_nav_verifier.md)
 
@@ -44,7 +44,7 @@ In this step we will display a simple dialog on button click.
 ### [8. Abstracting navigation actions with NavIntent](TBD)
 
 Sometimes a component in your application might want to navigate somehwere, but it doesn't know how to do that. 
-This tutorial step will show you how to do that using `NavIntent`s
+This tutorial step will show you how to do that using [NavIntent]s
 
 ### [9. Checking the result of navigation action or intent](09_checking_the_result_of_nav.md)
 
@@ -54,3 +54,5 @@ Demonstrates how to suspend your coroutine until navigation happens, or it is re
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
+[NavAction]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
+[NavIntent]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.intent/-nav-intent/index.md

@@ -52,7 +52,7 @@ class TutorialApplication : Application() {
 
 1. It's good idea to exclude actions originating from [GlobalGraph] from such check. 
    Overall, using [GlobalGraph] should be avoided exactly because it makes navigation unpredictable. 
-   Instead I recommend using `NavIntent`s which are covered later in this tutorial.
+   Instead I recommend using [NavIntent]s which are covered later in this tutorial.
 2. The actual check is happening here. The way it resolves the issue described in the intro, 
    is that the current destination in the app must change before Compose Navigation library starts processing another action. 
    If the app changes the destination to `ImageScreen` then action originating from `WelcomeScreen` will no longer be valid, 
@@ -69,8 +69,9 @@ Now let's focus on other features of this library.
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
-[NavActionVerifier]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-nav-action-verifier/index.md
-[VerifyResult]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-verify-result/index.md
-[NavAction.fromDestination]: ../../docs/components/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
-[ComposeNavigation]: ../../docs/components/composenav/com.adamkobus.compose.navigation/-compose-navigation/index.md
-[GlobalGraph]: ../../docs/components/composenav/com.adamkobus.compose.navigation.data/-global-graph/index.md
+[NavActionVerifier]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-nav-action-verifier/index.md
+[VerifyResult]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-verify-result/index.md
+[NavAction.fromDestination]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
+[ComposeNavigation]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-compose-navigation/index.md
+[GlobalGraph]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.data/-global-graph/index.md
+[NavIntent]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.intent/-nav-intent/index.md

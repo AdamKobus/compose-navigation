@@ -1,0 +1,34 @@
+tasks.register("publishDocumentation", Exec.class) {
+    setGroup("documentation")
+    workingDir "${rootProject.projectDir}"
+    commandLine 'python', 'scripts/publish_documentation.py', '-k', 'docs/components', '-c'
+}
+
+subprojects { subproject ->
+    pluginManager.withPlugin('org.jetbrains.dokka') {
+        configureDokka(subproject)
+    }
+}
+
+def configureDokka(Project subProject) {
+    subProject.dokkaGfm.configure {
+        dokkaSourceSets {
+            named("main") {
+                noAndroidSdkLink.set(false)
+                reportUndocumented.set(true)
+            }
+        }
+    }
+
+    subProject.tasks.register("removeDocumentation", Delete.class) {
+        setGroup("documentation")
+        delete "${subProject.buildDir}/dokka"
+    }
+
+    def createDocsTask = subProject.tasks.register("createDocumentation") {
+        setGroup("documentation")
+        dependsOn("removeDocumentation", "dokkaGfm")
+        mustRunAfter("removeDocumentation")
+    }
+    rootProject.tasks.getByName("publishDocumentation").dependsOn(createDocsTask)
+}

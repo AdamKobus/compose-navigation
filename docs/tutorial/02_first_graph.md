@@ -135,4 +135,4 @@ Now just launch the app and marvel at the beauty of what we created:
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
-[NavGraph]: ../../docs/components/composenav/com.adamkobus.compose.navigation.data/-nav-graph/index.md
+[NavGraph]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.data/-nav-graph/index.md

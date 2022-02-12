@@ -66,5 +66,5 @@ originates from proper destination and prevent it from executing if it doesn't.
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
-[NavAction]: ../../docs/components/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
-[PopAction]: ../../docs/components/composenav/com.adamkobus.compose.navigation.action/-pop-action/index.md
+[NavAction]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
+[PopAction]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.action/-pop-action/index.md
