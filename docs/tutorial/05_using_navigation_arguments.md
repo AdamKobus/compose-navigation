@@ -2,7 +2,8 @@
 
 # 5. Launching new destination with arguments
 
-In this step we will open a detail view from the `ListScreen` and pass the id of the clicked item as a launch argument to the opened detail screen.
+In this step we will open a detail view from the `ListScreen` and pass the id of the clicked item as a launch argument 
+to the opened detail screen.
 
 Let's start by creating a new screen in `.ui.detailscreen` package:
 
@@ -91,8 +92,13 @@ class ListScreenVM @Inject constructor(
 
 ```
 
-And that's all. Clicking an element in the list should now open a new screen that displays the id of the list item that you clicked. Also notice that thanks to the verifier which we implemented in the [previous step](04_nav_verifier.md) it's not possible to open multiple detail screens by pressing and releasing multiple list elements at once. 
+And that's all. Clicking an element in the list should now open a new screen that displays the id of the list item that you clicked.
+Also notice that thanks to the verifier which we implemented in the [previous step](04_nav_verifier.md) it's not possible 
+to open multiple detail screens by pressing and releasing multiple list elements at once. 
 
 ### Next: [6. Using back navigation](06_back_navigation.md)
 
 ### [Back to tutorials list](README.md)
+
+<!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
+

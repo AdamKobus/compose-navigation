@@ -71,7 +71,7 @@ class NavIntentResolvingManagerTest {
     @Test
     fun `GIVEN only one resolver registered WHEN resolve intent that directly produces action THEN action is returned`() = runTest {
         // given
-        testSubject.register(actionProducingResolver)
+        testSubject.register(listOf(actionProducingResolver))
 
         // when
         val obtained = testSubject.resolve(actionProducingIntent, currentDestination)
@@ -83,7 +83,7 @@ class NavIntentResolvingManagerTest {
     @Test
     fun `GIVEN multiple resolvers registered WHEN resolve intent that directly produces action THEN action is returned`() = runTest {
         // given
-        testSubject.register(intentProducingResolver, actionProducingResolver)
+        testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
         // when
         val obtained = testSubject.resolve(actionProducingIntent, currentDestination)
@@ -95,7 +95,7 @@ class NavIntentResolvingManagerTest {
     @Test
     fun `GIVEN unknown intent WHEN resolve THEN null is returned`() = runTest {
         // given
-        testSubject.register(intentProducingResolver, actionProducingResolver)
+        testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
         // when
         val obtained = testSubject.resolve(unknownIntent, currentDestination)
@@ -107,7 +107,7 @@ class NavIntentResolvingManagerTest {
     @Test
     fun `GIVEN finding actions requires multiple resolves WHEN resolve THEN action is returned`() = runTest {
         // given
-        testSubject.register(intentProducingResolver, actionProducingResolver)
+        testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
         // when
         val obtained = testSubject.resolve(firstIntent, currentDestination)
@@ -119,7 +119,7 @@ class NavIntentResolvingManagerTest {
     @Test(expected = NavIntentCycleDetectedError::class)
     fun `GIVEN resolver produces cycle WHEN resolve THEN NavIntentCycleDetectedError thrown`() = runTest {
         // given
-        testSubject.register(cycleProducingResolver)
+        testSubject.register(listOf(cycleProducingResolver))
 
         // when
         testSubject.resolve(firstIntent, currentDestination)
@@ -154,7 +154,7 @@ class NavIntentResolvingManagerTest {
             coEvery { resolver.resolve(capture(slot), any()) } coAnswers {
                 if (slot.captured == original) ResolveResult.Intent(nextIntent) else ResolveResult.None
             }
-            testSubject.register(resolver)
+            testSubject.register(listOf(resolver))
             previousIntent = nextIntent
         }
         return firstIntent

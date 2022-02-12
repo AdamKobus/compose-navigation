@@ -43,10 +43,14 @@ In this step we will display a simple dialog on button click.
 
 ### [8. Abstracting navigation actions with NavIntent](TBD)
 
-Sometimes a component in your application might want to navigate somehwere, but it doesn't know how to do that. This tutorial step will show you how to do that using `NavIntent`s
+Sometimes a component in your application might want to navigate somehwere, but it doesn't know how to do that. 
+This tutorial step will show you how to do that using `NavIntent`s
 
 ### [9. Checking the result of navigation action or intent](09_checking_the_result_of_nav.md)
 
 Demonstrates how to suspend your coroutine until navigation happens, or it is rejected, and how to check the result of navigation action.
 
 ### [Back to documentation](../README.md)
+
+<!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
+

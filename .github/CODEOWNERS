@@ -1,0 +1,18 @@
+/scripts/ @AdamKobus
+/gradle/ @AdamKobus
+/detekt/ @AdamKobus
+/buildSrc/ @AdamKobus
+/.idea/ @AdamKobus
+/.github/ @AdamKobus
+
+*.gradle @AdamKobus
+*.gradle.kts @AdamKobus
+*.properties @AdamKobus
+.gitignore @AdamKobus
+*.json @AdamKobus
+Gemfile @AdamKobus
+Dangerfile @AdamKobus
+LICENSE @AdamKobus
+*.gpg @AdamKobus
+/gradlew @AdamKobus
+/gradlew.bat @AdamKobus

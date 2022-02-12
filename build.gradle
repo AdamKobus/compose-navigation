@@ -35,6 +35,7 @@ buildscript {
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektPluginVersion"
         classpath "com.github.ben-manes:gradle-versions-plugin:$versionsPluginVersion"
         classpath "io.github.gradle-nexus:publish-plugin:$publishPluginVersion"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${Lib.KOTLIN_VERSION}"
     }
     rootProject.ext
 }

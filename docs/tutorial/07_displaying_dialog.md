@@ -82,3 +82,6 @@ data class DetailScreenInteractions(
 At this point you should be able to launch a dialog from the `DetailScreen`
 
 ### [Back to tutorials list](README.md)
+
+<!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
+

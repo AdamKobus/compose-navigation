@@ -1,8 +1,9 @@
 ### [Back to tutorials list](README.md)
 
-# 3. Navigation basics using NavAction
+# 3. Navigation basics using [NavAction]
 
-We displayed a screen with two buttons in the [previous step](02_first_graph.md) of this tutorial. In this step we wil actually make those buttons do stuff.
+We displayed a screen with two buttons in the [previous step](02_first_graph.md) of this tutorial. 
+In this step we wil actually make those buttons do stuff.
 
 Let's start by declaring two addictional screens:
 
@@ -107,7 +108,9 @@ object TutorialNavActions {
 }
 ```
 
-The format used above should be quite obvious. If you inspect `FromWelcomeToImage` or `FromWelcomeToList` you will see that `INavDestination.goTo(INavDestination)` created new `NavigateAction`. We can use it now in `WelcomeScreenVM` to perform the actual navigation:
+The format used above should be quite obvious. If you inspect `FromWelcomeToImage` or `FromWelcomeToList` 
+you will see that [INavDestination.goTo(INavDestination)] created new [NavigateAction]. 
+We can use it now in `WelcomeScreenVM` to perform the actual navigation:
 
 > `.ui.welcome.WelcomeScreen.kt`
 ```kotlin
@@ -146,7 +149,8 @@ object TutorialNavActions {
 }
 ```
 
-Even though it will work, it doesn't solve a different issue. If you hold both buttons and release them at the same time, then both `ImageScreen` and `ListScreen` will be put into back stack:
+Even though it will work, it doesn't solve a different issue. If you hold both buttons and release them at the same time, 
+then both `ImageScreen` and `ListScreen` will be put into back stack:
 
 ![Broken back stack](assets/03_broken_back_stack.gif)
 
@@ -155,3 +159,6 @@ In the next step we will learn how to fix it.
 ### Next: [4. Preventing navigation from happening with NavActionVerifier](04_nav_verifier.md)
 
 ### [Back to tutorials list](README.md)
+
+<!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
+

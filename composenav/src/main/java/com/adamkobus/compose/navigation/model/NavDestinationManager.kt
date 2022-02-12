@@ -9,6 +9,7 @@ import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
 import com.adamkobus.compose.navigation.destination.UnknownDestination
+import com.adamkobus.compose.navigation.logger.NavLogger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

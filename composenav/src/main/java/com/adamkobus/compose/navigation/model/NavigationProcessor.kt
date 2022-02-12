@@ -10,6 +10,7 @@ import com.adamkobus.compose.navigation.data.NavigationResult
 import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
+import com.adamkobus.compose.navigation.logger.NavLogger
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
