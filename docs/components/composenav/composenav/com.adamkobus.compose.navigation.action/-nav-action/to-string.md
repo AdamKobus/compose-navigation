@@ -4,3 +4,5 @@
 
 [androidJvm]\
 open override fun [toString](to-string.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)
+
+Returns String representation of [NavAction](index.md)

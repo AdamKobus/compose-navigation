@@ -73,5 +73,5 @@ Now let's focus on other features of this library.
 [VerifyResult]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-verify-result/index.md
 [NavAction.fromDestination]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.action/-nav-action/index.md
 [ComposeNavigation]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-compose-navigation/index.md
-[GlobalGraph]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.data/-global-graph/index.md
+[GlobalGraph]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-global-graph/index.md
 [NavIntent]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.intent/-nav-intent/index.md

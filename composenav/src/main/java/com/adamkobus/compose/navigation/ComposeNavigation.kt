@@ -1,6 +1,9 @@
 package com.adamkobus.compose.navigation
 
 import android.util.Log
+import com.adamkobus.compose.navigation.action.NavAction
+import com.adamkobus.compose.navigation.error.ReservedNameError
+import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
 import com.adamkobus.compose.navigation.logger.NavLogLevel
 import com.adamkobus.compose.navigation.logger.NavLogger
@@ -15,14 +18,33 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 /**
- * Provides methods to configure and interact with Compose Navigation library.
+ * Main use of this class is to configure Compose Navigation library with:
+ * - [ComposeNavigation.addNavActionVerifiers]
+ * - [ComposeNavigation.addNavIntentResolvers]
+ * - [ComposeNavigation.setLogger]
+ * - [ComposeNavigation.setLogLevel]
+ * - [ComposeNavigation.setMainDispatcher]
+ * - [ComposeNavigation.disableRestrictedNamesCheck]
+ *
+ * It also gives you access to:
+ * - [NavigationConsumer] via [ComposeNavigation.getNavigationConsumer] method
+ * - [NavigationStateSource] via [ComposeNavigation.getNavigationStateSource]
+ * - Current [NavLogger] via [ComposeNavigation.getLogger]
  */
 object ComposeNavigation {
 
+    private const val DEFAULT_RESERVED_NAMES_ENABLED = true
+
+    /**
+     * Default log level to which ComposeNavigation's logger is set to
+     */
     @NavLogLevel
     val DEFAULT_LOG_LEVEL = Log.ERROR
+
+    /**
+     * Default logger used by ComposeNavigation.
+     */
     val DEFAULT_LOGGER: NavLogger = NavLoggerImpl
-    private const val DEFAULT_RESERVED_NAMES_ENABLED = true
 
     @NavLogLevel
     private var logLevel = Log.ERROR
@@ -34,7 +56,6 @@ object ComposeNavigation {
     private val navGatekeeper = NavGatekeeper()
     private var mainDispatcher: CoroutineDispatcher = Dispatchers.Main
 
-    // singleton
     private val pendingActionDispatcher = PendingActionDispatcher()
     private val navigationProcessor = NavigationProcessor()
     private val navigationConsumer: NavigationConsumer = NavigationConsumerImpl()
@@ -43,18 +64,27 @@ object ComposeNavigation {
         reset()
     }
 
-    internal fun reset() {
+    /**
+     * Resets the ComposeNavigation to initial state. This will reset:
+     * - logger
+     * - navigation actions verifiers
+     * - navigation intent resolvers
+     * - main dispatcher
+     * - reserved names flag (it will become enabled again)
+     */
+    fun reset() {
         reservedNames.enabled = DEFAULT_RESERVED_NAMES_ENABLED
         navLogger = DEFAULT_LOGGER
         logLevel = DEFAULT_LOG_LEVEL
         navGatekeeper.reset()
+        navIntentResolvingManager.reset()
         mainDispatcher = Dispatchers.Main
     }
 
     /**
      * Changes the logger used by all [ComposeNavigation] components to [logger]
      *
-     * @param [ComposeNavigation] will start using this [NavLogger] from this point.
+     * @param logger [ComposeNavigation] and its components will start using this [NavLogger] from now on
      */
     fun setLogger(logger: NavLogger): ComposeNavigation {
         this.navLogger = logger
@@ -64,7 +94,8 @@ object ComposeNavigation {
 
     /**
      * Tells the logger to use this log level. It's up to the logger itself to honor this setting or ignore it.
-     * @param level Log level to use by compose navigation library. This setting is cached and any logger provided via [setLogger]
+     *
+     * @param level Log level to be used by compose navigation library. This setting is cached and any logger provided via [setLogger]
      * method is asked to use it.
      *
      * @see [NavLogLevel]
@@ -75,15 +106,31 @@ object ComposeNavigation {
         return this
     }
 
+    /**
+     * Adds provided [resolvers] so that they can participate in [NavIntent]s processing.
+     * The resolvers are used in the order in which you're adding them
+     */
     fun addNavIntentResolvers(vararg resolvers: NavIntentResolver): ComposeNavigation = addNavIntentResolvers(resolvers.toList())
 
+    /**
+     * Adds provided [resolvers] so that they can participate in [NavIntent]s processing.
+     * The resolvers are used in the order in which you're adding them
+     */
     fun addNavIntentResolvers(resolvers: Collection<NavIntentResolver>): ComposeNavigation {
         navIntentResolvingManager.register(resolvers)
         return this
     }
 
+    /**
+     * Adds provided [verifiers] so that they can participate in [NavAction]s processing.
+     * The verifiers are used in the order in which you're adding them
+     */
     fun addNavActionVerifiers(vararg verifiers: NavActionVerifier): ComposeNavigation = addNavActionVerifiers(verifiers.toList())
 
+    /**
+     * Adds provided [verifiers] so that they can participate in [NavAction]s processing.
+     * The verifiers are used in the order in which you're adding them
+     */
     fun addNavActionVerifiers(verifiers: Collection<NavActionVerifier>): ComposeNavigation {
         verifiers.forEach {
             navGatekeeper.addVerifier(it)
@@ -91,22 +138,34 @@ object ComposeNavigation {
         return this
     }
 
+    /**
+     * By default, it's not possible to use destinations or intents names that start with double underscore - '__'.
+     * Trying to use such names results in [ReservedNameError] being thrown.
+     * You can disable this behaviour by invoking this function. Please keep in mind that this can be risky.
+     * Such names were reserved in advance in case they would be needed in future, so there is no guarantee they will keep working for you.
+     */
     fun disableRestrictedNamesCheck(): ComposeNavigation {
         reservedNames.enabled = false
         return this
     }
 
+    /**
+     * @return [NavigationStateSource] managed by [ComposeNavigation]
+     */
     fun getNavigationStateSource(): NavigationStateSource {
         return destinationManager
     }
 
+    /**
+     * @return currently used logger.
+     */
     fun getLogger(): NavLogger {
         return navLogger
     }
 
     /**
      * Compose Navigation library interacts with NavHostController on main thread. This is achieved using [Dispatchers.Main] dispatcher.
-     * This method allows you to change the dispatcher to your own.
+     * This method allows you to change the dispatcher to a custom one.
      */
     fun setMainDispatcher(dispatcher: CoroutineDispatcher): ComposeNavigation {
         mainDispatcher = dispatcher
@@ -114,7 +173,7 @@ object ComposeNavigation {
     }
 
     /**
-     * Provides an instance of [NavigationConsumer] - a class that accepts your navigation actions or intents.
+     * @return an instance of [NavigationConsumer] - a class that accepts your navigation actions or intents.
      *
      * @see [NavigationConsumer]
      */

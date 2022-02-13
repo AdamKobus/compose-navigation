@@ -77,9 +77,9 @@ Now we need to declare destinations for those 2 screens and update `tutorialGrap
 object TutorialGraph : NavGraph("tutorialGraph") {
     override fun startDestination() = Welcome
 
-    val Welcome = navDestination("welcome")
-    val Image = navDestination("image")
-    val List = navDestination("list")
+    val Welcome = screenDestination("welcome")
+    val Image = screenDestination("image")
+    val List = screenDestination("list")
 }
 
 @ExperimentalAnimationApi

@@ -2,7 +2,7 @@ package com.adamkobus.compose.navigation.model
 
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.destination.NavGraph
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

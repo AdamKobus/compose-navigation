@@ -25,8 +25,3 @@ interface NavActionVerifier {
      */
     fun isNavActionAllowed(currentDestination: CurrentDestination, action: NavAction): VerifyResult
 }
-
-enum class VerifyResult {
-    Allow,
-    Discard
-}

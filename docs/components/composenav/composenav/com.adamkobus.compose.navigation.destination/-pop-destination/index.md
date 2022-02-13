@@ -3,20 +3,25 @@
 # PopDestination
 
 [androidJvm]\
-data class [PopDestination](index.md)(graph: [NavGraph](../../com.adamkobus.compose.navigation.data/-nav-graph/index.md), route: [NavRoute](../-nav-route/index.md)) : [INavDestination](../-i-nav-destination/index.md)
+data class [PopDestination](index.md)(graph: [NavGraph](../-nav-graph/index.md), route: [NavRoute](../-nav-route/index.md)) : [INavDestination](../-i-nav-destination/index.md)
 
-## Functions
+This is a special kind of destination that can be used only as a target of [PopAction](../../com.adamkobus.compose.navigation.action/-pop-action/index.md)
 
-| Name | Summary |
+## Constructors
+
+| | |
 |---|---|
-| [goTo](go-to.md) | [androidJvm]<br>open infix override fun [goTo](go-to.md)(other: [INavDestination](../-i-nav-destination/index.md)): [NavigateAction](../../com.adamkobus.compose.navigation.action/-navigate-action/index.md) |
-| [next](next.md) | [androidJvm]<br>open override fun [next](next.md)(init: [NavRoute.Builder](../-nav-route/-builder/index.md).() -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)): [NavDestination](../-nav-destination/index.md) |
-| [pop](pop.md) | [androidJvm]<br>open infix override fun [pop](pop.md)(other: [PopDestination](index.md)): [PopAction](../../com.adamkobus.compose.navigation.action/-pop-action/index.md) |
-| [toString](to-string.md) | [androidJvm]<br>open override fun [toString](to-string.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
+| [PopDestination](-pop-destination.md) | [androidJvm]<br>fun [PopDestination](-pop-destination.md)(graph: [NavGraph](../-nav-graph/index.md), route: [NavRoute](../-nav-route/index.md) = navRoute(graph.name, path = "__back__", reservedNamesCheck = false)) |
 
 ## Properties
 
 | Name | Summary |
 |---|---|
-| [graph](graph.md) | [androidJvm]<br>open override val [graph](graph.md): [NavGraph](../../com.adamkobus.compose.navigation.data/-nav-graph/index.md)<br>Graph to which this destination belongs |
-| [route](route.md) | [androidJvm]<br>open override val [route](route.md): [NavRoute](../-nav-route/index.md)<br>Builds a full route definition for this destination. By default it will build a route in format /<name>. |
+| [graph](graph.md) | [androidJvm]<br>open override val [graph](graph.md): [NavGraph](../-nav-graph/index.md)<br>Graph that this destination belongs to |
+| [route](route.md) | [androidJvm]<br>open override val [route](route.md): [NavRoute](../-nav-route/index.md)<br>Each destination must have a unique route. |
+
+## Functions
+
+| Name | Summary |
+|---|---|
+| [toString](to-string.md) | [androidJvm]<br>open override fun [toString](to-string.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |

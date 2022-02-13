@@ -4,3 +4,5 @@
 
 [androidJvm]\
 fun [GraphName](-graph-name.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))
+
+Name of a [NavGraph](../../-nav-graph/index.md)

@@ -4,3 +4,5 @@
 
 [androidJvm]\
 abstract val [currentDestination](current-destination.md): [CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md)
+
+Returns current back stack state synchronously

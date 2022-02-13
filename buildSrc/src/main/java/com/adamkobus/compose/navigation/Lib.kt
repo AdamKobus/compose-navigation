@@ -90,6 +90,13 @@ object Lib {
         const val LifecycleAwareViewModel = "com.adamkobus:lifecycle-observer-viewmodel-ktx:1.0.1"
     }
 
+    object Square {
+        /**
+         * [Moshi Releases](https://github.com/square/moshi/tags)
+         */
+        const val Moshi = "com.squareup.moshi:moshi:1.13.0"
+    }
+
     object Test {
         /**
          * [JUnit4 Releases](https://github.com/junit-team/junit4/releases)

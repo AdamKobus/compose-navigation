@@ -4,3 +4,5 @@
 
 [androidJvm]\
 open override fun [hashCode](hash-code.md)(): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
+
+Generates hash code based on fromDestination, toDestination, params and options fields

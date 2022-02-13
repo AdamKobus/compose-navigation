@@ -1,20 +1,20 @@
 package com.adamkobus.compose.navigation.demo.ui.nav
 
 import androidx.navigation.NavBackStackEntry
-import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.destination.NavDestination
+import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.ScreenDestination
 import com.adamkobus.compose.navigation.ext.getInt
 
 object DogsBrowserGraph : NavGraph("dogs") {
     const val PARAM_DOG_ID = "dogId"
 
-    override fun startDestination(): NavDestination = DogsList
+    override fun startDestination(): ScreenDestination = DogsList
 
-    val DogsList = navDestination("dogsList")
+    val DogsList = screenDestination("dogsList")
     val DogDetails = DogsList.next {
         param(PARAM_DOG_ID)
     }
-    val DemoDialog = navDestination("demoDialog")
+    val DemoDialog = dialogDestination("demoDialog")
     val Back = popDestination()
 }
 

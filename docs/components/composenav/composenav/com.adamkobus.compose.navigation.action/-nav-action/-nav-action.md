@@ -4,3 +4,12 @@
 
 [androidJvm]\
 fun [NavAction](-nav-action.md)(fromDestination: [INavDestination](../../com.adamkobus.compose.navigation.destination/-i-nav-destination/index.md), toDestination: [INavDestination](../../com.adamkobus.compose.navigation.destination/-i-nav-destination/index.md))
+
+## Parameters
+
+androidJvm
+
+| | |
+|---|---|
+| fromDestination | source of the action |
+| toDestination | target of the action |

@@ -3,4 +3,6 @@
 # asResult
 
 [androidJvm]\
-fun [asResult](as-result.md)(): [ResolveResult](../../com.adamkobus.compose.navigation.data/-resolve-result/index.md)
+fun [asResult](as-result.md)(): [ResolveResult](../../com.adamkobus.compose.navigation.intent/-resolve-result/index.md)
+
+Converts the action into [ResolveResult.Action](../../com.adamkobus.compose.navigation.intent/-resolve-result/-action/index.md)

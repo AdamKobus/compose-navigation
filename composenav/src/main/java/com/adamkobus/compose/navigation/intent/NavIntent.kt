@@ -1,28 +1,43 @@
 package com.adamkobus.compose.navigation.intent
 
 import com.adamkobus.compose.navigation.ComposeNavigation
-import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.data.ResolveResult
-import com.adamkobus.compose.navigation.destination.INavDestination
+import com.adamkobus.compose.navigation.NavIntentResolver
+import com.adamkobus.compose.navigation.action.NavOptions
+import com.adamkobus.compose.navigation.destination.NavDestination
 
 /**
  * Represents an intent navigate to certain part of the application without knowing the details required to actually perform such action.
  * This mechanism can be used in multi-module apps, tab hosts that have many edge cases, to show dev menu (if it's present),
  * do A/B testing in convenient way and so on.
  *
- * Intent on its own is not enough for navigation to happen. You must also register
- * [NavIntentResolver](s) in [ComposeNavigation]
+ * Intent on its own is not enough for navigation to happen. You must also register [NavIntentResolver] in [ComposeNavigation]
+ *
+ * @param name Unique id of the intent
+ * @param origin to help [NavIntentResolver]s process this NavIntent, you can provide a destination that requested it.
+ * @param popOptions if this intent should close a flow, then you can provide options that should result in doing that.
+ * Example could be an intent that launches home screen after successful log in.
+ * Such intent would contain [popOptions] that remove log in graph.
+ * @param arguments provides a way to add some extra information to the intent
  */
 data class NavIntent(
     val name: String,
-    val origin: INavDestination? = null,
+    val origin: NavDestination? = null,
+    val popOptions: NavOptions? = null,
     private val arguments: MutableMap<String, Any> = mutableMapOf()
 ) {
+    /**
+     * Creates a copy of [NavIntent] with [pair] added to its arguments
+     */
+    infix fun arg(pair: Pair<String, Any>): NavIntent = plus(pair)
 
-    infix fun arg(value: Pair<String, Any>): NavIntent = plus(value)
+    /**
+     * Creates a copy of [NavIntent] with [pair] added to its arguments
+     */
+    operator fun plus(pair: Pair<String, Any>): NavIntent = addArgument(pair.first, pair.second)
 
-    operator fun plus(value: Pair<String, Any>): NavIntent = addArgument(value.first, value.second)
-
+    /**
+     * Creates a copy of [NavIntent] with ([key], [value]) pair added to its arguments
+     */
     fun addArgument(key: String, value: Any): NavIntent = copy(
         arguments = arguments.toMutableMap().also {
             it[key] = value
@@ -41,6 +56,9 @@ data class NavIntent(
         return this[key] as? Int
     }
 
+    /**
+     * @return formatted string representation of [NavIntent]
+     */
     override fun toString(): String {
         return origin?.let { originDest ->
             if (arguments.isEmpty()) {
@@ -57,16 +75,19 @@ data class NavIntent(
         }
     }
 
+    /**
+     * Converts [NavIntent] to [ResolveResult.Intent]
+     */
     fun asResult(): ResolveResult = ResolveResult.Intent(this)
 }
 
 internal fun navIntent(
-    graph: NavGraph,
     name: String,
+    sourceDestination: NavDestination,
     reservedNameCheck: Boolean = true
 ): NavIntent {
     if (reservedNameCheck) {
         ComposeNavigation.getReservedNamesHandler().checkIntentName(name)
     }
-    return NavIntent(name, graph)
+    return NavIntent(name, sourceDestination)
 }

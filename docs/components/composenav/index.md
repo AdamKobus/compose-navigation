@@ -8,7 +8,6 @@
 |---|
 | [com.adamkobus.compose.navigation](composenav/com.adamkobus.compose.navigation/index.md) |
 | [com.adamkobus.compose.navigation.action](composenav/com.adamkobus.compose.navigation.action/index.md) |
-| [com.adamkobus.compose.navigation.data](composenav/com.adamkobus.compose.navigation.data/index.md) |
 | [com.adamkobus.compose.navigation.destination](composenav/com.adamkobus.compose.navigation.destination/index.md) |
 | [com.adamkobus.compose.navigation.error](composenav/com.adamkobus.compose.navigation.error/index.md) |
 | [com.adamkobus.compose.navigation.ext](composenav/com.adamkobus.compose.navigation.ext/index.md) |

@@ -5,7 +5,9 @@
 [androidJvm]\
 fun [getNavigationConsumer](get-navigation-consumer.md)(): [NavigationConsumer](../-navigation-consumer/index.md)
 
-Provides an instance of [NavigationConsumer](../-navigation-consumer/index.md) - a class that accepts your navigation actions or intents.
+#### Return
+
+an instance of [NavigationConsumer](../-navigation-consumer/index.md) - a class that accepts your navigation actions or intents.
 
 ## See also
 

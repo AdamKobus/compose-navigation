@@ -4,14 +4,14 @@ import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.data.NavGraph
 import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
+import com.adamkobus.compose.navigation.destination.NavGraph
 import com.adamkobus.compose.navigation.destination.UnknownDestination
 import com.adamkobus.compose.navigation.logger.NavLogger
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * This manager tracks any visited destination. Based on this, it builds a database of destinations and updates the [currentDestination].
@@ -23,9 +23,9 @@ internal class NavDestinationManager : NavigationStateSource {
     override val currentDestination: CurrentDestination
         get() = _currentDestination.value
 
-    override fun observeCurrentDestination(): Flow<CurrentDestination> = _currentDestination
+    override fun observeCurrentDestination(): StateFlow<CurrentDestination> = _currentDestination
 
-    private val knownDestinations = mutableMapOf<String, INavDestination>()
+    private val knownDestinations = mutableMapOf<String, NavDestination>()
 
     private val logger: NavLogger
         get() = ComposeNavigation.getLogger()
@@ -57,7 +57,7 @@ internal class NavDestinationManager : NavigationStateSource {
         }
     }
 
-    private fun addKnownDestination(route: String, destination: INavDestination) {
+    private fun addKnownDestination(route: String, destination: NavDestination) {
         synchronized(knownDestinations) {
             knownDestinations.putIfAbsent(route, destination)
         }
@@ -75,7 +75,7 @@ internal class NavDestinationManager : NavigationStateSource {
         }
     }
 
-    private fun resolveRouteToDestination(route: String?): INavDestination? =
+    private fun resolveRouteToDestination(route: String?): NavDestination? =
         route?.let {
             knownDestinations[route] ?: UnknownDestination(it)
         }

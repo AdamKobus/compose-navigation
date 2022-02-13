@@ -1,81 +1,94 @@
 package com.adamkobus.compose.navigation.action
 
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptionsBuilder
-import com.adamkobus.compose.navigation.destination.INavDestination
+import com.adamkobus.compose.navigation.destination.NavDestination
 
+/**
+ * Represents an action that changes current destination to [toDestination]
+ *
+ * @param fromDestination source back stack entry that initialized the action
+ * @param toDestination back stack entry that should be reached as a result of navigation
+ * @param params List of arguments that will be used to build [toDestination] formatted path.
+ * @param options [NavOptions] that if present, will influence the way navigation is performed.
+ */
 class NavigateAction(
-    fromDestination: INavDestination,
-    toDestination: INavDestination,
+    fromDestination: NavDestination,
+    toDestination: NavDestination,
     private val params: List<String> = emptyList(),
-    private val navigateWithController: ((NavHostController) -> Unit)? = null,
-    private val navBuilder: (NavOptionsBuilder.() -> Unit)? = null
+    private val options: NavOptions? = null,
 ) : NavAction(fromDestination = fromDestination, toDestination = toDestination) {
 
+    private val fromNavDestination: NavDestination
+        get() = fromDestination as NavDestination
+
+    private val toNavDestination: NavDestination
+        get() = toDestination as NavDestination
+
+    /**
+     * This constructor allows you to copy other [NavigateAction]
+     */
     constructor(navAction: NavigateAction) : this(
-        navAction.fromDestination,
-        navAction.toDestination,
+        navAction.fromNavDestination,
+        navAction.toNavDestination,
         navAction.params,
-        navAction.navigateWithController,
-        navAction.navBuilder
+        navAction.options
     )
 
-    operator fun plus(params: List<String>): NavigateAction =
-        NavigateAction(
-            fromDestination,
-            toDestination,
-            params = this.params + params,
-            navigateWithController = navigateWithController,
-            navBuilder = navBuilder
-        )
+    /**
+     * Provided [param] will be delivered to [toDestination]
+     */
+    infix fun arg(param: Int): NavigateAction = arg(param.toString())
 
-    operator fun plus(param: Int): NavigateAction = plus(param.toString())
-
-    operator fun plus(param: String): NavigateAction =
+    /**
+     * Provided [param] will be delivered to [toDestination]
+     */
+    infix fun arg(param: String): NavigateAction =
         NavigateAction(
-            fromDestination,
-            toDestination,
+            fromNavDestination,
+            toNavDestination,
             params = this.params + param,
-            navigateWithController = navigateWithController,
-            navBuilder = navBuilder
+            options = options
         )
 
-    infix fun arg(param: Int): NavigateAction = plus(param)
-
-    infix fun arg(param: String): NavigateAction = plus(param)
-
-    infix fun navigate(param: NavOptionsBuilder.() -> Unit): NavigateAction =
-        NavigateAction(fromDestination, toDestination, params, navBuilder = param, navigateWithController = navigateWithController)
-
-    infix fun navigateWithController(param: (NavHostController) -> Unit): NavigateAction =
-        NavigateAction(fromDestination, toDestination, params, navBuilder = navBuilder, navigateWithController = param)
+    /**
+     * Sets the options with which navigation action should be performed. Use [navActionOptions] builder to create new set of options.
+     *
+     * @param param those options will be provided to [NavHostController.navigate]
+     */
+    infix fun withOptions(param: NavOptions?): NavigateAction =
+        NavigateAction(fromNavDestination, toNavDestination, params, options = param)
 
     override fun navigate(controller: NavHostController) {
-        navigateWithController?.let { controllerAction ->
-            controllerAction(controller)
-        } ?: navBuilder?.let { builder ->
-            controller.navigate(toDestination.route.buildPath(params), builder)
+        options?.let { builder ->
+            controller.navigate(toDestination.route.buildPath(params), navOptions = options.toAndroidNavOptions())
         } ?: controller.navigate(toDestination.route.buildPath(params))
     }
 
+    /**
+     * Compares with other [NavigateAction] by [fromDestination], [toDestination], [params] and [options] fields
+     */
     override fun equals(other: Any?): Boolean {
         return other is NavigateAction &&
             other.fromDestination == fromDestination &&
             other.toDestination == toDestination &&
             other.params == params &&
-            other.navBuilder == navBuilder &&
-            other.navigateWithController == navigateWithController
+            other.options == options
     }
 
+    /**
+     * Generates hash code based on [fromDestination], [toDestination], [params] and [options] fields
+     */
     override fun hashCode(): Int {
         var result = fromDestination.hashCode()
         result = 31 * result + toDestination.hashCode()
         result = 31 * result + params.hashCode()
-        result = 31 * result + (navBuilder?.hashCode() ?: 0)
-        result = 31 * result + (navigateWithController?.hashCode() ?: 0)
+        result = 31 * result + (options?.hashCode() ?: 0)
         return result
     }
 
+    /**
+     * @return formatted String representation of [NavigateAction]
+     */
     override fun toString(): String {
         return "${super.toString()} [${params.joinToString(", ")}]"
     }

@@ -21,4 +21,4 @@ androidJvm
 
 | | |
 |---|---|
-| level | Log level to use by compose navigation library. This setting is cached and any logger provided via [setLogger](set-logger.md) method is asked to use it. |
+| level | Log level to be used by compose navigation library. This setting is cached and any logger provided via [setLogger](set-logger.md) method is asked to use it. |

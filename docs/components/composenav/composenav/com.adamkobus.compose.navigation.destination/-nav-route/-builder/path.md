@@ -4,3 +4,5 @@
 
 [androidJvm]\
 fun [path](path.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))
+
+Adds new static path to the route builder.

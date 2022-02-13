@@ -2,7 +2,6 @@ package com.adamkobus.compose.navigation.intent
 
 import com.adamkobus.compose.navigation.NavIntentResolver
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.data.ResolveResult
 import com.adamkobus.compose.navigation.destination.CurrentDestination
 
 internal class NavIntentResolvingManager {
@@ -39,5 +38,9 @@ internal class NavIntentResolvingManager {
             }
         }
         return ResolveResult.None
+    }
+
+    internal fun reset() {
+        resolvers.clear()
     }
 }

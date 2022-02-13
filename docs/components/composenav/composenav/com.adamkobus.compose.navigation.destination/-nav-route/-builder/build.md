@@ -4,3 +4,5 @@
 
 [androidJvm]\
 fun [build](build.md)(): [NavRoute](../index.md)
+
+Creates new [NavRoute](../index.md) based on configured path parts.
