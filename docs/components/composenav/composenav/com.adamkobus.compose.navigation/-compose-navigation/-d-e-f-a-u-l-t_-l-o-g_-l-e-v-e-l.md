@@ -4,3 +4,5 @@
 
 [androidJvm]\
 val [DEFAULT_LOG_LEVEL](-d-e-f-a-u-l-t_-l-o-g_-l-e-v-e-l.md): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
+
+Default log level to which ComposeNavigation's logger is set to

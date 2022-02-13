@@ -2,6 +2,9 @@ package com.adamkobus.compose.navigation.destination
 
 /**
  * Creates a definition of a route representing a destination in your application.
+ *
+ * @param parts Initial parts
+ * @param separator By default, Compose Navigation uses "/" as separator. Custom ones were not tested yet.
  */
 data class NavRoute constructor(
     private val parts: List<NavRoutePart>,
@@ -18,7 +21,7 @@ data class NavRoute constructor(
     }
 
     /**
-     * @return Path build based on the route definition and provided [params]
+     * @return Path built based on the route definition and provided [params]
      *
      * @throws [IllegalArgumentException] if number of provided params doesn't match the expected params count.
      */
@@ -55,16 +58,27 @@ data class NavRoute constructor(
         return builder.build()
     }
 
+    /**
+     * A builder for [NavRoute]
+     */
     class Builder internal constructor(initialParts: List<NavRoutePart>, private val reservedNamesCheck: Boolean) {
         private val parts = initialParts.toMutableList()
         var separator = PART_SEPARATOR
 
+        /**
+         * Initializes the builder with a list of initial route parts.
+         */
         constructor(initialParts: List<NavRoutePart>) : this(initialParts = initialParts, reservedNamesCheck = true)
 
+        /**
+         * Initializes the builder with single path part representing the graph's name
+         */
         constructor(graphName: String) : this(emptyList(), reservedNamesCheck = true) {
             graphName(graphName)
         }
-
+        /**
+         * Initializes the builder with two parts: graph's name and static path.
+         */
         constructor(graphName: String, pathName: String) : this(emptyList(), reservedNamesCheck = true) {
             graphName(graphName)
             path(pathName)
@@ -87,11 +101,18 @@ data class NavRoute constructor(
             parts.add(NavRoutePart.GraphName(name, reservedNamesCheck = reservedNamesCheck))
         }
 
+        /**
+         * Adds new static path to the route builder.
+         */
         fun path(name: String) {
             ensureNameNotEmpty(name)
             parts.add(NavRoutePart.Path(name, reservedNamesCheck = reservedNamesCheck))
         }
 
+        /**
+         * Adds a param to the route builder. In the route itself it will be rendered as {<name>}.
+         * When performing navigation, this will be replaced by a param's value.
+         */
         fun param(name: String) {
             ensureNameNotEmpty(name)
             parts.add(NavRoutePart.Param(name, reservedNamesCheck = reservedNamesCheck))
@@ -109,6 +130,9 @@ data class NavRoute constructor(
             }
         }
 
+        /**
+         * Creates new [NavRoute] based on configured path parts.
+         */
         fun build(): NavRoute {
             ensureGraphNameAdded()
             return NavRoute(parts = parts, separator = separator)
@@ -133,6 +157,9 @@ internal fun navRoute(
     return builder.build()
 }
 
+/**
+ * Initializes type-safe builder for [NavRoute]
+ */
 fun navRoute(graphName: String, path: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute =
     navRoute(graphName = graphName, path = path, reservedNamesCheck = true, init = init)
 

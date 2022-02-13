@@ -72,7 +72,7 @@ import com.adamkobus.compose.navigation.data.NavGraph
 object TutorialGraph : NavGraph("tutorialGraph") { // 1
     override fun startDestination() = Welcome // 2
 
-    val Welcome = navDestination("welcome") // 3
+    val Welcome = screenDestination("welcome") // 3
 }
 ```
 
@@ -135,4 +135,4 @@ Now just launch the app and marvel at the beauty of what we created:
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
-[NavGraph]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.data/-nav-graph/index.md
+[NavGraph]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-nav-graph/index.md

@@ -6,7 +6,7 @@
 
 @Composable
 
-fun [NavComposable](-nav-composable.md)(navController: [NavHostController](https://developer.android.com/reference/kotlin/androidx/navigation/NavHostController.html), vararg observedGraphs: [NavGraph](../com.adamkobus.compose.navigation.data/-nav-graph/index.md))
+fun [NavComposable](-nav-composable.md)(navController: [NavHostController](https://developer.android.com/reference/kotlin/androidx/navigation/NavHostController.html), vararg observedGraphs: [NavGraph](../com.adamkobus.compose.navigation.destination/-nav-graph/index.md))
 
 This components acts as a bridge between the owner of [navController](-nav-composable.md) and the navigation state model.
 

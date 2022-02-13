@@ -16,8 +16,14 @@ def configureDokka(Project subProject) {
             named("main") {
                 noAndroidSdkLink.set(false)
                 reportUndocumented.set(true)
+                suppressObviousFunctions.set(true)
             }
         }
+    }
+    subProject.tasks.withType(subProject.dokkaGfm.getClass()).configureEach {
+        pluginsMapConfiguration.set(
+                ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+        )
     }
 
     subProject.tasks.register("removeDocumentation", Delete.class) {

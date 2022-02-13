@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.destination.NavGraph
 
 /**
  * This components acts as a bridge between the owner of [navController] and the navigation state model.

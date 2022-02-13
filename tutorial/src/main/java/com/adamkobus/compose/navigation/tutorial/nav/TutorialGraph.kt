@@ -3,7 +3,7 @@ package com.adamkobus.compose.navigation.tutorial.nav
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
-import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.destination.NavGraph
 import com.adamkobus.compose.navigation.ext.composableDestination
 import com.adamkobus.compose.navigation.ext.composableDialog
 import com.adamkobus.compose.navigation.ext.composableNavigation
@@ -19,9 +19,9 @@ object TutorialGraph : NavGraph("tutorialGraph") {
 
     override fun startDestination() = Welcome
 
-    val Welcome = navDestination("welcome")
-    val Image = navDestination("image")
-    val List = navDestination("list")
+    val Welcome = screenDestination("welcome")
+    val Image = screenDestination("image")
+    val List = screenDestination("list")
 
     val Detail = List.next {
         param(PARAM_ITEM_ID)
@@ -31,7 +31,7 @@ object TutorialGraph : NavGraph("tutorialGraph") {
 
     val DetailDialog = Detail.next {
         path("dialog")
-    }
+    }.asDialog()
 }
 
 fun NavBackStackEntry.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)

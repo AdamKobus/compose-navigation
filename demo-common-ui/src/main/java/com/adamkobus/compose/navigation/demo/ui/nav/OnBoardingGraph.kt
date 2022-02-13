@@ -1,10 +1,10 @@
 package com.adamkobus.compose.navigation.demo.ui.nav
 
-import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.destination.NavDestination
+import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.ScreenDestination
 
 object OnBoardingGraph : NavGraph("onBoardingGraph") {
-    override fun startDestination(): NavDestination = WelcomeScreen
+    override fun startDestination(): ScreenDestination = WelcomeScreen
 
-    val WelcomeScreen = navDestination("welcomeScreen")
+    val WelcomeScreen = screenDestination("welcomeScreen")
 }

@@ -13,4 +13,4 @@ androidJvm
 
 | | |
 |---|---|
-| ComposeNavigation | will start using this [NavLogger](../../com.adamkobus.compose.navigation.logger/-nav-logger/index.md) from this point. |
+| logger | [ComposeNavigation](index.md) and its components will start using this [NavLogger](../../com.adamkobus.compose.navigation.logger/-nav-logger/index.md) from now on |

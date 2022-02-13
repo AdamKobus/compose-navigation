@@ -4,3 +4,7 @@
 
 [androidJvm]\
 fun [getLogger](get-logger.md)(): [NavLogger](../../com.adamkobus.compose.navigation.logger/-nav-logger/index.md)
+
+#### Return
+
+currently used logger.

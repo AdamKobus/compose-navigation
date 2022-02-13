@@ -21,7 +21,7 @@ object TutorialGraph : NavGraph("tutorialGraph") {
     // (...)
     val DetailDialog = Detail.next { 
         path("dialog")
-    }
+    }.asDialog() // 1
 }
 
 @ExperimentalAnimationApi
@@ -34,6 +34,8 @@ fun NavGraphBuilder.tutorialGraph() {
     }
 }
 ```
+
+1. [ScreenDestination.asDialog()] will convert this destination into [DialogDestination] that can be used with `NavGraphBuilder.composableDialog`.
 
 With destination in place, we can define new navigation action:
 > `.nav.TutorialNavActions.kt`
@@ -85,3 +87,5 @@ At this point you should be able to launch a dialog from the `DetailScreen`
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
+[DialogDestination]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-dialog-destination/index.md
+[ScreenDestination.asDialog()]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-screen-destination/index.md

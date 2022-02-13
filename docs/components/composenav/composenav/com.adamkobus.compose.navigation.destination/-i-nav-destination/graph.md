@@ -3,6 +3,6 @@
 # graph
 
 [androidJvm]\
-abstract val [graph](graph.md): [NavGraph](../../com.adamkobus.compose.navigation.data/-nav-graph/index.md)
+abstract val [graph](graph.md): [NavGraph](../-nav-graph/index.md)
 
-Graph to which this destination belongs
+Graph that this destination belongs to

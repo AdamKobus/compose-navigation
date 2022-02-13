@@ -5,14 +5,18 @@
 [androidJvm]\
 interface [NavigationStateSource](index.md)
 
-## Functions
+Allows you to check the current state of back stack with [currentDestination](current-destination.md)
 
-| Name | Summary |
-|---|---|
-| [observeCurrentDestination](observe-current-destination.md) | [androidJvm]<br>abstract fun [observeCurrentDestination](observe-current-destination.md)(): Flow&lt;[CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md)&gt; |
+Allows you to observe back stack changes with [observeCurrentDestination](observe-current-destination.md)
 
 ## Properties
 
 | Name | Summary |
 |---|---|
-| [currentDestination](current-destination.md) | [androidJvm]<br>abstract val [currentDestination](current-destination.md): [CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md) |
+| [currentDestination](current-destination.md) | [androidJvm]<br>abstract val [currentDestination](current-destination.md): [CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md)<br>Returns current back stack state synchronously |
+
+## Functions
+
+| Name | Summary |
+|---|---|
+| [observeCurrentDestination](observe-current-destination.md) | [androidJvm]<br>abstract fun [observeCurrentDestination](observe-current-destination.md)(): StateFlow&lt;[CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md)&gt;<br>Allows you to observe the changes to the back stack |

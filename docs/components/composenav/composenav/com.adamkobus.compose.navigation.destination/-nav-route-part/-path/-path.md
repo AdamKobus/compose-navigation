@@ -4,3 +4,5 @@
 
 [androidJvm]\
 fun [Path](-path.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))
+
+name will become part of the final route without any modification

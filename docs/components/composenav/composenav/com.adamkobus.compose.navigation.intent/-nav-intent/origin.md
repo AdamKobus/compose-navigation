@@ -3,4 +3,4 @@
 # origin
 
 [androidJvm]\
-val [origin](origin.md): [INavDestination](../../com.adamkobus.compose.navigation.destination/-i-nav-destination/index.md)? = null
+val [origin](origin.md): [NavDestination](../../com.adamkobus.compose.navigation.destination/-nav-destination/index.md)? = null

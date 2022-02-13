@@ -1,12 +1,12 @@
 package com.adamkobus.compose.navigation.demo.ui.nav
 
-import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.destination.NavDestination
+import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.ScreenDestination
 
 object SettingsGraph : NavGraph("settingsGraph") {
-    override fun startDestination(): NavDestination = SettingsHome
+    override fun startDestination(): ScreenDestination = SettingsHome
 
-    val SettingsHome = navDestination("home")
+    val SettingsHome = screenDestination("home")
 
     val Back = popDestination()
 }

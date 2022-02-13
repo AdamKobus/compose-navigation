@@ -4,7 +4,7 @@ import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.action.NavActionWrapper
-import com.adamkobus.compose.navigation.data.NavigationResult
+import com.adamkobus.compose.navigation.action.NavigationResult
 import com.adamkobus.compose.navigation.intent.NavIntent
 import kotlinx.coroutines.CompletableDeferred
 

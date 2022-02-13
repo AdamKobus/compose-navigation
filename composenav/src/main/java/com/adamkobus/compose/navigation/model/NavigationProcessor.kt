@@ -2,12 +2,12 @@ package com.adamkobus.compose.navigation.model
 
 import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.ComposeNavigation
+import com.adamkobus.compose.navigation.action.DiscardReason
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.data.DiscardReason
-import com.adamkobus.compose.navigation.data.GlobalGraph
-import com.adamkobus.compose.navigation.data.NavGraph
-import com.adamkobus.compose.navigation.data.NavigationResult
+import com.adamkobus.compose.navigation.action.NavigationResult
 import com.adamkobus.compose.navigation.destination.CurrentDestination
+import com.adamkobus.compose.navigation.destination.GlobalGraph
+import com.adamkobus.compose.navigation.destination.NavGraph
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
 import com.adamkobus.compose.navigation.logger.NavLogger

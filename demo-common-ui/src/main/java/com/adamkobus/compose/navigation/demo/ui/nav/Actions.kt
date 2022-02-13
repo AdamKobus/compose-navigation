@@ -2,11 +2,11 @@ package com.adamkobus.compose.navigation.demo.ui.nav
 
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.action.NavActionWrapper
-import com.adamkobus.compose.navigation.ext.popUpTo
+import com.adamkobus.compose.navigation.action.navActionOptions
 
 sealed class FromSplash(action: NavAction) : NavActionWrapper(action) {
     object ToWelcome : FromSplash(
-        AppGraph.SplashScreen goTo OnBoardingGraph navigate {
+        AppGraph.SplashScreen goTo OnBoardingGraph withOptions navActionOptions {
             popUpTo(AppGraph)
             launchSingleTop = true
         }
@@ -15,7 +15,7 @@ sealed class FromSplash(action: NavAction) : NavActionWrapper(action) {
 
 sealed class FromWelcome(action: NavAction) : NavActionWrapper(action) {
     object ToCatsList : FromWelcome(
-        OnBoardingGraph.WelcomeScreen goTo CatsBrowserGraph navigate {
+        OnBoardingGraph.WelcomeScreen goTo CatsBrowserGraph withOptions navActionOptions {
             popUpTo(OnBoardingGraph) {
                 inclusive = true
             }
@@ -24,7 +24,7 @@ sealed class FromWelcome(action: NavAction) : NavActionWrapper(action) {
     )
 
     object ToDogsList : FromWelcome(
-        OnBoardingGraph.WelcomeScreen goTo DogsBrowserGraph navigate {
+        OnBoardingGraph.WelcomeScreen goTo DogsBrowserGraph withOptions navActionOptions {
             popUpTo(OnBoardingGraph) {
                 inclusive = true
             }
@@ -35,7 +35,7 @@ sealed class FromWelcome(action: NavAction) : NavActionWrapper(action) {
 
 sealed class FromCatsList(action: NavAction) : NavActionWrapper(action) {
     class ToCatDetails(catId: Int) : FromCatsList(
-        CatsBrowserGraph.CatsList goTo CatsBrowserGraph.CatDetails arg catId navigate {
+        CatsBrowserGraph.CatsList goTo CatsBrowserGraph.CatDetails arg catId withOptions navActionOptions {
             popUpTo(CatsBrowserGraph.CatsList)
         }
     )

@@ -1,18 +1,20 @@
 # Jetpack Compose Navigation
 
-Set of utils to help with integrating Jetpack Compose and Jetpack's Navigation
-
-Right now it depends quite heavily on Hilt / Dagger to work. 
-I'm also using jetpack and accompanist from unstable channel, because their features make lots of stuff more convenient.
-I'll switch over to stable versions once updates are released.
+Set of utils to help integrating Jetpack Compose with Jetpack's Navigation
 
 ##### Please keep in mind that this is still in early stage. If you're willing to use it in your project, then please remember that the API is still not set in stone
 
-I'm doing refactors / changes almost every day currently, in hopes that I'll be able to simplify the API even more, so please keep that in mind :)
+I'm doing refactors / changes almost every day currently, in hopes that I'll be able to simplify the API even more.
+
+##### Api will change a lot in near future
+
+See [https://github.com/AdamKobus/compose-navigation/issues/63](https://github.com/AdamKobus/compose-navigation/issues/63)
 
 ## Releases
 
 Current releases can be found at [https://github.com/AdamKobus/compose-navigation/releases](https://github.com/AdamKobus/compose-navigation/releases)
+
+It could potentially remove the need to declare `fun NavGraphBuilder.myGraph()` types of extensions and will also make arguments type safe.
 
 ```groovy
 repositories {
@@ -34,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.1.16-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.1.17-SNAPSHOT"
 }
 ```
 

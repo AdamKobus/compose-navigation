@@ -3,4 +3,4 @@
 # destination
 
 [androidJvm]\
-val [destination](destination.md): [INavDestination](../-i-nav-destination/index.md)?
+val [destination](destination.md): [NavDestination](../-nav-destination/index.md)?

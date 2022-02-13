@@ -3,4 +3,4 @@
 # PopDestination
 
 [androidJvm]\
-fun [PopDestination](-pop-destination.md)(graph: [NavGraph](../../com.adamkobus.compose.navigation.data/-nav-graph/index.md), route: [NavRoute](../-nav-route/index.md) = navRoute(graph.name, path = "__back__", reservedNamesCheck = false))
+fun [PopDestination](-pop-destination.md)(graph: [NavGraph](../-nav-graph/index.md), route: [NavRoute](../-nav-route/index.md) = navRoute(graph.name, path = "__back__", reservedNamesCheck = false))

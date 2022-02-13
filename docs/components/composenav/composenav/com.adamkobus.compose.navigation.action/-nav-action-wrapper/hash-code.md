@@ -4,3 +4,5 @@
 
 [androidJvm]\
 open override fun [hashCode](hash-code.md)(): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
+
+Builds hash code based on [action](action.md) field

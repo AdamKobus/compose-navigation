@@ -7,6 +7,15 @@ data class [NavRoute](index.md)(parts: [List](https://kotlinlang.org/api/latest/
 
 Creates a definition of a route representing a destination in your application.
 
+## Parameters
+
+androidJvm
+
+| | |
+|---|---|
+| parts | Initial parts |
+| separator | By default, Compose Navigation uses "/" as separator. Custom ones were not tested yet. |
+
 ## Constructors
 
 | | |
@@ -17,7 +26,7 @@ Creates a definition of a route representing a destination in your application.
 
 | Name | Summary |
 |---|---|
-| [Builder](-builder/index.md) | [androidJvm]<br>class [Builder](-builder/index.md) |
+| [Builder](-builder/index.md) | [androidJvm]<br>class [Builder](-builder/index.md)<br>A builder for [NavRoute](index.md) |
 | [Companion](-companion/index.md) | [androidJvm]<br>object [Companion](-companion/index.md) |
 
 ## Functions

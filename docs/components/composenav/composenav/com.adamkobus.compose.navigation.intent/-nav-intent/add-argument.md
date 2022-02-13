@@ -4,3 +4,5 @@
 
 [androidJvm]\
 fun [addArgument](add-argument.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), value: [Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)): [NavIntent](index.md)
+
+Creates a copy of [NavIntent](index.md) with ([key](add-argument.md), [value](add-argument.md)) pair added to its arguments
