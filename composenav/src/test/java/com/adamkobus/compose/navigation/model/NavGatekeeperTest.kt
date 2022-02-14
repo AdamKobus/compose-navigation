@@ -3,7 +3,7 @@ package com.adamkobus.compose.navigation.model
 import com.adamkobus.compose.navigation.NavActionVerifier
 import com.adamkobus.compose.navigation.VerifyResult
 import com.adamkobus.compose.navigation.action.NavigateAction
-import com.adamkobus.compose.navigation.destination.CurrentDestination
+import com.adamkobus.compose.navigation.destination.NavState
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertNotNull
@@ -61,7 +61,7 @@ class NavGatekeeperTest {
         }
 
     companion object {
-        private val NAV_DESTINATION = mockk<CurrentDestination>()
+        private val NAV_DESTINATION = mockk<NavState>()
         private val NAV_ACTION = mockk<NavigateAction>()
     }
 }

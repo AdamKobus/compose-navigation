@@ -3,7 +3,7 @@
 # resolve
 
 [androidJvm]\
-abstract suspend fun [resolve](resolve.md)(intent: [NavIntent](../../com.adamkobus.compose.navigation.intent/-nav-intent/index.md), currentDestination: [CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md)): [ResolveResult](../../com.adamkobus.compose.navigation.intent/-resolve-result/index.md)
+abstract suspend fun [resolve](resolve.md)(intent: [NavIntent](../../com.adamkobus.compose.navigation.intent/-nav-intent/index.md), navState: [NavState](../../com.adamkobus.compose.navigation.destination/-nav-state/index.md)): [ResolveResult](../../com.adamkobus.compose.navigation.intent/-resolve-result/index.md)
 
 This method should return one of the available results in [ResolveResult](../../com.adamkobus.compose.navigation.intent/-resolve-result/index.md)
 

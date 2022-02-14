@@ -1,9 +1,9 @@
 package com.adamkobus.compose.navigation.demo.ui.nav
 
-import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.NavStackEntry
 import com.adamkobus.compose.navigation.destination.ScreenDestination
-import com.adamkobus.compose.navigation.ext.getInt
+import com.adamkobus.compose.navigation.destination.getInt
 
 object CatsBrowserGraph : NavGraph("cats") {
     const val PARAM_CAT_ID = "catId"
@@ -18,4 +18,4 @@ object CatsBrowserGraph : NavGraph("cats") {
     val Back = popDestination()
 }
 
-fun NavBackStackEntry.catId() = getInt(CatsBrowserGraph.PARAM_CAT_ID)
+fun NavStackEntry?.catId() = getInt(CatsBrowserGraph.PARAM_CAT_ID)

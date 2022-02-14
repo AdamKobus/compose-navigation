@@ -30,12 +30,24 @@ interface NavLogger {
      */
     fun d(error: Throwable, message: String)
 
+    /**
+     * Used to log warnings, i.e. about intents or actions that were discarded
+     */
     fun w(message: String)
 
+    /**
+     * Used to log warnings, i.e. about intents or actions that were discarded
+     */
     fun w(error: Throwable, message: String)
 
+    /**
+     * Used to log unexpected errors
+     */
     fun e(message: String)
 
+    /**
+     * Used to log unexpected errors
+     */
     fun e(error: Throwable, message: String)
 
     /**

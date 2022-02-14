@@ -1,13 +1,13 @@
 package com.adamkobus.compose.navigation.tutorial.nav
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.NavStackEntry
+import com.adamkobus.compose.navigation.destination.getInt
 import com.adamkobus.compose.navigation.ext.composableDestination
 import com.adamkobus.compose.navigation.ext.composableDialog
 import com.adamkobus.compose.navigation.ext.composableNavigation
-import com.adamkobus.compose.navigation.ext.getInt
 import com.adamkobus.compose.navigation.tutorial.ui.detailscreen.DetailScreen
 import com.adamkobus.compose.navigation.tutorial.ui.detailscreen.DetailScreenDialog
 import com.adamkobus.compose.navigation.tutorial.ui.imagescreen.ImageScreen
@@ -34,7 +34,7 @@ object TutorialGraph : NavGraph("tutorialGraph") {
     }.asDialog()
 }
 
-fun NavBackStackEntry.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
+fun NavStackEntry?.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.tutorialGraph() {
@@ -48,11 +48,11 @@ fun NavGraphBuilder.tutorialGraph() {
         composableDestination(TutorialGraph.List) {
             ListScreen()
         }
-        composableDestination(TutorialGraph.Detail) { navBackStackEntry ->
-            DetailScreen(itemId = navBackStackEntry.getItemId())
+        composableDestination(TutorialGraph.Detail) { navStackEntry ->
+            DetailScreen(itemId = navStackEntry.getItemId())
         }
-        composableDialog(TutorialGraph.DetailDialog) { navBackStackEntry ->
-            DetailScreenDialog(itemId = navBackStackEntry.getItemId())
+        composableDialog(TutorialGraph.DetailDialog) { navStackEntry ->
+            DetailScreenDialog(itemId = navStackEntry.getItemId())
         }
     }
 }

@@ -1,29 +1,30 @@
 package com.adamkobus.compose.navigation.model
 
+import android.os.Bundle
 import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
-import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.NavStackEntry
+import com.adamkobus.compose.navigation.destination.NavState
 import com.adamkobus.compose.navigation.destination.UnknownDestination
 import com.adamkobus.compose.navigation.logger.NavLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * This manager tracks any visited destination. Based on this, it builds a database of destinations and updates the [currentDestination].
+ * This manager tracks any visited destination. Based on this, it builds a database of destinations and updates the [navState].
  * It depends on NavComposable to work properly.
  */
 internal class NavDestinationManager : NavigationStateSource {
 
-    private val _currentDestination = MutableStateFlow(CurrentDestination(null, emptyList()))
-    override val currentDestination: CurrentDestination
-        get() = _currentDestination.value
+    private val _navState = MutableStateFlow(NavState(null, emptyList()))
+    override val navState: NavState
+        get() = _navState.value
 
-    override fun observeCurrentDestination(): StateFlow<CurrentDestination> = _currentDestination
+    override fun observeNavState(): StateFlow<NavState> = _navState
 
     private val knownDestinations = mutableMapOf<String, NavDestination>()
 
@@ -45,15 +46,10 @@ internal class NavDestinationManager : NavigationStateSource {
     }
 
     internal fun addToKnownDestinations(destination: INavDestination) {
-        if (destination is NavGraph) {
-            val startDestination = destination.startDestination()
-            addKnownDestination(startDestination.route.buildRoute(), startDestination)
-            addKnownDestination(destination.route.buildRoute(), destination)
-        } else if (destination is NavDestination) {
-            addKnownDestination(destination.route.buildRoute(), destination)
+        if (destination is NavDestination) {
             val startDestination = destination.graph.startDestination()
             addKnownDestination(startDestination.route.buildRoute(), startDestination)
-            addKnownDestination(destination.graph.route.buildRoute(), destination.graph)
+            addKnownDestination(destination.route.buildRoute(), destination)
         }
     }
 
@@ -65,25 +61,43 @@ internal class NavDestinationManager : NavigationStateSource {
 
     internal fun onBackStackUpdated(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
         if (entry == null) {
-            updateCurrentDestination(CurrentDestination(null, emptyList()))
+            updateCurrentDestination(NavState(null, emptyList()))
         } else {
-            val currentDest = resolveRouteToDestination(entry.destination.route)
-            val backStack = backQueue.map {
-                resolveRouteToDestination(it.destination.route)
-            }.filterNotNull()
-            updateCurrentDestination(CurrentDestination(currentDest, backStack))
+            val backStack = backQueue.mapNotNull {
+                it.toNavStackEntry(this)
+            }
+            updateCurrentDestination(NavState(entry.toNavStackEntry(this), backStack))
         }
     }
 
-    private fun resolveRouteToDestination(route: String?): NavDestination? =
+    internal fun resolveRouteToDestination(route: String?): NavDestination? =
         route?.let {
             knownDestinations[route] ?: UnknownDestination(it)
         }
 
-    private fun updateCurrentDestination(destination: CurrentDestination) {
-        if (_currentDestination.value != destination) {
-            _currentDestination.value = destination
+    private fun updateCurrentDestination(destination: NavState) {
+        if (_navState.value != destination) {
+            _navState.value = destination
             logger.d("Current destination changed to $destination")
         }
     }
 }
+
+internal fun NavBackStackEntry.toNavStackEntry(
+    manager: NavDestinationManager = ComposeNavigation.getNavDestinationManager()
+): NavStackEntry? =
+    this.let { entry ->
+        entry.destination.route.let { route ->
+            manager.resolveRouteToDestination(route)
+        }?.let { destination ->
+            NavStackEntry(
+                destination = destination,
+                arguments = buildArguments(destination, entry.arguments)
+            )
+        }
+    }
+
+private fun buildArguments(destination: NavDestination, arguments: Bundle?): Map<String, String> =
+    destination.route.paramNames.associateWith {
+        arguments?.getString(it)!!
+    }

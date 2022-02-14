@@ -11,7 +11,7 @@ Any destination that is not recognized by [NavigationStateSource](../../com.adam
 
 | Name | Summary |
 |---|---|
-| [graph](../-nav-graph/graph.md) | [androidJvm]<br>open override val [graph](../-nav-graph/graph.md): [NavGraph](../-nav-graph/index.md)<br>Graph that this destination belongs to |
+| [graph](../-nav-graph/graph.md) | [androidJvm]<br>open override val [graph](../-nav-graph/graph.md): [NavGraph](../-nav-graph/index.md)<br>In case of [NavGraph](../-nav-graph/index.md), [graph](../-nav-graph/graph.md) always points to itself |
 | [name](../-nav-graph/name.md) | [androidJvm]<br>val [name](../-nav-graph/name.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
 | [route](../-nav-graph/route.md) | [androidJvm]<br>open override val [route](../-nav-graph/route.md): [NavRoute](../-nav-route/index.md)<br>Represents a route that will be used to register this graph inside NavHost |
 

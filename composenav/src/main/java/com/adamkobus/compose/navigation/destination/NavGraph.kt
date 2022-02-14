@@ -42,9 +42,15 @@ abstract class NavGraph internal constructor(
     fun dialogDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): DialogDestination =
         dialogDestination(this, pathName = pathName, reservedNameCheck = reservedNameCheck, init = init)
 
+    /**
+     * In case of [NavGraph], [graph] always points to itself
+     */
     override val graph: NavGraph
         get() = this
 
+    /**
+     * @return formatted string representation of [NavGraph]
+     */
     override fun toString(): String {
         return "Graph($name)"
     }

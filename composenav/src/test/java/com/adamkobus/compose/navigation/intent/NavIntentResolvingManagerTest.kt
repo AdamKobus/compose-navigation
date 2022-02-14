@@ -2,7 +2,7 @@ package com.adamkobus.compose.navigation.intent
 
 import com.adamkobus.compose.navigation.NavIntentResolver
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.destination.CurrentDestination
+import com.adamkobus.compose.navigation.destination.NavState
 import com.adamkobus.compose.navigation.error.NavIntentCycleDetectedError
 import com.adamkobus.compose.navigation.error.NavIntentMappingTooDeepError
 import io.mockk.coEvery
@@ -23,7 +23,7 @@ class NavIntentResolvingManagerTest {
     private val cycleProducingResolver: NavIntentResolver = mockk()
 
     private val producedAction: NavAction = mockk()
-    private val currentDestination: CurrentDestination = mockk()
+    private val navState: NavState = mockk()
 
     private val testSubject = NavIntentResolvingManager()
 
@@ -73,7 +73,7 @@ class NavIntentResolvingManagerTest {
         testSubject.register(listOf(actionProducingResolver))
 
         // when
-        val obtained = testSubject.resolve(actionProducingIntent, currentDestination)
+        val obtained = testSubject.resolve(actionProducingIntent, navState)
 
         // then
         assertEquals(producedAction, obtained)
@@ -85,7 +85,7 @@ class NavIntentResolvingManagerTest {
         testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
         // when
-        val obtained = testSubject.resolve(actionProducingIntent, currentDestination)
+        val obtained = testSubject.resolve(actionProducingIntent, navState)
 
         // then
         assertEquals(producedAction, obtained)
@@ -97,7 +97,7 @@ class NavIntentResolvingManagerTest {
         testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
         // when
-        val obtained = testSubject.resolve(unknownIntent, currentDestination)
+        val obtained = testSubject.resolve(unknownIntent, navState)
 
         // then
         assertNull(obtained)
@@ -109,7 +109,7 @@ class NavIntentResolvingManagerTest {
         testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
         // when
-        val obtained = testSubject.resolve(firstIntent, currentDestination)
+        val obtained = testSubject.resolve(firstIntent, navState)
 
         // then
         assertEquals(producedAction, obtained)
@@ -121,7 +121,7 @@ class NavIntentResolvingManagerTest {
         testSubject.register(listOf(cycleProducingResolver))
 
         // when
-        testSubject.resolve(firstIntent, currentDestination)
+        testSubject.resolve(firstIntent, navState)
     }
 
     @Test(expected = NavIntentMappingTooDeepError::class)
@@ -130,7 +130,7 @@ class NavIntentResolvingManagerTest {
         val firstIntent = createChain(51)
 
         // when
-        testSubject.resolve(firstIntent, currentDestination)
+        testSubject.resolve(firstIntent, navState)
     }
 
     @Test
@@ -139,7 +139,7 @@ class NavIntentResolvingManagerTest {
         val firstIntent = createChain(50)
 
         // when
-        testSubject.resolve(firstIntent, currentDestination)
+        testSubject.resolve(firstIntent, navState)
     }
 
     private fun createChain(depth: Int): NavIntent {

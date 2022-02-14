@@ -3,7 +3,7 @@
 # isNavActionAllowed
 
 [androidJvm]\
-abstract fun [isNavActionAllowed](is-nav-action-allowed.md)(currentDestination: [CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md), action: [NavAction](../../com.adamkobus.compose.navigation.action/-nav-action/index.md)): [VerifyResult](../-verify-result/index.md)
+abstract fun [isNavActionAllowed](is-nav-action-allowed.md)(navState: [NavState](../../com.adamkobus.compose.navigation.destination/-nav-state/index.md), action: [NavAction](../../com.adamkobus.compose.navigation.action/-nav-action/index.md)): [VerifyResult](../-verify-result/index.md)
 
 #### Return
 
@@ -15,7 +15,7 @@ androidJvm
 
 | | |
 |---|---|
-| [com.adamkobus.compose.navigation.destination.CurrentDestination](../../com.adamkobus.compose.navigation.destination/-current-destination/index.md) |  |
+| [com.adamkobus.compose.navigation.destination.NavState](../../com.adamkobus.compose.navigation.destination/-nav-state/index.md) |  |
 | [com.adamkobus.compose.navigation.action.NavAction](../../com.adamkobus.compose.navigation.action/-nav-action/index.md) |  |
 
 ## Parameters
@@ -24,5 +24,5 @@ androidJvm
 
 | | |
 |---|---|
-| currentDestination | Represents the destination displayed to the user at the moment of performing this check |
+| navState | Represents the state of the back stack at the moment of performing this check |
 | action | Action that was produced via [NavigationConsumer.offer](../-navigation-consumer/offer.md) |

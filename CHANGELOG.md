@@ -41,6 +41,10 @@
 - Updated Accompanist to `0.24.2-alpha`
 - `NavGraph` no longer has `navDestination` method. From now on you should use `screenDestination` and `dialogDestination` instead.
 - removed `com.adamkobus.compose.navigation.data` package. Classes were moved to `.action`, `.destination` and `.intent` packages.
+- `CurrentDestination` class was replaced by `NavState`. Also added `NavStackEntry` class which holds both destination and 
+  the arguments with which it was launched.
+- `NavGraphBuilder.composableDestination` and `NavGraphBuilder.composableDialog` content lambda
+  now accepts `NavStackEntry` instead of `NavBackStackEntry`
 
 # 0.1.0
 

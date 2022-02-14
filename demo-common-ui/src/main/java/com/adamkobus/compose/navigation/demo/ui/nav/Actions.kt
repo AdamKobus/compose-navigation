@@ -44,7 +44,7 @@ sealed class FromCatsList(action: NavAction) : NavActionWrapper(action) {
 }
 
 sealed class FromCatDetails(action: NavAction) : NavActionWrapper(action) {
-    object Back : FromCatDetails(CatsBrowserGraph.CatDetails pop CatsBrowserGraph.Back)
+    object Back : FromCatDetails(CatsBrowserGraph.CatDetails.pop())
 }
 
 sealed class FromDogsList(action: NavAction) : NavActionWrapper(action) {
@@ -53,14 +53,14 @@ sealed class FromDogsList(action: NavAction) : NavActionWrapper(action) {
 }
 
 sealed class FromDogDetails(action: NavAction) : NavActionWrapper(action) {
-    object Back : FromDogDetails(DogsBrowserGraph.DogDetails pop DogsBrowserGraph.Back)
+    object Back : FromDogDetails(DogsBrowserGraph.DogDetails.pop())
     object ToDemoDialog : FromDogDetails(DogsBrowserGraph.DogDetails goTo DogsBrowserGraph.DemoDialog)
 }
 
 sealed class FromDemoDialog(action: NavAction) : NavActionWrapper(action) {
-    object Dismiss : FromDemoDialog(DogsBrowserGraph.DemoDialog pop DogsBrowserGraph.Back)
+    object Dismiss : FromDemoDialog(DogsBrowserGraph.DemoDialog.pop())
 }
 
 sealed class FromSettingsHome(action: NavAction) : NavActionWrapper(action) {
-    object Back : FromSettingsHome(SettingsGraph.SettingsHome pop SettingsGraph.Back)
+    object Back : FromSettingsHome(SettingsGraph.SettingsHome.pop())
 }

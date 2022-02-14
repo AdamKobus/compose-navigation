@@ -15,7 +15,7 @@ sealed class NavRoutePart {
     class GraphName internal constructor(val name: String, reservedNamesCheck: Boolean = true) : NavRoutePart() {
 
         /**
-         * Name of a [NavGraph]
+         * @param name Name of a [NavGraph]
          */
         constructor(name: String) : this(name, reservedNamesCheck = true)
 
@@ -47,11 +47,13 @@ sealed class NavRoutePart {
 
     /**
      * Declares a static part of the route.
+     *
+     * @param name will become part of the final route without any modification
      */
     class Path internal constructor(val name: String, reservedNamesCheck: Boolean) : NavRoutePart() {
 
         /**
-         * [name] will become part of the final route without any modification
+         * @param name will become part of the final route without any modification
          */
         constructor(name: String) : this(name, reservedNamesCheck = true)
 
@@ -83,9 +85,14 @@ sealed class NavRoutePart {
 
     /**
      * Defined a part of the route that will be substituted with param value during path building
+     *
+     * @param paramName name by which this param can be later obtained from [NavStackEntry]
      */
     class Param internal constructor(val paramName: String, reservedNamesCheck: Boolean) : NavRoutePart() {
 
+        /**
+         * @param paramName name by which this param can be later obtained from [NavStackEntry]
+         */
         constructor(paramName: String) : this(paramName, true)
 
         init {

@@ -5,9 +5,9 @@ import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.DiscardReason
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.action.NavigationResult
-import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.destination.GlobalGraph
 import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.NavState
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
 import com.adamkobus.compose.navigation.logger.NavLogger
@@ -29,8 +29,8 @@ internal class NavigationProcessor {
     private val destinationManager: NavDestinationManager
         get() = ComposeNavigation.getNavDestinationManager()
 
-    private val currentDestination: CurrentDestination
-        get() = destinationManager.currentDestination
+    private val navState: NavState
+        get() = destinationManager.navState
 
     private val navIntentResolver: NavIntentResolvingManager
         get() = ComposeNavigation.getNavIntentResolvingManager()
@@ -77,7 +77,7 @@ internal class NavigationProcessor {
     }
 
     private suspend fun processIntent(navIntent: NavIntent): NavigationResult {
-        val action = navIntentResolver.resolve(navIntent, currentDestination)
+        val action = navIntentResolver.resolve(navIntent, navState)
         return if (action == null) {
             logger.w("Intent $navIntent was discarded, because it was not mapped to any action")
             NavigationResult.Discarded(DiscardReason.NotMapped)
@@ -95,7 +95,7 @@ internal class NavigationProcessor {
             logger.e("Discarded: $action | Navigating to GlobalGraph is not allowed")
             return NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
-        val rejectingVerifier = navGatekeeper.isNavActionAllowed(currentDestination, action)
+        val rejectingVerifier = navGatekeeper.isNavActionAllowed(navState, action)
         if (rejectingVerifier != null) {
             logger.v("Action discarded by verifier: $action")
             return NavigationResult.Discarded(DiscardReason.RejectedByVerifier(rejectingVerifier))

@@ -7,17 +7,11 @@ object [GlobalGraph](index.md) : [NavGraph](../-nav-graph/index.md)
 
 You can use this graph to create [NavigateAction](../../com.adamkobus.compose.navigation.action/-navigate-action/index.md)s that do not belong to any of your graphs. It might be a bad idea though as it increases chance for your [NavActionVerifier](../../com.adamkobus.compose.navigation/-nav-action-verifier/index.md)s to not work properly.
 
-## Properties
-
-| Name | Summary |
-|---|---|
-| [Back](-back.md) | [androidJvm]<br>val [Back](-back.md): [PopDestination](../-pop-destination/index.md) |
-
 ## Inherited properties
 
 | Name | Summary |
 |---|---|
-| [graph](../-nav-graph/graph.md) | [androidJvm]<br>open override val [graph](../-nav-graph/graph.md): [NavGraph](../-nav-graph/index.md)<br>Graph that this destination belongs to |
+| [graph](../-nav-graph/graph.md) | [androidJvm]<br>open override val [graph](../-nav-graph/graph.md): [NavGraph](../-nav-graph/index.md)<br>In case of [NavGraph](../-nav-graph/index.md), [graph](../-nav-graph/graph.md) always points to itself |
 | [name](../-nav-graph/name.md) | [androidJvm]<br>val [name](../-nav-graph/name.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
 | [route](../-nav-graph/route.md) | [androidJvm]<br>open override val [route](../-nav-graph/route.md): [NavRoute](../-nav-route/index.md)<br>Represents a route that will be used to register this graph inside NavHost |
 

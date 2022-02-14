@@ -14,6 +14,14 @@ data class NavRoute constructor(
     private val paramsCount: Int by lazy { parts.count { it is NavRoutePart.Param } }
 
     /**
+     * Returns the names of all of the params present in this route.
+     */
+    val paramNames: List<String>
+        get() = parts.mapNotNull { part ->
+            part as? NavRoutePart.Param
+        }.map { it.paramName }
+
+    /**
      * @return route definition that can be later used with TODO refer class from Jetpack navigation
      */
     fun buildRoute(): String {
@@ -63,6 +71,10 @@ data class NavRoute constructor(
      */
     class Builder internal constructor(initialParts: List<NavRoutePart>, private val reservedNamesCheck: Boolean) {
         private val parts = initialParts.toMutableList()
+
+        /**
+         * Separator which will be used when joining the parts of the route into String representation.
+         */
         var separator = PART_SEPARATOR
 
         /**
@@ -76,6 +88,7 @@ data class NavRoute constructor(
         constructor(graphName: String) : this(emptyList(), reservedNamesCheck = true) {
             graphName(graphName)
         }
+
         /**
          * Initializes the builder with two parts: graph's name and static path.
          */
@@ -144,6 +157,11 @@ data class NavRoute constructor(
     }
 }
 
+/**
+ * Type-safe builder for NavRoute that is initialized with graph name
+ *
+ * @param graphName Name of the graph the builder will be initialized with
+ */
 fun navRoute(graphName: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute =
     navRoute(graphName = graphName, reservedNamesCheck = true, init = init)
 
@@ -158,7 +176,10 @@ internal fun navRoute(
 }
 
 /**
- * Initializes type-safe builder for [NavRoute]
+ * Type-safe builder for NavRoute that is initialized with graph name and initial path
+ *
+ * @param graphName Name of the graph the builder will be initialized with
+ * @param path Path to initialize the builder with
  */
 fun navRoute(graphName: String, path: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute =
     navRoute(graphName = graphName, path = path, reservedNamesCheck = true, init = init)

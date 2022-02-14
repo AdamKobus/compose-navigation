@@ -16,6 +16,8 @@ import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.destination.DialogDestination
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.NavStackEntry
+import com.adamkobus.compose.navigation.model.toNavStackEntry
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 
@@ -32,7 +34,7 @@ fun NavGraphBuilder.composableDestination(
     exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+    content: @Composable AnimatedVisibilityScope.(NavStackEntry?) -> Unit
 ) {
     ComposeNavigation.getNavDestinationManager().addToKnownDestinations(destination)
 
@@ -44,7 +46,9 @@ fun NavGraphBuilder.composableDestination(
         exitTransition = exitTransition,
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
-        content = content
+        content = { backStackEntry ->
+            content(backStackEntry.toNavStackEntry())
+        }
     )
 }
 
@@ -82,13 +86,15 @@ fun NavGraphBuilder.composableDialog(
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     dialogProperties: DialogProperties = DialogProperties(),
-    content: @Composable (NavBackStackEntry) -> Unit
+    content: @Composable (NavStackEntry?) -> Unit
 ) {
     dialog(
         route = destination.route.buildRoute(),
         arguments = arguments,
         deepLinks = deepLinks,
         dialogProperties = dialogProperties,
-        content = content
+        content = { backStackEntry ->
+            content(backStackEntry.toNavStackEntry())
+        }
     )
 }

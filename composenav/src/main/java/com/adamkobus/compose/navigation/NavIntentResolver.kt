@@ -1,6 +1,6 @@
 package com.adamkobus.compose.navigation
 
-import com.adamkobus.compose.navigation.destination.CurrentDestination
+import com.adamkobus.compose.navigation.destination.NavState
 import com.adamkobus.compose.navigation.error.NavIntentCycleDetectedError
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.ResolveResult
@@ -28,5 +28,5 @@ interface NavIntentResolver {
      *
      * - [ResolveResult.None] - should be returned when the implementation of [NavIntentResolver] doesn't recognize provided [intent]
      */
-    suspend fun resolve(intent: NavIntent, currentDestination: CurrentDestination): ResolveResult
+    suspend fun resolve(intent: NavIntent, navState: NavState): ResolveResult
 }

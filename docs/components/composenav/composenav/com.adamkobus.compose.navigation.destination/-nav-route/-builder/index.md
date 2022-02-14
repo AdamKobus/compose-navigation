@@ -19,7 +19,7 @@ A builder for [NavRoute](../index.md)
 
 | Name | Summary |
 |---|---|
-| [separator](separator.md) | [androidJvm]<br>var [separator](separator.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
+| [separator](separator.md) | [androidJvm]<br>var [separator](separator.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Separator which will be used when joining the parts of the route into String representation. |
 
 ## Functions
 
