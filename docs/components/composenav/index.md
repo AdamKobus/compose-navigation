@@ -13,5 +13,4 @@
 | [com.adamkobus.compose.navigation.ext](composenav/com.adamkobus.compose.navigation.ext/index.md) |
 | [com.adamkobus.compose.navigation.intent](composenav/com.adamkobus.compose.navigation.intent/index.md) |
 | [com.adamkobus.compose.navigation.logger](composenav/com.adamkobus.compose.navigation.logger/index.md) |
-| [com.adamkobus.compose.navigation.model](composenav/com.adamkobus.compose.navigation.model/index.md) |
 | [com.adamkobus.compose.navigation.ui](composenav/com.adamkobus.compose.navigation.ui/index.md) |

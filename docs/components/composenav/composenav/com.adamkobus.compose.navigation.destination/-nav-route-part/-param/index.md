@@ -7,6 +7,14 @@ class [Param](index.md) : [NavRoutePart](../index.md)
 
 Defined a part of the route that will be substituted with param value during path building
 
+## Parameters
+
+androidJvm
+
+| | |
+|---|---|
+| paramName | name by which this param can be later obtained from [NavStackEntry](../../-nav-stack-entry/index.md) |
+
 ## Constructors
 
 | | |

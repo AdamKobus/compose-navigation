@@ -8,7 +8,7 @@ fun [NavigateAction](-navigate-action.md)(navAction: [NavigateAction](index.md))
 This constructor allows you to copy other [NavigateAction](index.md)
 
 [androidJvm]\
-fun [NavigateAction](-navigate-action.md)(fromDestination: [NavDestination](../../com.adamkobus.compose.navigation.destination/-nav-destination/index.md), toDestination: [NavDestination](../../com.adamkobus.compose.navigation.destination/-nav-destination/index.md), params: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)&gt; = emptyList(), options: [NavOptions](../-nav-options/index.md)? = null)
+fun [NavigateAction](-navigate-action.md)(fromNavDestination: [NavDestination](../../com.adamkobus.compose.navigation.destination/-nav-destination/index.md), toNavDestination: [NavDestination](../../com.adamkobus.compose.navigation.destination/-nav-destination/index.md), params: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)&gt; = emptyList(), options: [NavOptions](../-nav-options/index.md)? = null)
 
 ## Parameters
 

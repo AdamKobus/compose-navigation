@@ -8,7 +8,7 @@ import com.adamkobus.compose.navigation.NavigationStateSource
 import com.adamkobus.compose.navigation.demo.ui.nav.CatsBrowserGraph
 import com.adamkobus.compose.navigation.demo.ui.nav.DemoIntents
 import com.adamkobus.compose.navigation.demo.ui.nav.DogsBrowserGraph
-import com.adamkobus.compose.navigation.destination.CurrentDestination
+import com.adamkobus.compose.navigation.destination.NavState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,14 +44,14 @@ class DemoTabsNavigationVM @Inject constructor(
 
     init {
         runOnStart {
-            navigationStateSource.observeCurrentDestination().collect {
+            navigationStateSource.observeNavState().collect {
                 processNavigationUpdate(it)
             }
         }
     }
 
-    private fun processNavigationUpdate(currentDestination: CurrentDestination) {
-        val destination = currentDestination.destination
+    private fun processNavigationUpdate(navState: NavState) {
+        val destination = navState.currentDestination?.destination
         if (destination in CATS_DESTINATIONS) {
             onCatActive()
         } else if (destination in DOGS_DESTINATIONS) {

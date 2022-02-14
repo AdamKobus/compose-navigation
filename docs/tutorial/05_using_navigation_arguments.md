@@ -49,15 +49,15 @@ object TutorialGraph : NavGraph("tutorialGraph") {
 }
 
 // I recommend adding extensions like this for more convenient access to param's value
-fun NavBackStackEntry.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
+fun NavStackEntry?.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.tutorialGraph() {
     composableNavigation(TutorialGraph) {
        // (...)
        
-        composableDestination(TutorialGraph.Detail) { navBackStackEntry ->
-            DetailScreen(itemId = navBackStackEntry.getItemId()) // getItemId() is the extension we declared above
+        composableDestination(TutorialGraph.Detail) { navStackEntry ->
+            DetailScreen(itemId = navStackEntry.getItemId()) // getItemId() is the extension we declared above
         }
     }
 }

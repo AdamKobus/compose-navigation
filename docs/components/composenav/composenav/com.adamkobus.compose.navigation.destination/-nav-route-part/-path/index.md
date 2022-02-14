@@ -7,11 +7,19 @@ class [Path](index.md) : [NavRoutePart](../index.md)
 
 Declares a static part of the route.
 
+## Parameters
+
+androidJvm
+
+| | |
+|---|---|
+| name | will become part of the final route without any modification |
+
 ## Constructors
 
 | | |
 |---|---|
-| [Path](-path.md) | [androidJvm]<br>fun [Path](-path.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))<br>name will become part of the final route without any modification |
+| [Path](-path.md) | [androidJvm]<br>fun [Path](-path.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) |
 
 ## Properties
 

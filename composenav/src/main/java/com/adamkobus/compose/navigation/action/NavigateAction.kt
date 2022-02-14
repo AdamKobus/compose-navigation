@@ -12,17 +12,11 @@ import com.adamkobus.compose.navigation.destination.NavDestination
  * @param options [NavOptions] that if present, will influence the way navigation is performed.
  */
 class NavigateAction(
-    fromDestination: NavDestination,
-    toDestination: NavDestination,
+    private val fromNavDestination: NavDestination,
+    private val toNavDestination: NavDestination,
     private val params: List<String> = emptyList(),
     private val options: NavOptions? = null,
-) : NavAction(fromDestination = fromDestination, toDestination = toDestination) {
-
-    private val fromNavDestination: NavDestination
-        get() = fromDestination as NavDestination
-
-    private val toNavDestination: NavDestination
-        get() = toDestination as NavDestination
+) : NavAction(fromDestination = fromNavDestination, toDestination = toNavDestination) {
 
     /**
      * This constructor allows you to copy other [NavigateAction]
@@ -56,7 +50,12 @@ class NavigateAction(
      * @param param those options will be provided to [NavHostController.navigate]
      */
     infix fun withOptions(param: NavOptions?): NavigateAction =
-        NavigateAction(fromNavDestination, toNavDestination, params, options = param)
+        NavigateAction(
+            fromNavDestination,
+            toNavDestination,
+            params,
+            options = param
+        )
 
     override fun navigate(controller: NavHostController) {
         options?.let { builder ->

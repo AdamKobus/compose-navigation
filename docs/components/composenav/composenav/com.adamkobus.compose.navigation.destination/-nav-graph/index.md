@@ -30,7 +30,7 @@ androidJvm
 
 | Name | Summary |
 |---|---|
-| [graph](graph.md) | [androidJvm]<br>open override val [graph](graph.md): [NavGraph](index.md)<br>Graph that this destination belongs to |
+| [graph](graph.md) | [androidJvm]<br>open override val [graph](graph.md): [NavGraph](index.md)<br>In case of [NavGraph](index.md), [graph](graph.md) always points to itself |
 | [name](name.md) | [androidJvm]<br>val [name](name.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
 | [route](route.md) | [androidJvm]<br>open override val [route](route.md): [NavRoute](../-nav-route/index.md)<br>Represents a route that will be used to register this graph inside NavHost |
 

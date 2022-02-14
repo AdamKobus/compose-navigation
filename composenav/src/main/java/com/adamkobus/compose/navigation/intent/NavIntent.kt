@@ -44,16 +44,31 @@ data class NavIntent(
         }
     )
 
-    operator fun get(key: String): Any? {
-        return arguments[key]
+    /**
+     * Returns a value that was previously added via [addArgument] under the same [key]
+     *
+     * @throws NullPointerException if argument was not found
+     */
+    operator fun get(key: String): Any {
+        return arguments[key]!!
     }
 
-    fun getString(key: String): String? {
-        return this[key] as? String
+    /**
+     * Returns a value that was previously added via [addArgument] under the same [key]
+     *
+     * @throws NullPointerException if argument was not found
+     */
+    fun getString(key: String): String {
+        return this[key] as String
     }
 
-    fun getInt(key: String): Int? {
-        return this[key] as? Int
+    /**
+     * Returns a value that was previously added via [addArgument] under the same [key]
+     *
+     * @throws NullPointerException if argument was not found
+     */
+    fun getInt(key: String): Int {
+        return this[key] as Int
     }
 
     /**

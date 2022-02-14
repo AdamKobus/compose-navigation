@@ -5,4 +5,4 @@
 [androidJvm]\
 open override val [graph](graph.md): [NavGraph](index.md)
 
-Graph that this destination belongs to
+In case of [NavGraph](index.md), [graph](graph.md) always points to itself

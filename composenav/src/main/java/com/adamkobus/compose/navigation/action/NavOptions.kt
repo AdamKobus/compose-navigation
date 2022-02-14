@@ -13,11 +13,13 @@ import com.adamkobus.compose.navigation.destination.NavDestination
  * given that it was previously saved when removing it from back stack. See [androidx.navigation.NavOptionsBuilder.restoreState]
  * @property popOptions If not null, then back stack will be popped before navigating to a new screen.
  * [PopOptions] are used to configure the pop behaviour.
+ * @property anim If not null, then animation performed during screen transition will be overriden
  */
 data class NavOptions internal constructor(
     val launchSingleTop: Boolean,
     val restoreState: Boolean,
-    val popOptions: PopOptions?
+    val popOptions: PopOptions?,
+    val anim: AnimBuilder?
 ) {
     /**
      * [NavOptions] were introduced for internal use by Compose Navigation library.
@@ -28,10 +30,19 @@ data class NavOptions internal constructor(
     fun toAndroidNavOptions(): androidx.navigation.NavOptions {
         return navOptions {
             launchSingleTop = this@NavOptions.launchSingleTop
+            restoreState = this@NavOptions.restoreState
             this@NavOptions.popOptions?.let {
                 popUpTo(it.destination.route.buildRoute()) {
                     saveState = it.saveState
                     inclusive = it.inclusive
+                }
+            }
+            this@NavOptions.anim?.let { animBuilder ->
+                anim {
+                    enter = animBuilder.enter
+                    exit = animBuilder.exit
+                    popEnter = animBuilder.popEnter
+                    popExit = animBuilder.popExit
                 }
             }
         }
@@ -104,7 +115,8 @@ data class NavOptionsBuilder internal constructor(
         NavOptions(
             launchSingleTop = launchSingleTop,
             restoreState = restoreState,
-            popOptions = popOptions
+            popOptions = popOptions,
+            anim = animBuilder
         )
 }
 

@@ -29,6 +29,12 @@ androidJvm
 | [Builder](-builder/index.md) | [androidJvm]<br>class [Builder](-builder/index.md)<br>A builder for [NavRoute](index.md) |
 | [Companion](-companion/index.md) | [androidJvm]<br>object [Companion](-companion/index.md) |
 
+## Properties
+
+| Name | Summary |
+|---|---|
+| [paramNames](param-names.md) | [androidJvm]<br>val [paramNames](param-names.md): [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)&gt;<br>Returns the names of all of the params present in this route. |
+
 ## Functions
 
 | Name | Summary |

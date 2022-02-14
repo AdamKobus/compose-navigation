@@ -19,7 +19,7 @@ androidJvm
 
 | | |
 |---|---|
-| [GraphName](-graph-name.md) | [androidJvm]<br>fun [GraphName](-graph-name.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))<br>Name of a [NavGraph](../../-nav-graph/index.md) |
+| [GraphName](-graph-name.md) | [androidJvm]<br>fun [GraphName](-graph-name.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) |
 
 ## Properties
 

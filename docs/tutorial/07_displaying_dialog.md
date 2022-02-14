@@ -28,8 +28,8 @@ object TutorialGraph : NavGraph("tutorialGraph") {
 fun NavGraphBuilder.tutorialGraph() {
     composableNavigation(TutorialGraph) {
         // (...)
-        composableDialog(TutorialGraph.DetailDialog) { navBackStackEntry ->
-            DetailScreenDialog(itemId = navBackStackEntry.getItemId())
+        composableDialog(TutorialGraph.DetailDialog) { navStackEntry ->
+            DetailScreenDialog(itemId = navStackEntry.getItemId())
         }
     }
 }

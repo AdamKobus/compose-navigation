@@ -5,8 +5,8 @@ import com.adamkobus.compose.navigation.TabStateSavingBehaviour.SAVE_ALL
 import com.adamkobus.compose.navigation.TabStateSavingBehaviour.SAVE_START_DESTINATION
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.action.navActionOptions
-import com.adamkobus.compose.navigation.destination.CurrentDestination
 import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.destination.NavState
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.ResolveResult
 
@@ -49,24 +49,24 @@ open class TabBarIntentResolver(
 
     private val allGraphs = tabsMapping.values.toSet()
 
-    override suspend fun resolve(intent: NavIntent, currentDestination: CurrentDestination): ResolveResult {
+    override suspend fun resolve(intent: NavIntent, navState: NavState): ResolveResult {
         if (intent == popToTabHostIntent) {
-            return handlePopIntent(currentDestination)
+            return handlePopIntent(navState)
         }
-        return resolveInternal(intent, currentDestination)?.let {
+        return resolveInternal(intent, navState)?.let {
             ResolveResult.Action(it)
         } ?: ResolveResult.None
     }
 
-    private fun resolveInternal(intent: NavIntent, currentDestination: CurrentDestination): NavAction? {
+    private fun resolveInternal(intent: NavIntent, navState: NavState): NavAction? {
         val mappedGraph = tabsMapping[intent] ?: return null
         val graphStartDestination = mappedGraph.startDestination()
 
         // this resolver supports only navigation when tab host is already launched (as in, it handles only tab items clicks)
-        val currentDest = currentDestination.destination ?: return null
+        val currentDest = navState.currentDestination?.destination ?: return null
 
         // this resolver supports only navigation when tab host is already launched (as in, it handles only tab items clicks)
-        if (!currentDestination.isInBackStack(tabsRootGraph)) return null
+        if (!navState.isInBackStack(tabsRootGraph)) return null
 
         // we're already at the destination that clicking this tab would take us to
         if (currentDest == graphStartDestination) return null
@@ -75,7 +75,7 @@ open class TabBarIntentResolver(
         if (currentDest.graph !in allGraphs) return null
 
         // tab item's starting destination is already in back stack and we can pop back to it
-        if (graphStartDestination in currentDestination.backStack) {
+        if (navState.isInBackStack(graphStartDestination)) {
             return currentDest goTo graphStartDestination withOptions navActionOptions {
                 popUpTo(graphStartDestination)
                 launchSingleTop = true
@@ -94,11 +94,11 @@ open class TabBarIntentResolver(
         }
     }
 
-    private fun handlePopIntent(currentDestination: CurrentDestination): ResolveResult {
-        val currentDest = currentDestination.destination ?: return ResolveResult.None
-        currentDestination.backStack.findLast { it.graph in allGraphs }?.let {
-            val ret = currentDest goTo it withOptions navActionOptions {
-                popUpTo(it)
+    private fun handlePopIntent(navState: NavState): ResolveResult {
+        val currentDest = navState.currentDestination ?: return ResolveResult.None
+        navState.backStack.findLast { it.destination.graph in allGraphs }?.let {
+            val ret = currentDest.destination goTo it.destination withOptions navActionOptions {
+                popUpTo(it.destination)
                 launchSingleTop = true
             }
             return ret.asResult()

@@ -19,5 +19,8 @@ object GlobalGraph : NavGraph(name = "__global__", reservedNameCheck = false) {
      */
     override fun startDestination(): ScreenDestination = Root
 
-    val Back = popDestination(this)
+    /**
+     * Global destination for back navigation.
+     */
+    internal val Back = popDestination(this)
 }
