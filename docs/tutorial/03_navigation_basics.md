@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 
 @Composable
 fun ImageScreen() {
@@ -46,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen() {
@@ -138,15 +140,19 @@ import com.adamkobus.compose.navigation.NavigationConsumer
 
 @HiltViewModel
 class WelcomeScreenVM @Inject constructor(
-    val navigationConsumer: NavigationConsumer // 1.
+    private val navigationConsumer: NavigationConsumer // 1.
 ) : ViewModel() {
     val interactions = WelcomeScreenInteractions(
         onShowImageClicked = {
-            navigationConsumer.offer(TutorialNavActions.FromWelcomeToImage)
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialNavActions.FromWelcomeToImage)
+            }
         },
         onShowListClicked = {
-            navigationConsumer.offer(TutorialNavActions.FromWelcomeToList)
-        },
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialNavActions.FromWelcomeToList)
+            }
+        }
     )
 }
 ```
@@ -163,10 +169,10 @@ This can be prevented using `launchSingleTop = true` option like below:
 ```kotlin
 object TutorialNavActions {
     val FromWelcomeToImage = TutorialGraph.Welcome goTo TutorialGraph.Image withOptions navActionOptions {
-        launchSingleTop
+        launchSingleTop = true
     }
     val FromWelcomeToList = TutorialGraph.Welcome goTo TutorialGraph.List withOptions navActionOptions {
-        launchSingleTop
+        launchSingleTop = true
     }
 }
 ```

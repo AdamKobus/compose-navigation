@@ -2,6 +2,7 @@ package com.adamkobus.compose.navigation.tutorial
 
 import android.app.Application
 import com.adamkobus.compose.navigation.ComposeNavigation
+import com.adamkobus.compose.navigation.tutorial.nav.OpenRandomItemIntentResolver
 import com.adamkobus.compose.navigation.tutorial.nav.TutorialNavActionVerifier
 import dagger.hilt.android.HiltAndroidApp
 
@@ -11,5 +12,6 @@ class TutorialApplication : Application() {
         super.onCreate()
         ComposeNavigation
             .addNavActionVerifiers(TutorialNavActionVerifier)
+            .addNavIntentResolvers(OpenRandomItemIntentResolver)
     }
 }

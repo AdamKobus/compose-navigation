@@ -2,6 +2,16 @@
 
 ### Fixes
 
+
+
+### Changes
+
+
+
+# 0.2.0
+
+### Fixes
+
 - [#26](https://github.com/AdamKobus/compose-navigation/issues/26) `NavDestinationManager.currentDestination` change to the first visible
   screen happens instantly on app launch now.
   

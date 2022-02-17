@@ -14,9 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavigationConsumer
+import com.adamkobus.compose.navigation.tutorial.nav.TutorialGraph
+import com.adamkobus.compose.navigation.tutorial.nav.TutorialIntents
 import com.adamkobus.compose.navigation.tutorial.nav.TutorialNavActions
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @Composable
@@ -38,6 +42,10 @@ private fun WelcomeScreenContent(interactions: WelcomeScreenInteractions = Welco
         Button(onClick = interactions.onShowListClicked, modifier = Modifier.fillMaxWidth()) {
             Text(text = "Show me a list!")
         }
+        Spacer(modifier = Modifier.height(30.dp))
+        Button(onClick = interactions.onOpenRandomItemClicked, modifier = Modifier.fillMaxWidth()) {
+            Text(text = "Open random item!")
+        }
     }
 }
 
@@ -49,26 +57,37 @@ private fun WelcomeScreenPreview() {
 
 @HiltViewModel
 class WelcomeScreenVM @Inject constructor(
-    val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer
 ) : ViewModel() {
     val interactions = WelcomeScreenInteractions(
         onShowImageClicked = {
-            navigationConsumer.offer(TutorialNavActions.FromWelcomeToImage)
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialNavActions.FromWelcomeToImage)
+            }
         },
         onShowListClicked = {
-            navigationConsumer.offer(TutorialNavActions.FromWelcomeToList)
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialNavActions.FromWelcomeToList)
+            }
         },
+        onOpenRandomItemClicked = {
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialIntents.openRandomItem(TutorialGraph.Welcome))
+            }
+        }
     )
 }
 
 data class WelcomeScreenInteractions(
     val onShowImageClicked: () -> Unit,
-    val onShowListClicked: () -> Unit
+    val onShowListClicked: () -> Unit,
+    val onOpenRandomItemClicked: () -> Unit
 ) {
     companion object {
         val STUB = WelcomeScreenInteractions(
             onShowImageClicked = {},
-            onShowListClicked = {}
+            onShowListClicked = {},
+            onOpenRandomItemClicked = {}
         )
     }
 }

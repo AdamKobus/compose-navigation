@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.tutorial.nav.TutorialGraph
 import com.adamkobus.compose.navigation.tutorial.nav.TutorialNavActions
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @Composable
@@ -49,10 +51,14 @@ class DetailScreenVM @Inject constructor(
 ) : ViewModel() {
     val interactions = DetailScreenInteractions(
         onBackClicked = {
-            navigationConsumer.offer(TutorialGraph.Detail.pop())
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialGraph.Detail.pop())
+            }
         },
         onOpenDialogClicked = { itemId ->
-            navigationConsumer.offer(TutorialNavActions.fromDetailToDialog(itemId))
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialNavActions.fromDetailToDialog(itemId))
+            }
         }
     )
 }
