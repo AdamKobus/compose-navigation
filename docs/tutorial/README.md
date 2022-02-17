@@ -41,7 +41,7 @@ Explains how to implement back navigation while maintaining the stable state of 
 
 In this step we will display a simple dialog on button click.
 
-### [8. Abstracting navigation actions with NavIntent](TBD)
+### [8. Abstracting navigation actions with NavIntent](08_using_nav_intents.md)
 
 Sometimes a component in your application might want to navigate somehwere, but it doesn't know how to do that. 
 This tutorial step will show you how to do that using [NavIntent]s

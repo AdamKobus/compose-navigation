@@ -40,7 +40,9 @@ class DetailScreenVM @Inject constructor(
 ) : ViewModel() {
     val interactions = DetailScreenInteractions(
         onBackClicked = {
-            navigationConsumer.offer(TutorialGraph.Detail.pop())
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialGraph.Detail.pop())
+            }
         }
     )
 }

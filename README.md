@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.1.0"
+    implementation "com.adamkobus:compose-navigation:0.2.0"
 }
 ```
 
@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.1.19-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.2.0-SNAPSHOT"
 }
 ```
 
@@ -71,7 +71,7 @@ object MyGraph : NavGraph("myGraph") {
     val Alert = dialogDestination("alertDialog")
 }
 
-// extension which you can later use in your o
+// extension which you can later use in your AnimatedNavHost
 @ExperimentalAnimationApi
 fun NavGraphBuilder.myGraph() { 
     composableNavigation(MyGraph) {

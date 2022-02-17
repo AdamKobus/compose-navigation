@@ -76,7 +76,9 @@ class DetailScreenVM @Inject constructor(
     val interactions = DetailScreenInteractions(
         // (...)
         onOpenDialogClicked = { itemId ->
-            navigationConsumer.offer(TutorialNavActions.fromDetailToDialog(itemId))
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialNavActions.fromDetailToDialog(itemId))
+            }
         }
     )
 }
@@ -88,6 +90,8 @@ data class DetailScreenInteractions(
 ```
 
 At this point you should be able to launch a dialog from within `DetailScreen`
+
+### Next: [8. Abstracting navigation actions with NavIntent](08_using_nav_intents.md)
 
 ### [Back to tutorials list](README.md)
 

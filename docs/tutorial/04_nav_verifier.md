@@ -33,14 +33,14 @@ import com.adamkobus.compose.navigation.destination.GlobalGraph
 import com.adamkobus.compose.navigation.destination.NavState
 
 object TutorialNavActionVerifier : NavActionVerifier {
-   override fun isNavActionAllowed(navState: NavState, action: NavAction): VerifyResult {
-      if (action.fromDestination.graph == GlobalGraph) return VerifyResult.Allow // 1.
-      return if (navState.isCurrent(action.fromDestination)) { // 2.
-         VerifyResult.Allow
-      } else {
-         VerifyResult.Discard
-      }
-   }
+    override fun isNavActionAllowed(navState: NavState, action: NavAction): VerifyResult {
+        if (action.fromDestination.graph == GlobalGraph) return VerifyResult.Allow // 1.
+        return if (navState.isCurrent(action.fromDestination)) { // 2.
+            VerifyResult.Allow
+        } else {
+            VerifyResult.Discard
+        }
+    }
 }
 ```
 

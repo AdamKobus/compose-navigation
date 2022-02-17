@@ -97,7 +97,9 @@ class ListScreenVM @Inject constructor(
     )
     val interactions = ListScreenInteractions(
         onItemSelected = {
-            navigationConsumer.offer(TutorialNavActions.fromListToDetail(it.id)) // changed, previously it was TODO
+            viewModelScope.launch {
+                navigationConsumer.offer(TutorialNavActions.fromListToDetail(it.id)) // changed, previously it was TODO
+            }
         }
     )
 }
