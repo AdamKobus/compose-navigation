@@ -4,10 +4,14 @@ on:
   release:
     types: [released]
 
+env:
+  MAVEN_SNAPSHOT: false
+
 jobs:
   publish:
     name: Publish release build
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -29,9 +33,7 @@ jobs:
         run: ./gradlew :composenav:androidSourcesJar
 
       - name: Publish to MavenCentral
-        run: ./gradlew :publishReleasePublicationToSonatypeRepository --max-workers 1 :closeAndReleaseSonatypeStagingRepository
-        env:
-          MAVEN_SNAPSHOT: false
+        run: ./gradlew publishReleasePublicationToSonatypeRepository closeAndReleaseSonatypeStagingRepository --max-workers 1
 
       - name: Clean up secrets
         if: always()
