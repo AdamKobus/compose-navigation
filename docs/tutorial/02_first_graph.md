@@ -6,6 +6,18 @@ We will start by creating a `WelcomeScreen` composable and its `ViewModel` in `.
 
 > `.ui.welcome.WelcomeScreen.kt`
 ```kotlin
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
 @Composable
 fun WelcomeScreen() {
     val vm: WelcomeScreenVM = hiltViewModel()
@@ -15,7 +27,7 @@ fun WelcomeScreen() {
 @Composable
 private fun WelcomeScreenContent(interactions: WelcomeScreenInteractions = WelcomeScreenInteractions.STUB) {
     Column(
-        modifier=Modifier.padding(16.dp),
+        modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = interactions.onShowImageClicked, modifier = Modifier.fillMaxWidth()) {
@@ -42,7 +54,7 @@ class WelcomeScreenVM @Inject constructor() : ViewModel() {
         },
         onShowListClicked = {
             // TODO
-        },
+        }
     )
 }
 
@@ -67,7 +79,7 @@ To do that, create `.nav` package and put `TutorialGraph.kt` in it with followin
 
 > `.nav.TutorialGraph.kt`
 ```kotlin
-import com.adamkobus.compose.navigation.data.NavGraph
+import com.adamkobus.compose.navigation.destination.NavGraph
 
 object TutorialGraph : NavGraph("tutorialGraph") { // 1
     override fun startDestination() = Welcome // 2
@@ -80,19 +92,24 @@ object TutorialGraph : NavGraph("tutorialGraph") { // 1
 2. Graphs must have starting points. It can be either a destination or another graph
 3. We declared a new destination in the app. Ideally, every screen in your app should have its own destination declared like this
 
-You could use those definitions to declare Jetpack's navigation graph directly in `NavHost`, 
-but I recommend doing this through an extension, as it makes the `NavHost` easier to read.
+To use those destinations, we must first tell Jetpack's Navigation how to render them.
+We could do that directly in `NavHost`, but I recommend doing this through an extension, as it makes the `NavHost` less cluttered.
 
-For the graph above, an extension would look like this:
+For the graph above, the extension would look like this:
 
 > `nav.TutorialGraph.kt`
 ```kotlin
+import androidx.navigation.NavGraphBuilder
+import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.ext.composableDestination
+import com.adamkobus.compose.navigation.ext.composableNavigation
+
+(...)
+
 @ExperimentalAnimationApi // 1
 fun NavGraphBuilder.tutorialGraph() {
     composableNavigation(TutorialGraph) { // 2
-        composableDestination(TutorialGraph.Welcome) {
-            WelcomeScreen()
-        }
+        composableDestination(TutorialGraph.Welcome) { WelcomeScreen() }
     }
 }
 ```
@@ -101,20 +118,36 @@ fun NavGraphBuilder.tutorialGraph() {
 2. `composableNavigation` is a function from Compose Navigation library and it's used to define a graph inside `NavGraphBuilder`
 3. `composableDestination` is another function from Compose Navigation. It declares new destination in `NavGraphBuilder`
 
-All that's left now putting it all together in `MainActivity`. Replace the content inside your theme with:
+And now we can put it all together in `MainActivity`:
 
 > `.MainActivity.kt`
 ```kotlin
-                val navHostController = rememberAnimatedNavController() // 1.
-                NavComposable(navController = navHostController) // 2.
+import androidx.compose.animation.ExperimentalAnimationApi
+import com.adamkobus.compose.navigation.ui.NavComposable
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
-                AnimatedNavHost(
-                    navController = navHostController,
-                    startDestination = TutorialGraph.name, // 3.
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    tutorialGraph() // 4.
-                }
+@OptIn(ExperimentalAnimationApi::class)
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      setContent {
+         YourTheme {
+            val navHostController = rememberAnimatedNavController() // 1.
+            NavComposable(navController = navHostController) // 2.
+
+            AnimatedNavHost(
+               navController = navHostController,
+               startDestination = TutorialGraph.name, // 3.
+               modifier = Modifier.fillMaxSize()
+            ) {
+               tutorialGraph() // 4.
+            }
+         }
+      }
+   }
+}
 ```
 
 1. `rememberAnimatedNavController()` is part of [Accompanist Navigation Animation]

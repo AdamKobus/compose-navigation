@@ -7,22 +7,46 @@ In this step we wil actually make those buttons do stuff.
 
 Let's start by declaring two addictional screens:
 
-> `.ui.imagescreen.ImageScreen.kt`:
+> `.ui.image.ImageScreen.kt`:
 ```kotlin
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
 @Composable
 fun ImageScreen() {
     Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Icon(
             imageVector = Icons.Filled.ThumbUp,
             contentDescription = "app icon",
-            modifier = Modifier.align(Alignment.CenterEnd)
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
 ```
 
-> `.ui.imagescreen.ListScreen.kt`:
+> `.ui.list.ListScreen.kt`:
 ```kotlin
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Card
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
 @Composable
 fun ListScreen() {
     val vm: ListScreenVM = hiltViewModel()
@@ -85,15 +109,9 @@ object TutorialGraph : NavGraph("tutorialGraph") {
 @ExperimentalAnimationApi
 fun NavGraphBuilder.tutorialGraph() {
     composableNavigation(TutorialGraph) {
-        composableDestination(TutorialGraph.Welcome) {
-            WelcomeScreen()
-        }
-        composableDestination(TutorialGraph.Image) {
-            ImageScreen()
-        }
-        composableDestination(TutorialGraph.List) {
-            ListScreen()
-        }
+        composableDestination(TutorialGraph.Welcome) { WelcomeScreen() }
+        composableDestination(TutorialGraph.Image) { ImageScreen() }
+        composableDestination(TutorialGraph.List) { ListScreen() }
     }
 }
 ```
@@ -114,6 +132,10 @@ We can use it now in `WelcomeScreenVM` to perform the actual navigation:
 
 > `.ui.welcome.WelcomeScreen.kt`
 ```kotlin
+import com.adamkobus.compose.navigation.NavigationConsumer
+
+(...)
+
 @HiltViewModel
 class WelcomeScreenVM @Inject constructor(
     val navigationConsumer: NavigationConsumer // 1.
@@ -140,11 +162,11 @@ This can be prevented using `launchSingleTop = true` option like below:
 > `.nav.TutorialNavActions.kt`
 ```kotlin
 object TutorialNavActions {
-    val FromWelcomeToImage = TutorialGraph.Welcome goTo TutorialGraph.Image navigate {
-        launchSingleTop = true
+    val FromWelcomeToImage = TutorialGraph.Welcome goTo TutorialGraph.Image withOptions navActionOptions {
+        launchSingleTop
     }
-    val FromWelcomeToList = TutorialGraph.Welcome goTo TutorialGraph.List navigate {
-        launchSingleTop = true
+    val FromWelcomeToList = TutorialGraph.Welcome goTo TutorialGraph.List withOptions navActionOptions {
+        launchSingleTop
     }
 }
 ```

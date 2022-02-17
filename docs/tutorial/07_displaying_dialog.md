@@ -4,8 +4,10 @@
 
 First let's define a dialog in `DetailScreen.kt`:
 
-> `.ui.detailscreen.DetailScreen.kt`
+> `.ui.detail.DetailScreen.kt`
 ```kotlin
+import androidx.compose.material.Card
+
 @Composable
 fun DetailScreenDialog(itemId: Int) {
     Card {
@@ -17,6 +19,8 @@ fun DetailScreenDialog(itemId: Int) {
 Then we need to add a destination to `TutorialGraph`:
 > `.nav.TutorialGraph.kt`
 ```kotlin
+import com.adamkobus.compose.navigation.ext.composableDialog
+
 object TutorialGraph : NavGraph("tutorialGraph") {
     // (...)
     val DetailDialog = Detail.next { 
@@ -35,7 +39,8 @@ fun NavGraphBuilder.tutorialGraph() {
 }
 ```
 
-1. [ScreenDestination.asDialog()] will convert this destination into [DialogDestination] that can be used with `NavGraphBuilder.composableDialog`.
+1. [ScreenDestination.asDialog()] will convert this destination 
+   into [DialogDestination] that can be used with `NavGraphBuilder.composableDialog`.
 
 With destination in place, we can define new navigation action:
 > `.nav.TutorialNavActions.kt`
@@ -46,8 +51,9 @@ object TutorialNavActions {
 }
 ```
 
-And now the only thing that's left is updating `DetailScreen` by adding new button and handling it by using the action we just defined:
-> `.ui.DetailScreen.kt`
+And now the only thing that's left is updating `DetailScreen` by adding a new button 
+and handling its click by using the action we just defined:
+> `.ui.detail.DetailScreen.kt`
 ```kotlin
 @Composable
 fun DetailScreen(itemId: Int) {
@@ -81,11 +87,11 @@ data class DetailScreenInteractions(
 )
 ```
 
-At this point you should be able to launch a dialog from the `DetailScreen`
+At this point you should be able to launch a dialog from within `DetailScreen`
 
 ### [Back to tutorials list](README.md)
 
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
-[DialogDestination]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-dialog-destination/index.md
 [ScreenDestination.asDialog()]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-screen-destination/index.md
+[DialogDestination]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-dialog-destination/index.md

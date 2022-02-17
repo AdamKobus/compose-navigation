@@ -1,4 +1,4 @@
-package com.adamkobus.compose.navigation.tutorial.ui.imagescreen
+package com.adamkobus.compose.navigation.tutorial.ui.image
 
 import android.os.SystemClock
 import androidx.compose.foundation.layout.Arrangement

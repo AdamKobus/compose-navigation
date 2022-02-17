@@ -1,4 +1,4 @@
-package com.adamkobus.compose.navigation.tutorial.ui.detailscreen
+package com.adamkobus.compose.navigation.tutorial.ui.detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import com.adamkobus.compose.navigation.NavigationConsumer
+import com.adamkobus.compose.navigation.tutorial.nav.TutorialGraph
 import com.adamkobus.compose.navigation.tutorial.nav.TutorialNavActions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -48,7 +49,7 @@ class DetailScreenVM @Inject constructor(
 ) : ViewModel() {
     val interactions = DetailScreenInteractions(
         onBackClicked = {
-            navigationConsumer.offer(TutorialNavActions.FromDetailNavigateBack)
+            navigationConsumer.offer(TutorialGraph.Detail.pop())
         },
         onOpenDialogClicked = { itemId ->
             navigationConsumer.offer(TutorialNavActions.fromDetailToDialog(itemId))

@@ -1,6 +1,6 @@
 @file:Suppress("MagicNumber")
 
-package com.adamkobus.compose.navigation.tutorial.ui.listscreen
+package com.adamkobus.compose.navigation.tutorial.ui.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +50,7 @@ private fun ListElement(data: ListItemData, onItemClicked: (ListItemData) -> Uni
 
 @HiltViewModel
 class ListScreenVM @Inject constructor(
-    val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer
 ) : ViewModel() {
     val listContent = mutableStateOf(
         // will generate 50 list elements numbered from 1 to 50
