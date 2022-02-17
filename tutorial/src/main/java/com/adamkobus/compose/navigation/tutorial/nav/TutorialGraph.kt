@@ -8,10 +8,10 @@ import com.adamkobus.compose.navigation.destination.getInt
 import com.adamkobus.compose.navigation.ext.composableDestination
 import com.adamkobus.compose.navigation.ext.composableDialog
 import com.adamkobus.compose.navigation.ext.composableNavigation
-import com.adamkobus.compose.navigation.tutorial.ui.detailscreen.DetailScreen
-import com.adamkobus.compose.navigation.tutorial.ui.detailscreen.DetailScreenDialog
-import com.adamkobus.compose.navigation.tutorial.ui.imagescreen.ImageScreen
-import com.adamkobus.compose.navigation.tutorial.ui.listscreen.ListScreen
+import com.adamkobus.compose.navigation.tutorial.ui.detail.DetailScreen
+import com.adamkobus.compose.navigation.tutorial.ui.detail.DetailScreenDialog
+import com.adamkobus.compose.navigation.tutorial.ui.image.ImageScreen
+import com.adamkobus.compose.navigation.tutorial.ui.list.ListScreen
 import com.adamkobus.compose.navigation.tutorial.ui.welcome.WelcomeScreen
 
 object TutorialGraph : NavGraph("tutorialGraph") {
@@ -26,8 +26,6 @@ object TutorialGraph : NavGraph("tutorialGraph") {
     val Detail = List.next {
         param(PARAM_ITEM_ID)
     }
-
-    val Back = popDestination()
 
     val DetailDialog = Detail.next {
         path("dialog")

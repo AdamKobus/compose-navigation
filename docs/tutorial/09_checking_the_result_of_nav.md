@@ -5,10 +5,11 @@
 We used [NavigationConsumer] quite a lot so far, but we didn't touch on its blocking methods yet. 
 Those provide a way to learn the result of the navigation and block the calling coroutine until the back stack actually updates.
 
-One important thing to know is that the action is considered completed regardless how the back stack changes. 
+One important thing to know is that the action is considered as complete 
+regardless if back stack changes to the expected destination or not.
 For now at least, the sole event of back stack updating is considered a success.
 
-We will experiment with blocking methods in `ImageScreen`. We will do navigation inside the view this time, without adding a ViewModel:
+We will implement navigation inside the view this time without adding a ViewModel:
 
 > `.nav.TutorialNavActions.kt`
 ```kotlin
@@ -18,8 +19,16 @@ object TutorialNavActions {
 }
 ```
 
-> `.ui.imagescreen.ImageScreen.kt`
+> `.ui.image.ImageScreen.kt`
 ```kotlin
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import com.adamkobus.compose.navigation.ComposeNavigation
+import kotlinx.coroutines.launch
+
 @Composable
 fun ImageScreen() {
     Box(
@@ -68,7 +77,7 @@ And here is the result:
 
 ![Checking the result of nav action](assets/09_result.gif)
 
-As you can see, in case of double click, the invalid action has been rejected almost instantly. 
+As you can see, in the case of double click, the invalid action has been rejected almost instantly. 
 That's because no actual interaction with `NavHostController` happens in such case.
 
 ### [Back to tutorials list](README.md)

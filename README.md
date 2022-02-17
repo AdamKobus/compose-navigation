@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.1.18-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.1.19-SNAPSHOT"
 }
 ```
 
@@ -50,7 +50,7 @@ Just use `ComposeNavigation.getNavigationConsumer.offer(<action or intent>)`
 ### Blocking navigation methods
 
 `NavigationConsumer` has suspend versions of its `offer` methods. 
-Thanks to this, you can block your coroutine until backstack actually changes.
+Thanks to this, you can block your coroutine until back stack actually changes.
 
 ### Navigation actions and graphs definitions that are easy to read
 
@@ -62,19 +62,23 @@ object MyGraph : NavGraph("myGraph") {
   
     override fun startDestination() = Home
 
-    val Home = navDestination("home")
+    val Home = screenDestination("home")
+  
     val ImagePreview = Home.next {
         param(PARAM_IMAGE_ID)
     }
-    val Alert = navDestination("alertDialog")
-    val Back = popDestination()
+  
+    val Alert = dialogDestination("alertDialog")
 }
 
+// extension which you can later use in your o
 @ExperimentalAnimationApi
 fun NavGraphBuilder.myGraph() { 
     composableNavigation(MyGraph) {
         composableDestination(MyGraph.Home) { HomeScreen() }
-        composableDestination(MyGraph.ImagePreview) { entry -> ImagePreviewScreen(entry.getInt(PARAM_IMAGE_ID)) }
+        composableDestination(MyGraph.ImagePreview) { entry ->
+            ImagePreviewScreen(entry.getInt(PARAM_IMAGE_ID))
+        }
         composableDialog(MyGraph.Alert) { HomeAlert() }
     }
 }
@@ -82,12 +86,18 @@ fun NavGraphBuilder.myGraph() {
 
 And actions:
 ```kotlin
+// using wrapper:
 sealed class FromHome(action: NavAction) : NavActionWrapper(action) {
     class ToImagePreview(imageId: Int) : FromHome(MyGraph.Home goTo MyGraph.ImagePreview arg imageId)
     object ToAlert : FromHome(MyGraph.Home goTo MyGraph.Alert)
 }
 
-val FromImagePreviewNavigateBack = MyGraph.ImagePreview pop Back
+// or you can declare actions without NavActionWrapper like this:
+fun FromHomeToImagePreview(imageId: Int) = MyGraph.Home goTo MyGraph.ImagePreview arg imageId
+val FromHomeToAlert = MyGraph.Home goTo MyGraph.Alert
+
+// back navigation action declaration:
+val FromImagePreviewNavigateBack = MyGraph.ImagePreview.pop()
 ```
 
 ### Discarding navigation actions
@@ -96,8 +106,10 @@ With `NavActionVerifier` you can discard `NavActions` that don't meet you criter
 
 ```kotlin
 object AppNavActionVerifier : NavActionVerifier {
-    override fun isNavActionAllowed(currentDestination: CurrentDestination, action: NavAction): VerifyResult {
-        return if (currentDestination.destination == action.fromDestination) {
+  
+    // will reject an action if its origin is different from the current destination
+    override fun isNavActionAllowed(navState: NavState, action: NavAction): VerifyResult {
+        return if (state.isCurrent(action.fromDestination)) {
             VerifyResult.Allow
         } else {
             VerifyResult.Discard

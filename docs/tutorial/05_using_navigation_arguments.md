@@ -3,21 +3,30 @@
 # 5. Launching new destination with arguments
 
 In this step we will open a detail view from the `ListScreen` and pass the id of the clicked item as a launch argument 
-to the opened detail screen.
+to the new screen.
 
-Let's start by creating a new screen in `.ui.detailscreen` package:
+Let's start by creating new screen in `.ui.detail` package:
 
-> `.ui.detailscreen.DetailScreen.kt`:
+> `.ui.detail.DetailScreen.kt`:
 ```kotlin
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
 @Composable
 fun DetailScreen(itemId: Int) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(text = "Opened item with id $itemId", modifier = Modifier.align(Alignment.Center))
-    }
+   Box(
+      modifier = Modifier
+         .fillMaxSize()
+         .padding(16.dp)
+   ) {
+      Text(text = "Opened item with id $itemId", modifier = Modifier.align(Alignment.Center))
+   }
 }
 ```
 
@@ -28,6 +37,9 @@ Now we need to add a special destination for this screen to `TutorialGraph`. You
 
 > `.nav.TutorialGraph.kt`
 ```kotlin
+import com.adamkobus.compose.navigation.destination.NavStackEntry
+import com.adamkobus.compose.navigation.destination.getInt
+
 object TutorialGraph : NavGraph("tutorialGraph") {
     const val PARAM_ITEM_ID = "itemId"
 
@@ -63,7 +75,7 @@ fun NavGraphBuilder.tutorialGraph() {
 }
 ```
 
-Now all that's left is defining navigation action in `TutorialNavActions` and handling click in the `ListScreen`:
+Now all that's left is defining navigation action in `TutorialNavActions` and handling list element click in the `ListScreen`:
 
 > `.nav.TutorialNavActions.kt`
 ```kotlin
@@ -73,11 +85,11 @@ object TutorialNavActions {
 }
 ```
 
-> `.ui.listscreen.ListScreen.kt`
+> `.ui.list.ListScreen.kt`
 ```kotlin
 @HiltViewModel
 class ListScreenVM @Inject constructor(
-    val navigationConsumer: NavigationConsumer // Added
+    private val navigationConsumer: NavigationConsumer // Added
 ) : ViewModel() {
     val listContent = mutableStateOf(
         // will generate 50 list elements numbered from 1 to 50
@@ -92,7 +104,7 @@ class ListScreenVM @Inject constructor(
 
 ```
 
-And that's all. Clicking an element in the list should now open a new screen that displays the id of the list item that you clicked.
+And that's all. Clicking on a list element should open a new screen that displays the id of the list item that you clicked.
 Also notice that thanks to the verifier which we implemented in the [previous step](04_nav_verifier.md) it's not possible 
 to open multiple detail screens by pressing and releasing multiple list elements at once. 
 
