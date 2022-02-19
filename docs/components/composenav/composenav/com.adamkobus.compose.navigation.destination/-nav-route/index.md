@@ -3,7 +3,7 @@
 # NavRoute
 
 [androidJvm]\
-data class [NavRoute](index.md)(parts: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[NavRoutePart](../-nav-route-part/index.md)&gt;, separator: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))
+data class [NavRoute](index.md)(parts: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[NavRoutePart](../-nav-route-part/index.md)&gt;)
 
 Creates a definition of a route representing a destination in your application.
 
@@ -14,13 +14,12 @@ androidJvm
 | | |
 |---|---|
 | parts | Initial parts |
-| separator | By default, Compose Navigation uses "/" as separator. Custom ones were not tested yet. |
 
 ## Constructors
 
 | | |
 |---|---|
-| [NavRoute](-nav-route.md) | [androidJvm]<br>fun [NavRoute](-nav-route.md)(parts: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[NavRoutePart](../-nav-route-part/index.md)&gt;, separator: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) |
+| [NavRoute](-nav-route.md) | [androidJvm]<br>fun [NavRoute](-nav-route.md)(parts: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[NavRoutePart](../-nav-route-part/index.md)&gt;) |
 
 ## Types
 

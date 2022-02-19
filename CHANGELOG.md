@@ -7,6 +7,7 @@
 ### Changes
 
 - Added `NavDestination.popUpTo` which is equivalent of `NavHostController.popBackStack(route, saveState, inclusive)`
+- `NavRoute` and `NavRouteBuilder` no longer accept custom path separators. Separator is now hardcoded to '/'
 
 # 0.2.0
 
