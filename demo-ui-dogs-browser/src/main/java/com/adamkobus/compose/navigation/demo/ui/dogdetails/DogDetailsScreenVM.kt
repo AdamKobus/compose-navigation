@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adamkobus.android.vm.ViewParam
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
@@ -20,7 +21,7 @@ import com.adamkobus.compose.navigation.democore.model.DogsSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ class DogDetailsScreenVM @Inject constructor(
 ) : ViewModel(), LifecycleEventObserver {
 
     private var dogInfoRefreshJob: Job? = null
-    private val dogId = MutableStateFlow<Int?>(null)
+    val dogId = ViewParam<Int>()
     private val _screenState = mutableStateOf<DogDetailsState>(DogDetailsState.Loading)
     val screenState: State<DogDetailsState> = _screenState
 
@@ -46,15 +47,17 @@ class DogDetailsScreenVM @Inject constructor(
             viewModelScope.launch {
                 navigationConsumer.offer(FromDogDetails.ToDemoDialog)
             }
+        },
+        onOpenGalleryClicked = {
+            viewModelScope.launch {
+                val id = dogId.observe().first()
+                navigationConsumer.offer(FromDogDetails.ToGallery(id))
+            }
         }
     )
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         event.onStartStop(onStart = ::onStart, onStop = ::onStop)
-    }
-
-    fun bindDogId(id: Int) {
-        dogId.value = id
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

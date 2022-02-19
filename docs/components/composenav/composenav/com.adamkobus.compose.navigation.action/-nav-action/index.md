@@ -44,3 +44,4 @@ androidJvm
 |---|
 | [NavigateAction](../-navigate-action/index.md) |
 | [PopAction](../-pop-action/index.md) |
+| [PopUpToAction](../-pop-up-to-action/index.md) |

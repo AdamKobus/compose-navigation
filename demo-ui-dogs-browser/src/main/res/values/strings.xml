@@ -7,8 +7,13 @@
     <string name="dog_details_title">Dog Details</string>
     <string name="dog_details_error">Failed to load dog details</string>
     <string name="dog_details_open_dialog_button">Open Alert Dialog</string>
+    <string name="dog_details_open_gallery_button">Open Gallery</string>
 
     <!-- DemoDialog -->
     <string name="demo_dialog_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </string>
     <string name="demo_dialog_close">I understand</string>
+    
+    <!-- DogGalleryScreen -->
+    <string name="dog_gallery_title">Dog Gallery</string>
+    <string name="dog_gallery_back_to_list_button">Back to Dogs List</string>
 </resources>

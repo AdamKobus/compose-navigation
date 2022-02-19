@@ -6,7 +6,7 @@
 
 ### Changes
 
-
+- Added `NavDestination.popUpTo` which is equivalent of `NavHostController.popBackStack(route, saveState, inclusive)`
 
 # 0.2.0
 

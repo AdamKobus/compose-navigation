@@ -84,6 +84,11 @@ class DemoTabsNavigationVM @Inject constructor(
 
     companion object {
         private val CATS_DESTINATIONS = listOf(CatsBrowserGraph.CatsList, CatsBrowserGraph.CatDetails)
-        private val DOGS_DESTINATIONS = listOf(DogsBrowserGraph.DogDetails, DogsBrowserGraph.DogsList, DogsBrowserGraph.DemoDialog)
+        private val DOGS_DESTINATIONS = listOf(
+            DogsBrowserGraph.DogDetails,
+            DogsBrowserGraph.DogsList,
+            DogsBrowserGraph.DemoDialog,
+            DogsBrowserGraph.DogGallery
+        )
     }
 }

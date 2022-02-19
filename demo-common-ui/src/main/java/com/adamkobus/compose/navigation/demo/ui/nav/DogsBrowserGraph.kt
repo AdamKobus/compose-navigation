@@ -15,7 +15,9 @@ object DogsBrowserGraph : NavGraph("dogs") {
         param(PARAM_DOG_ID)
     }
     val DemoDialog = dialogDestination("demoDialog")
-    val Back = popDestination()
+    val DogGallery = DogDetails.next {
+        path("gallery")
+    }
 }
 
 fun NavStackEntry?.dogId() = getInt(DogsBrowserGraph.PARAM_DOG_ID)

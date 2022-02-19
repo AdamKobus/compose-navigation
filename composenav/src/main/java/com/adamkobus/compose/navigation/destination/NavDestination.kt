@@ -1,7 +1,9 @@
 package com.adamkobus.compose.navigation.destination
 
+import com.adamkobus.compose.navigation.action.NavOptions
 import com.adamkobus.compose.navigation.action.NavigateAction
 import com.adamkobus.compose.navigation.action.PopAction
+import com.adamkobus.compose.navigation.action.PopUpToAction
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.navIntent
 
@@ -29,6 +31,17 @@ interface NavDestination : INavDestination {
      * @param other will be used as target destination of created [PopAction]
      */
     infix fun pop(other: PopDestination): PopAction = PopAction(this, other)
+
+    /**
+     * Creates [PopUpToAction]
+     *
+     * @param destination Destination to which the back stack will be popped
+     * @param inclusive if true then [destination] will be removed from back stack as well.
+     * @param saveState if true then popped destinations' state will be saved and it will be possible to restore it later
+     * by navigating to any of them with [NavOptions.restoreState] set to true
+     */
+    fun popUpTo(destination: NavDestination, inclusive: Boolean = false, saveState: Boolean = false): PopUpToAction =
+        PopUpToAction(this, destination, inclusive = inclusive, saveState = saveState)
 
     /**
      * Creates [NavigateAction] that originates from this [NavDestination] and targets [other].

@@ -55,6 +55,7 @@ sealed class FromDogsList(action: NavAction) : NavActionWrapper(action) {
 sealed class FromDogDetails(action: NavAction) : NavActionWrapper(action) {
     object Back : FromDogDetails(DogsBrowserGraph.DogDetails.pop())
     object ToDemoDialog : FromDogDetails(DogsBrowserGraph.DogDetails goTo DogsBrowserGraph.DemoDialog)
+    class ToGallery(dogId: Int) : FromDogDetails(DogsBrowserGraph.DogDetails goTo DogsBrowserGraph.DogGallery arg dogId)
 }
 
 sealed class FromDemoDialog(action: NavAction) : NavActionWrapper(action) {
@@ -63,4 +64,8 @@ sealed class FromDemoDialog(action: NavAction) : NavActionWrapper(action) {
 
 sealed class FromSettingsHome(action: NavAction) : NavActionWrapper(action) {
     object Back : FromSettingsHome(SettingsGraph.SettingsHome.pop())
+}
+
+sealed class FromDogsGallery(action: NavAction) : NavActionWrapper(action) {
+    object ToList : FromDogsGallery(DogsBrowserGraph.DogGallery.popUpTo(DogsBrowserGraph.DogsList))
 }

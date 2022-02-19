@@ -7,7 +7,7 @@ internal sealed class PendingActionState {
 
     object Missing : PendingActionState()
 
-    class Present(val action: NavAction, private val completable: CompletableDeferred<Unit>) : PendingActionState() {
+    class Present(val action: NavAction, private val completable: CompletableDeferred<Boolean>) : PendingActionState() {
         override fun equals(other: Any?): Boolean {
             return other is Present && other.action == action
         }
@@ -16,8 +16,8 @@ internal sealed class PendingActionState {
             return action.hashCode()
         }
 
-        fun complete() {
-            completable.complete(Unit)
+        fun complete(backStackModified: Boolean) {
+            completable.complete(backStackModified)
         }
     }
 }

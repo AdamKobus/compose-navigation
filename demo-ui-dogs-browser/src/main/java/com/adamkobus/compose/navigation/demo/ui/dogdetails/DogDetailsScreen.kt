@@ -26,8 +26,8 @@ import com.adamkobus.compose.navigation.democore.data.DogInfo
 @Composable
 fun DogDetailsScreen(dogId: Int) {
     val vm = hiltViewModel<DogDetailsScreenVM>()
-    vm.bindDogId(dogId)
     LifecycleAwareComponent(observer = vm)
+    vm.dogId.bind(dogId)
     val screenState = vm.screenState.value
     val interactions = vm.interactions
     DogDetailsScreenContent(screenState, interactions)
@@ -38,19 +38,23 @@ private fun DogDetailsScreenContent(screenState: DogDetailsState, interactions: 
     DemoAppBackground(usesTopBar = true) {
         when (screenState) {
             is DogDetailsState.Loading -> LoadingScreen()
-            is DogDetailsState.Loaded -> DogDetails(screenState.dogInfo, interactions.onOpenDialogClicked)
+            is DogDetailsState.Loaded -> DogDetails(screenState.dogInfo, interactions)
             is DogDetailsState.Error -> DogError()
         }
     }
 }
 
 @Composable
-private fun DogDetails(dogInfo: DogInfo, onOpenDialogClicked: () -> Unit) {
+private fun DogDetails(dogInfo: DogInfo, interactions: DogDetailsScreenInteractions) {
     Column(modifier = Modifier.padding(Paddings.Screen)) {
         Text(text = dogInfo.name, style = MaterialTheme.typography.h2)
         Spacer(modifier = Modifier.height(60.dp))
-        Button(onClick = onOpenDialogClicked, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = interactions.onOpenDialogClicked, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(id = R.string.dog_details_open_dialog_button))
+        }
+        Spacer(modifier = Modifier.height(60.dp))
+        Button(onClick = interactions.onOpenGalleryClicked, modifier = Modifier.fillMaxWidth()) {
+            Text(text = stringResource(id = R.string.dog_details_open_gallery_button))
         }
     }
 }

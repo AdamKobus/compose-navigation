@@ -101,19 +101,24 @@ internal class NavigationProcessor {
             return NavigationResult.Discarded(DiscardReason.RejectedByVerifier(rejectingVerifier))
         }
         onActionPerformed = CompletableDeferred()
-        if (actionDispatcher.dispatchAction(action = action)) {
+        return if (actionDispatcher.dispatchAction(action = action)) {
             logger.v("Action delivered: $action")
             onActionPerformed?.await()
             logger.v("Stopped processing: $action")
-            return NavigationResult.Accepted
+            NavigationResult.Accepted
         } else {
             logger.w("Failed to deliver action: $action")
-            return NavigationResult.Discarded(DiscardReason.NotDelivered)
+            NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
     }
 
     fun onBackStackEntryUpdated(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
         destinationManager.onBackStackUpdated(entry, backQueue)
+        onActionPerformed?.complete(Unit)
+        onActionPerformed = null
+    }
+
+    fun onActionCompletedWithoutBackStackUpdate() {
         onActionPerformed?.complete(Unit)
         onActionPerformed = null
     }

@@ -16,8 +16,8 @@ class PopAction(
     /**
      * Calls [NavHostController.popBackStack]
      */
-    override fun navigate(controller: NavHostController) {
-        controller.popBackStack()
+    override fun navigate(controller: NavHostController): Boolean {
+        return controller.popBackStack()
     }
 
     /**
