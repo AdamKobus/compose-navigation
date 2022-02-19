@@ -3,7 +3,6 @@ package com.adamkobus.compose.navigation.demo.ui.catslist
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -43,7 +42,7 @@ private fun CatsListContent(data: List<CatInfo>, onCatListItemSelected: (CatInfo
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
+        contentPadding = Paddings.ScreenWithTabHostInsets
     ) {
         items(data, key = { it.id }) { catInfo ->
             CatListItem(catInfo = catInfo, onCatListItemSelected)
@@ -56,7 +55,6 @@ private fun CatListItem(catInfo: CatInfo, onCatListItemSelected: (CatInfo) -> Un
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Paddings.Screen)
             .clickable {
                 onCatListItemSelected(catInfo)
             },

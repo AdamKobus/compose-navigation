@@ -14,12 +14,38 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.dialog
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.destination.DialogDestination
-import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavGraph
 import com.adamkobus.compose.navigation.destination.NavStackEntry
+import com.adamkobus.compose.navigation.destination.ScreenDestination
 import com.adamkobus.compose.navigation.model.toNavStackEntry
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
+
+/**
+ * @see [navigation]
+ */
+@Suppress("LongParameterList")
+@ExperimentalAnimationApi
+fun NavGraphBuilder.composableNavigation(
+    graph: NavGraph,
+    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
+    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
+    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
+    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
+    builder: NavGraphBuilder.() -> Unit
+) {
+    ComposeNavigation.getNavDestinationManager().addToKnownDestinations(graph)
+
+    navigation(
+        route = graph.serializedRoute,
+        startDestination = graph.startDestination().route.buildRoute(),
+        enterTransition = enterTransition,
+        exitTransition = exitTransition,
+        popEnterTransition = popEnterTransition,
+        popExitTransition = popExitTransition,
+        builder = builder
+    )
+}
 
 /**
  * @see [composable]
@@ -27,7 +53,7 @@ import com.google.accompanist.navigation.animation.navigation
 @Suppress("LongParameterList")
 @ExperimentalAnimationApi
 fun NavGraphBuilder.composableDestination(
-    destination: INavDestination,
+    destination: ScreenDestination,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
@@ -49,32 +75,6 @@ fun NavGraphBuilder.composableDestination(
         content = { backStackEntry ->
             content(backStackEntry.toNavStackEntry())
         }
-    )
-}
-
-/**
- * @see [navigation]
- */
-@Suppress("LongParameterList")
-@ExperimentalAnimationApi
-fun NavGraphBuilder.composableNavigation(
-    graph: NavGraph,
-    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
-    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    builder: NavGraphBuilder.() -> Unit
-) {
-    ComposeNavigation.getNavDestinationManager().addToKnownDestinations(graph)
-
-    navigation(
-        route = graph.name,
-        startDestination = graph.startDestination().route.buildRoute(),
-        enterTransition = enterTransition,
-        exitTransition = exitTransition,
-        popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-        builder = builder
     )
 }
 

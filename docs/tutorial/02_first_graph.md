@@ -123,8 +123,7 @@ And now we can put it all together in `MainActivity`:
 > `.MainActivity.kt`
 ```kotlin
 import androidx.compose.animation.ExperimentalAnimationApi
-import com.adamkobus.compose.navigation.ui.NavComposable
-import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.adamkobus.compose.navigation.ComposeNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -134,27 +133,24 @@ class MainActivity : ComponentActivity() {
       super.onCreate(savedInstanceState)
       setContent {
          YourTheme {
-            val navHostController = rememberAnimatedNavController() // 1.
-            NavComposable(navController = navHostController) // 2.
-
-            AnimatedNavHost(
-               navController = navHostController,
-               startDestination = TutorialGraph.name, // 3.
+            val controller = rememberAnimatedNavController() // 1
+            ComposeNavHost( // 2
+               startGraph = TutorialGraph, // 3
+               controller = controller,
                modifier = Modifier.fillMaxSize()
             ) {
-               tutorialGraph() // 4.
+               tutorialGraph() // 4
             }
          }
       }
    }
 }
 ```
-
 1. `rememberAnimatedNavController()` is part of [Accompanist Navigation Animation]
-2. This is a component from Compose Navigation library. 
-   Its purpose is to consume pending navigation actions and deliver them to `navHostController`
-3. startDestination of controller determines where the user will land at the application launch. 
-4. We're using the extension we wrote earlier to declare a navigation graph inside `NavHost`
+2. [ComposeNavHost] is a Composable from Compose Navigation Library which is  a wrapper 
+   for AnimatedNavHost from [Accompanist Navigation Animation]. It takes care of configuring [NavComposable] inside it.
+3. startGraph determines where will the user land at the application launch. 
+4. We're using the extension we wrote earlier to build navigation graph
 
 Now just launch the app and marvel at the beauty of what we created:
 

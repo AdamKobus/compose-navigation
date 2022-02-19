@@ -2,7 +2,7 @@ package com.adamkobus.compose.navigation.model
 
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.action.NavAction
-import com.adamkobus.compose.navigation.destination.NavGraph
+import com.adamkobus.compose.navigation.logger.NavLogger
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -16,18 +16,22 @@ internal class PendingActionDispatcher {
         get() = ComposeNavigation.getMainDispatcher()
     private val consumers = mutableListOf<PendingActionConsumer>()
 
-    fun register(owner: Any, graphs: List<NavGraph>): Flow<NavAction> {
+    private val logger: NavLogger
+        get() = ComposeNavigation.getLogger()
+
+    fun register(actionConsumer: ActionConsumer): Flow<NavAction> {
         synchronized(consumers) {
-            if (consumers.any { it.owner == owner }) {
-                throw IllegalStateException("$owner is already a registered pending nav action consumer")
+            consumers.find { it.owner == actionConsumer }?.let {
+                logger.w("Registering action consumer that is already registered: $actionConsumer")
+                return it.consumerFlow
             }
             val flow = MutableSharedFlow<NavAction>()
-            consumers.add(0, PendingActionConsumer(owner, graphs, flow, CoroutineScope(dispatcher + SupervisorJob())))
+            consumers.add(0, PendingActionConsumer(actionConsumer, flow, CoroutineScope(dispatcher + SupervisorJob())))
             return flow
         }
     }
 
-    fun unregister(owner: Any) {
+    fun unregister(owner: ActionConsumer) {
         synchronized(consumers) {
             consumers.find { it.owner == owner }?.let {
                 it.scope.cancel()
@@ -37,23 +41,34 @@ internal class PendingActionDispatcher {
     }
 
     suspend fun dispatchAction(action: NavAction): Boolean {
+        val localConsumers = synchronized(consumers) {
+            consumers.toList()
+        }
+        localConsumers.forEach {
+            it.owner.awaitUntilReady()
+        }
         val consumer = synchronized(consumers) {
-            consumers.find { it.graphs.isEmpty() || it.graphs.contains(action.fromDestination.graph) }
+            consumers.find {
+                it.owner.supportedGraphsRoutes.isEmpty() ||
+                    it.owner.supportedGraphsRoutes.contains(action.fromDestination.graph.route.buildRoute())
+            }
         }
         var ret = false
         consumer?.let {
             withContext(it.scope.coroutineContext) {
+                logger.v("Action $action was delivered to ${it.owner}")
                 it.consumerFlow.emit(action)
                 ret = true
             }
+        } ?: run {
+            logger.w("Found no NavComposable that could accept $action")
         }
         return ret
     }
 }
 
 private data class PendingActionConsumer(
-    val owner: Any,
-    val graphs: List<NavGraph>,
+    val owner: ActionConsumer,
     val consumerFlow: MutableSharedFlow<NavAction>,
     val scope: CoroutineScope
 )

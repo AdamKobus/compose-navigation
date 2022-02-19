@@ -24,6 +24,8 @@ abstract class NavGraph internal constructor(
      */
     override val route: NavRoute = navRoute(name, reservedNamesCheck = reservedNameCheck)
 
+    internal val serializedRoute: String by lazy { graph.route.buildRoute() }
+
     /**
      * Each graph must have a start destination which NavHostController will try to display when you navigate to this graph.
      * It's ok to have another graph as start destination, but eventually one of the graphs should return [ScreenDestination].
