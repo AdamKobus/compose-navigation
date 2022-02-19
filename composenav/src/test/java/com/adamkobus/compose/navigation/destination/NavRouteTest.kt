@@ -49,20 +49,6 @@ class NavRouteTest {
     }
 
     @Test
-    fun `GIVEN route with custom separator WHEN buildRoute THEN custom separator is used`() {
-        // given
-        val testSubject = navRoute("testGraph", "testPath") {
-            separator = "-"
-        }
-
-        // when
-        val obtained = testSubject.buildRoute()
-
-        // then
-        assertEquals("testGraph-testPath", obtained)
-    }
-
-    @Test
     fun `GIVEN route without params WHEN buildPath THEN proper path is returned`() {
         // given
         val testSubject = navRoute("testGraph", "testPath")

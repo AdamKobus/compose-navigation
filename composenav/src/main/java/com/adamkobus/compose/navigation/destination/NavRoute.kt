@@ -4,11 +4,9 @@ package com.adamkobus.compose.navigation.destination
  * Creates a definition of a route representing a destination in your application.
  *
  * @param parts Initial parts
- * @param separator By default, Compose Navigation uses "/" as separator. Custom ones were not tested yet.
  */
 data class NavRoute constructor(
-    private val parts: List<NavRoutePart>,
-    private val separator: String
+    private val parts: List<NavRoutePart>
 ) {
 
     private val paramsCount: Int by lazy { parts.count { it is NavRoutePart.Param } }
@@ -25,7 +23,7 @@ data class NavRoute constructor(
      * @return route definition that can be later used with TODO refer class from Jetpack navigation
      */
     fun buildRoute(): String {
-        return parts.joinToString(separator = separator)
+        return parts.joinToString(separator = PART_SEPARATOR)
     }
 
     /**
@@ -45,7 +43,7 @@ data class NavRoute constructor(
             throw IllegalArgumentException("Wrong number of params, expected $paramsCount but got ${params.size} | $params")
         }
         var currentParamIndex = 0
-        return parts.joinToString(separator = separator) {
+        return parts.joinToString(separator = PART_SEPARATOR) {
             when (it) {
                 is NavRoutePart.GraphName -> it.name
                 is NavRoutePart.Path -> it.name
@@ -71,11 +69,6 @@ data class NavRoute constructor(
      */
     class Builder internal constructor(initialParts: List<NavRoutePart>, private val reservedNamesCheck: Boolean) {
         private val parts = initialParts.toMutableList()
-
-        /**
-         * Separator which will be used when joining the parts of the route into String representation.
-         */
-        var separator = PART_SEPARATOR
 
         /**
          * Initializes the builder with a list of initial route parts.
@@ -148,7 +141,7 @@ data class NavRoute constructor(
          */
         fun build(): NavRoute {
             ensureGraphNameAdded()
-            return NavRoute(parts = parts, separator = separator)
+            return NavRoute(parts = parts)
         }
     }
 

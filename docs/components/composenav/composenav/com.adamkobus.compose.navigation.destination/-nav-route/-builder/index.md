@@ -15,12 +15,6 @@ A builder for [NavRoute](../index.md)
 | [Builder](-builder.md) | [androidJvm]<br>fun [Builder](-builder.md)(graphName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))<br>Initializes the builder with single path part representing the graph's name |
 | [Builder](-builder.md) | [androidJvm]<br>fun [Builder](-builder.md)(graphName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), pathName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))<br>Initializes the builder with two parts: graph's name and static path. |
 
-## Properties
-
-| Name | Summary |
-|---|---|
-| [separator](separator.md) | [androidJvm]<br>var [separator](separator.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Separator which will be used when joining the parts of the route into String representation. |
-
 ## Functions
 
 | Name | Summary |
