@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.random.Random
 
 @Singleton
 class DogsSource @Inject constructor() {
@@ -19,11 +18,7 @@ class DogsSource @Inject constructor() {
 
     suspend fun getDog(id: Int): DogInfo? {
         delay(MOCK_DELAY)
-        if (Random.nextBoolean()) {
-            return data.value.find { it.id == id }
-        } else {
-            throw IllegalStateException("Failed to load cat info for id $id")
-        }
+        return data.value.find { it.id == id }
     }
 
     private fun createData() =

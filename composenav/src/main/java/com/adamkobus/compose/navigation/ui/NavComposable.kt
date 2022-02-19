@@ -19,17 +19,17 @@ fun NavComposable(
     vararg observedGraphs: NavGraph
 ) {
     val vm: NavComposableVM = viewModel()
+    val currentBackStackEntry = navController.currentBackStackEntryAsState()
     LifecycleAwareComponent(vm)
     vm.graphsParam.bind(observedGraphs.toList())
 
     val pendingAction = vm.pendingActionState.value
     LaunchedEffect(key1 = pendingAction) {
         if (pendingAction is PendingActionState.Present) {
-            pendingAction.action.navigate(navController)
-            pendingAction.complete()
+            val backStackModifier = pendingAction.action.navigate(navController)
+            pendingAction.complete(backStackModifier)
         }
     }
-    val currentBackStackEntry = navController.currentBackStackEntryAsState()
     LaunchedEffect(key1 = currentBackStackEntry.value) {
         vm.processBackStackEntry(currentBackStackEntry.value, navController.backQueue)
     }

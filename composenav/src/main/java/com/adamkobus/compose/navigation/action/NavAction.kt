@@ -47,5 +47,5 @@ abstract class NavAction(
     /**
      * This method is used to perform actual navigation
      */
-    internal abstract fun navigate(controller: NavHostController)
+    internal abstract fun navigate(controller: NavHostController): Boolean
 }

@@ -57,10 +57,11 @@ class NavigateAction(
             options = param
         )
 
-    override fun navigate(controller: NavHostController) {
+    override fun navigate(controller: NavHostController): Boolean {
         options?.let { builder ->
             controller.navigate(toDestination.route.buildPath(params), navOptions = options.toAndroidNavOptions())
         } ?: controller.navigate(toDestination.route.buildPath(params))
+        return true
     }
 
     /**

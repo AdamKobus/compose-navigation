@@ -28,9 +28,12 @@ internal class NavComposableVM : LifecycleAwareViewModel() {
                 graphsParam.observe().flatMapLatest {
                     register(it)
                 }.collect {
-                    val completable = CompletableDeferred<Unit>()
+                    val completable = CompletableDeferred<Boolean>()
                     pendingActionState.value = PendingActionState.Present(it, completable)
-                    completable.await()
+                    val backStackModified = completable.await()
+                    if (!backStackModified) {
+                        navigationProcessor.onActionCompletedWithoutBackStackUpdate()
+                    }
                     pendingActionState.value = PendingActionState.Missing
                 }
             }
