@@ -6,7 +6,6 @@ import com.adamkobus.compose.navigation.action.DiscardReason
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.action.NavigationResult
 import com.adamkobus.compose.navigation.destination.GlobalGraph
-import com.adamkobus.compose.navigation.destination.NavGraph
 import com.adamkobus.compose.navigation.destination.NavState
 import com.adamkobus.compose.navigation.intent.NavIntent
 import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
@@ -52,9 +51,9 @@ internal class NavigationProcessor {
         }
     }
 
-    fun register(graphsOwner: Any, graphs: List<NavGraph>): Flow<NavAction> = actionDispatcher.register(graphsOwner, graphs)
+    fun register(actionConsumer: ActionConsumer): Flow<NavAction> = actionDispatcher.register(actionConsumer)
 
-    fun unregister(graphsOwner: Any) = actionDispatcher.unregister(graphsOwner)
+    fun unregister(actionConsumer: ActionConsumer) = actionDispatcher.unregister(actionConsumer)
 
     fun postNavAction(navAction: NavAction, onTaskCompleted: CompletableDeferred<NavigationResult>? = null) {
         scope.launch {

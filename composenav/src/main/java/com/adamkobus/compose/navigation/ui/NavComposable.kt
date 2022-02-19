@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.adamkobus.compose.navigation.destination.NavGraph
 
 /**
  * This components acts as a bridge between the owner of [navController] and the navigation state model.
@@ -16,12 +15,12 @@ import com.adamkobus.compose.navigation.destination.NavGraph
 @Composable
 fun NavComposable(
     navController: NavHostController,
-    vararg observedGraphs: NavGraph
+    observedGraphs: List<String> = emptyList()
 ) {
     val vm: NavComposableVM = viewModel()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     LifecycleAwareComponent(vm)
-    vm.graphsParam.bind(observedGraphs.toList())
+    vm.graphsRoutesParam.bind(observedGraphs)
 
     val pendingAction = vm.pendingActionState.value
     LaunchedEffect(key1 = pendingAction) {

@@ -6,27 +6,24 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import com.adamkobus.compose.navigation.ComposeNavHost
 import com.adamkobus.compose.navigation.tutorial.nav.TutorialGraph
 import com.adamkobus.compose.navigation.tutorial.nav.tutorialGraph
 import com.adamkobus.compose.navigation.tutorial.ui.theme.ComposeNavigationTutorialTheme
-import com.adamkobus.compose.navigation.ui.NavComposable
-import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 
+@OptIn(ExperimentalAnimationApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeNavigationTutorialTheme {
-                val navHostController = rememberAnimatedNavController()
-                NavComposable(navController = navHostController)
-
-                AnimatedNavHost(
-                    navController = navHostController,
-                    startDestination = TutorialGraph.name,
+                val controller = rememberAnimatedNavController()
+                ComposeNavHost(
+                    startGraph = TutorialGraph,
+                    controller = controller,
                     modifier = Modifier.fillMaxSize()
                 ) {
                     tutorialGraph()

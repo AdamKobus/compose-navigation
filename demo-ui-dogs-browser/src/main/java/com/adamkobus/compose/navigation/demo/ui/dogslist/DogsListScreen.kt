@@ -3,7 +3,6 @@ package com.adamkobus.compose.navigation.demo.ui.dogslist
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,7 +43,7 @@ private fun DogsListContent(data: List<DogInfo>, onDogsItemSelected: (DogInfo) -
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
+        contentPadding = Paddings.ScreenWithTabHostInsets
     ) {
         items(data, key = { it.id }) { dogInfo ->
             DogListItem(dogInfo = dogInfo, onDogsItemSelected)
@@ -57,7 +56,6 @@ private fun DogListItem(dogInfo: DogInfo, onDogsItemSelected: (DogInfo) -> Unit)
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Paddings.Screen)
             .clickable {
                 onDogsItemSelected(dogInfo)
             },
