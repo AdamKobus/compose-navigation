@@ -8,8 +8,10 @@ import com.adamkobus.compose.navigation.intent.NavIntentResolvingManager
 import com.adamkobus.compose.navigation.logger.NavLogLevel
 import com.adamkobus.compose.navigation.logger.NavLogger
 import com.adamkobus.compose.navigation.logger.NavLoggerImpl
-import com.adamkobus.compose.navigation.model.NavDestinationManager
+import com.adamkobus.compose.navigation.model.KnownDestinationsSource
 import com.adamkobus.compose.navigation.model.NavGatekeeper
+import com.adamkobus.compose.navigation.model.NavHostComponents
+import com.adamkobus.compose.navigation.model.NavStateManager
 import com.adamkobus.compose.navigation.model.NavigationConsumerImpl
 import com.adamkobus.compose.navigation.model.NavigationProcessor
 import com.adamkobus.compose.navigation.model.PendingActionDispatcher
@@ -50,15 +52,16 @@ object ComposeNavigation {
     private var logLevel = Log.ERROR
 
     private var navLogger: NavLogger = DEFAULT_LOGGER
-    private val destinationManager = NavDestinationManager()
     private val reservedNames = ReservedNamesHandler()
     private val navIntentResolvingManager = NavIntentResolvingManager()
     private val navGatekeeper = NavGatekeeper()
     private var mainDispatcher: CoroutineDispatcher = Dispatchers.Main
 
     private val pendingActionDispatcher = PendingActionDispatcher()
-    private val navigationProcessor = NavigationProcessor()
     private val navigationConsumer: NavigationConsumer = NavigationConsumerImpl()
+    private val knownDestinationsSource = KnownDestinationsSource()
+
+    private val components = mutableListOf<NavHostComponents>()
 
     init {
         reset()
@@ -150,10 +153,12 @@ object ComposeNavigation {
     }
 
     /**
+     * @param navigationId an id of [ComposeNavHost] state of which you want to access.
+     *
      * @return [NavigationStateSource] managed by [ComposeNavigation]
      */
-    fun getNavigationStateSource(): NavigationStateSource {
-        return destinationManager
+    fun getNavigationStateSource(navigationId: NavigationId): NavigationStateSource {
+        return getNavDestinationManager(navigationId)
     }
 
     /**
@@ -181,8 +186,8 @@ object ComposeNavigation {
         return navigationConsumer
     }
 
-    internal fun getNavDestinationManager(): NavDestinationManager {
-        return destinationManager
+    internal fun getNavDestinationManager(navigationId: NavigationId): NavStateManager {
+        return getComponentsFor(navigationId).destinationManager
     }
 
     internal fun getReservedNamesHandler(): ReservedNamesHandler = reservedNames
@@ -195,5 +200,23 @@ object ComposeNavigation {
 
     internal fun getPendingActionDispatcher() = pendingActionDispatcher
 
-    internal fun getNavigationProcessor() = navigationProcessor
+    internal fun getNavigationProcessor(navigationId: NavigationId) = getComponentsFor(navigationId).navigationProcessor
+
+    internal fun getKnownDestinationsSource() = knownDestinationsSource
+
+    internal fun getAllNavProcessors(): List<NavigationProcessor> {
+        synchronized(components) {
+            return components.map { it.navigationProcessor }
+        }
+    }
+
+    private fun getComponentsFor(navigationId: NavigationId): NavHostComponents {
+        synchronized(components) {
+            return components.find { it.navigationId == navigationId } ?: run {
+                val newComponent = NavHostComponents(navigationId)
+                components.add(newComponent)
+                newComponent
+            }
+        }
+    }
 }

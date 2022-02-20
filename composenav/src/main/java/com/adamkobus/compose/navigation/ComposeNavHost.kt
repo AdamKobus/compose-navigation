@@ -31,6 +31,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 fun ComposeNavHost(
     startGraph: NavGraph,
     controller: NavHostController,
+    navigationId: NavigationId,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.Center,
     enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition) =
@@ -42,7 +43,7 @@ fun ComposeNavHost(
     builder: NavGraphBuilder.() -> Unit
 ) {
     val graphRoutes = remember { NavGraphNamesExtractor.extractGraphNames(controller, startGraph.serializedRoute, builder) }
-    NavComposable(navController = controller, observedGraphs = graphRoutes)
+    NavComposable(navController = controller, navigationId = navigationId, observedGraphs = graphRoutes)
     AnimatedNavHost(
         navController = controller,
         startDestination = startGraph.serializedRoute,

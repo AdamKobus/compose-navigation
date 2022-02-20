@@ -7,6 +7,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import com.adamkobus.compose.navigation.ComposeNavHost
+import com.adamkobus.compose.navigation.NavigationId
 import com.adamkobus.compose.navigation.tutorial.nav.TutorialGraph
 import com.adamkobus.compose.navigation.tutorial.nav.tutorialGraph
 import com.adamkobus.compose.navigation.tutorial.ui.theme.ComposeNavigationTutorialTheme
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
                 ComposeNavHost(
                     startGraph = TutorialGraph,
                     controller = controller,
+                    navigationId = NavigationId.DEFAULT,
                     modifier = Modifier.fillMaxSize()
                 ) {
                     tutorialGraph()

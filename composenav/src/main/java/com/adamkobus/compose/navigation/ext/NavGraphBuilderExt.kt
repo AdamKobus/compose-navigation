@@ -34,7 +34,7 @@ fun NavGraphBuilder.composableNavigation(
     popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     builder: NavGraphBuilder.() -> Unit
 ) {
-    ComposeNavigation.getNavDestinationManager().addToKnownDestinations(graph)
+    ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(graph)
 
     navigation(
         route = graph.serializedRoute,
@@ -62,7 +62,7 @@ fun NavGraphBuilder.composableDestination(
     popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
     content: @Composable AnimatedVisibilityScope.(NavStackEntry?) -> Unit
 ) {
-    ComposeNavigation.getNavDestinationManager().addToKnownDestinations(destination)
+    ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(destination)
 
     composable(
         destination.route.buildRoute(),
