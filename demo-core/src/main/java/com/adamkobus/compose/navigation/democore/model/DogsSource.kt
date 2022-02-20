@@ -16,16 +16,16 @@ class DogsSource @Inject constructor() {
         return data
     }
 
-    suspend fun getDog(id: Int): DogInfo? {
+    suspend fun getDog(id: Int): DogInfo {
         delay(MOCK_DELAY)
-        return data.value.find { it.id == id }
+        return data.value.find { it.id == id } ?: throw IllegalArgumentException("Dog with id $id does not exist")
     }
 
     private fun createData() =
         generateSequence(0) { it + 1 }.take(MOCKED_DATA_SIZE).map { DogInfo(it, "Dog $it") }.toList()
 
     companion object {
-        private const val MOCK_DELAY = 1000L
+        private const val MOCK_DELAY = 500L
         private const val MOCKED_DATA_SIZE = 20
     }
 }

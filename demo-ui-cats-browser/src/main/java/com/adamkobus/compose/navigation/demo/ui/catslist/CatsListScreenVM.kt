@@ -1,35 +1,40 @@
 package com.adamkobus.compose.navigation.demo.ui.catslist
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adamkobus.android.vm.LifecycleAwareViewModel
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarActionState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarTitleState
 import com.adamkobus.compose.navigation.demo.ui.cats.R
-import com.adamkobus.compose.navigation.demo.ui.ext.onStartStop
 import com.adamkobus.compose.navigation.demo.ui.nav.FromCatsList
+import com.adamkobus.compose.navigation.democore.data.CatInfo
 import com.adamkobus.compose.navigation.democore.model.CatsSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CatsListVM @Inject constructor(
+class CatsListScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource,
     private val catsSource: CatsSource
-) : ViewModel(), LifecycleEventObserver {
+) : LifecycleAwareViewModel() {
 
-    private val _listState = mutableStateOf<CatsListState>(CatsListState.Loading)
-    val listState: State<CatsListState> = _listState
+    private val isLoading = mutableStateOf(true)
+    private val catsList = mutableStateOf<List<CatInfo>>(emptyList())
+    val screenState = CatsListScreenState(
+        isLoading = isLoading,
+        catsList = catsList
+    )
+
+    val interactions = CatsListInteractions(
+        onCatListItemSelected = {
+            navigationConsumer.offer(FromCatsList.ToCatDetails(it.id))
+        }
+    )
 
     private val settingsAction = AppBarActionState.settings {
         viewModelScope.launch {
@@ -41,38 +46,13 @@ class CatsListVM @Inject constructor(
         actionsState = listOf(settingsAction)
     )
 
-    private var catsListRefreshJob: Job? = null
-
-    val interactions = CatsListInteractions(
-        onCatListItemSelected = {
-            navigationConsumer.offer(FromCatsList.ToCatDetails(it.id))
-        }
-    )
-
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        event.onStartStop(onStart = ::onStart, onStop = ::onStop)
-    }
-
-    private fun onStart() {
-        cleanUp()
-        setUpTopBar()
-        catsListRefreshJob = viewModelScope.launch {
+    init {
+        runOnStart {
+            appBarStateSource.offer(appBarState)
             catsSource.observeCats().collect {
-                _listState.value = CatsListState.Loaded(it)
+                isLoading.value = false
+                catsList.value = it
             }
         }
-    }
-
-    private fun setUpTopBar() {
-        appBarStateSource.offer(appBarState)
-    }
-
-    private fun onStop() {
-        cleanUp()
-    }
-
-    private fun cleanUp() {
-        catsListRefreshJob?.cancel()
-        catsListRefreshJob = null
     }
 }

@@ -1,15 +1,11 @@
 package com.adamkobus.compose.navigation.demo.ui.splash
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adamkobus.android.vm.LifecycleAwareViewModel
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
-import com.adamkobus.compose.navigation.demo.ui.ext.onStart
 import com.adamkobus.compose.navigation.demo.ui.nav.FromSplash
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -21,7 +17,7 @@ import javax.inject.Inject
 class SplashScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource
-) : ViewModel(), LifecycleEventObserver {
+) : LifecycleAwareViewModel() {
 
     private val appBarState = AnimatedAppBarState()
 
@@ -32,11 +28,9 @@ class SplashScreenVM @Inject constructor(
         }
     }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        event.onStart {
-            viewModelScope.launch {
-                appBarStateSource.offer(appBarState)
-            }
+    init {
+        runOnStart {
+            appBarStateSource.offer(appBarState)
         }
     }
 

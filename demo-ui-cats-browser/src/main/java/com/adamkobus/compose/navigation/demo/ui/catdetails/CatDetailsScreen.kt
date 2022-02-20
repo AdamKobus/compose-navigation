@@ -16,23 +16,23 @@ import com.adamkobus.compose.navigation.demo.ui.Paddings
 import com.adamkobus.compose.navigation.demo.ui.cats.R
 import com.adamkobus.compose.navigation.demo.ui.loading.LoadingScreen
 import com.adamkobus.compose.navigation.democore.data.CatInfo
+import com.adamkobus.compose.navigation.democore.util.AsyncData
 
 @Composable
 fun CatDetailsScreen(catId: Int) {
     val vm = hiltViewModel<CatDetailsScreenVM>()
-    vm.bindCatId(catId)
+    vm.catIdParam.bind(catId)
     LifecycleAwareComponent(observer = vm)
-    val screenState = vm.screenState.value
-    CatDetailsScreenContent(screenState)
+    CatDetailsScreenContent(vm.screenState)
 }
 
 @Composable
-private fun CatDetailsScreenContent(screenState: CatDetailsState) {
+private fun CatDetailsScreenContent(screenState: CatDetailsScreenState) {
     DemoAppBackground(usesTopBar = true) {
-        when (screenState) {
-            is CatDetailsState.Loading -> LoadingScreen()
-            is CatDetailsState.Loaded -> CatDetails(screenState.catInfo)
-            is CatDetailsState.Error -> CatError()
+        when (val catInfo = screenState.catInfo.value) {
+            is AsyncData.Loading -> LoadingScreen()
+            is AsyncData.Present -> CatDetails(catInfo.data)
+            is AsyncData.Missing -> CatError()
         }
     }
 }
