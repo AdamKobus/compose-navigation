@@ -1,13 +1,9 @@
 package com.adamkobus.compose.navigation.demo.ui.welcome
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
+import com.adamkobus.android.vm.LifecycleAwareViewModel
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
-import com.adamkobus.compose.navigation.demo.ui.ext.onStart
 import com.adamkobus.compose.navigation.demo.ui.nav.FromWelcome
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,7 +12,7 @@ import javax.inject.Inject
 class WelcomeScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource
-) : ViewModel(), LifecycleEventObserver {
+) : LifecycleAwareViewModel() {
 
     val interactions = WelcomeScreenInteractions(
         onDogsSelected = {
@@ -29,8 +25,8 @@ class WelcomeScreenVM @Inject constructor(
 
     private val appBatState = AnimatedAppBarState()
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        event.onStart {
+    init {
+        runOnStart {
             appBarStateSource.offer(appBatState)
         }
     }

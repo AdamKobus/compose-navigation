@@ -17,12 +17,12 @@ class CatsSource @Inject constructor() {
         return data
     }
 
-    suspend fun getCat(id: Int): CatInfo? {
+    suspend fun getCat(id: Int): CatInfo {
         delay(MOCK_DELAY)
         if (Random.nextBoolean()) {
-            return data.value.find { it.id == id }
+            return data.value.find { it.id == id } ?: throw IllegalArgumentException("Cat with id $id does not exist")
         } else {
-            throw IllegalStateException("Failed to load cat info for id $id")
+            throw IllegalArgumentException("Failed to load cat info for id $id")
         }
     }
 
@@ -30,7 +30,7 @@ class CatsSource @Inject constructor() {
         generateSequence(0) { it + 1 }.take(MOCKED_DATA_SIZE).map { CatInfo(it, "Cat $it") }.toList()
 
     companion object {
-        private const val MOCK_DELAY = 1000L
+        private const val MOCK_DELAY = 500L
         private const val MOCKED_DATA_SIZE = 20
     }
 }

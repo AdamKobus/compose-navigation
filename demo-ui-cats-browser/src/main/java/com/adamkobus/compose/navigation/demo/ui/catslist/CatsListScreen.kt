@@ -22,23 +22,30 @@ import com.adamkobus.compose.navigation.democore.data.CatInfo
 
 @Composable
 fun CatsListScreen() {
-    val vm = hiltViewModel<CatsListVM>()
+    val vm = hiltViewModel<CatsListScreenVM>()
     LifecycleAwareComponent(observer = vm)
     DemoAppBackground(usesTopBar = true) {
-        CatsListScreenContent(vm.listState.value, vm.interactions)
+        CatsListScreenContent(vm.screenState, vm.interactions)
     }
 }
 
 @Composable
-private fun CatsListScreenContent(state: CatsListState, interactions: CatsListInteractions) {
-    when (state) {
-        is CatsListState.Loading -> LoadingScreen()
-        is CatsListState.Loaded -> CatsListContent(state.data, interactions.onCatListItemSelected)
+private fun CatsListScreenContent(
+    state: CatsListScreenState,
+    interactions: CatsListInteractions
+) {
+    when (state.isLoading.value) {
+        true -> LoadingScreen()
+        false -> CatsListContent(state, interactions.onCatListItemSelected)
     }
 }
 
 @Composable
-private fun CatsListContent(data: List<CatInfo>, onCatListItemSelected: (CatInfo) -> Unit) {
+private fun CatsListContent(
+    state: CatsListScreenState,
+    onCatListItemSelected: (CatInfo) -> Unit
+) {
+    val data = state.catsList.value
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),

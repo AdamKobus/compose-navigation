@@ -23,23 +23,27 @@ import com.adamkobus.compose.navigation.democore.data.DogInfo
 
 @Composable
 fun DogsListScreen() {
-    val vm = hiltViewModel<DogsListVM>()
+    val vm = hiltViewModel<DogsListScreenVM>()
     LifecycleAwareComponent(observer = vm)
     DemoAppBackground(usesTopBar = true) {
-        DogsListScreenContent(vm.listState.value, vm.interactions)
+        DogsListScreenContent(vm.screenState, vm.interactions)
     }
 }
 
 @Composable
-private fun DogsListScreenContent(state: DogsListState, interactions: DogsListInteractions) {
-    when (state) {
-        is DogsListState.Loading -> LoadingScreen()
-        is DogsListState.Loaded -> DogsListContent(state.data, interactions.onDogsItemSelected)
+private fun DogsListScreenContent(
+    state: DogsListScreenState,
+    interactions: DogsListInteractions
+) {
+    when (state.isLoading.value) {
+        true -> LoadingScreen()
+        false -> DogsListContent(state, interactions.onDogsItemSelected)
     }
 }
 
 @Composable
-private fun DogsListContent(data: List<DogInfo>, onDogsItemSelected: (DogInfo) -> Unit) {
+private fun DogsListContent(state: DogsListScreenState, onDogsItemSelected: (DogInfo) -> Unit) {
+    val data = state.dogsList.value
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),

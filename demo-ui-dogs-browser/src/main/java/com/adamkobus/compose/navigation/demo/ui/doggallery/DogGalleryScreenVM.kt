@@ -24,7 +24,7 @@ class DogGalleryScreenVM @Inject constructor(
     val dogId = ViewParam<Int>()
 
     private val appBarState = AnimatedAppBarState(
-        titleState = AppBarTitleState(titleResId = R.string.dog_details_title),
+        titleState = AppBarTitleState(titleResId = R.string.dog_gallery_title),
         iconState = AppBarIconState.back { onBackPressed() }
     )
 

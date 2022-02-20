@@ -14,8 +14,6 @@ object CatsBrowserGraph : NavGraph("cats") {
     val CatDetails = CatsList.next {
         param(PARAM_CAT_ID)
     }
-
-    val Back = popDestination()
 }
 
 fun NavStackEntry?.catId() = getInt(CatsBrowserGraph.PARAM_CAT_ID)

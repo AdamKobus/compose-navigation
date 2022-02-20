@@ -1,40 +1,36 @@
 package com.adamkobus.compose.navigation.demo.ui.catdetails
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.adamkobus.android.vm.LifecycleAwareViewModel
+import com.adamkobus.android.vm.ViewParam
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarIconState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarTitleState
 import com.adamkobus.compose.navigation.demo.ui.cats.R
-import com.adamkobus.compose.navigation.demo.ui.ext.onStartStop
-import com.adamkobus.compose.navigation.demo.ui.nav.FromCatDetails
+import com.adamkobus.compose.navigation.demo.ui.nav.CatsBrowserGraph
 import com.adamkobus.compose.navigation.democore.data.CatInfo
 import com.adamkobus.compose.navigation.democore.model.CatsSource
+import com.adamkobus.compose.navigation.democore.util.AsyncData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class CatDetailsScreenVM @Inject constructor(
     private val catsSource: CatsSource,
     private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource
-) : ViewModel(), LifecycleEventObserver {
+) : LifecycleAwareViewModel() {
 
-    private var catInfoRefreshJob: Job? = null
-    private val catId = MutableStateFlow<Int?>(null)
-    private val _screenState = mutableStateOf<CatDetailsState>(CatDetailsState.Loading)
-    val screenState: State<CatDetailsState> = _screenState
+    val catIdParam = ViewParam<Int>()
+
+    private val catInfo = mutableStateOf<AsyncData<CatInfo, Throwable>>(AsyncData.Loading())
+    val screenState = CatDetailsScreenState(
+        catInfo = catInfo
+    )
 
     private val appBarState = AnimatedAppBarState(
         titleState = AppBarTitleState(titleResId = R.string.cat_details_title),
@@ -42,60 +38,21 @@ class CatDetailsScreenVM @Inject constructor(
     )
 
     private fun onBackPressed() {
-        navigationConsumer.offer(FromCatDetails.Back)
+        navigationConsumer.offer(CatsBrowserGraph.CatDetails.pop())
     }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        event.onStartStop(onStart = ::onStart, onStop = ::onStop)
-    }
-
-    fun bindCatId(id: Int) {
-        catId.value = id
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun onStart() {
-        cleanUp()
-        setUpTopBar()
-        catInfoRefreshJob = viewModelScope.launch {
-            catId.collect { id ->
+    init {
+        runOnStart {
+            appBarStateSource.offer(appBarState)
+        }
+        runOnStart {
+            catIdParam.observe().collect {
                 try {
-                    onCatIdUpdated(id)
-                } catch (e: IllegalStateException) {
-                    e.printStackTrace()
-                    _screenState.value = CatDetailsState.Error
+                    catInfo.value = AsyncData.Present(catsSource.getCat(it))
+                } catch (e: IllegalArgumentException) {
+                    catInfo.value = AsyncData.Missing(e)
                 }
             }
         }
-    }
-
-    private fun setUpTopBar() {
-        appBarStateSource.offer(appBarState)
-    }
-
-    private suspend fun onCatIdUpdated(id: Int?) {
-        if (id != null) {
-            val catInfo = catsSource.getCat(id)
-            onCatInfoLoaded(catInfo)
-        } else {
-            _screenState.value = CatDetailsState.Loading
-        }
-    }
-
-    private fun onCatInfoLoaded(catInfo: CatInfo?) {
-        if (catInfo != null) {
-            _screenState.value = CatDetailsState.Loaded(catInfo = catInfo)
-        } else {
-            _screenState.value = CatDetailsState.Error
-        }
-    }
-
-    private fun onStop() {
-        cleanUp()
-    }
-
-    private fun cleanUp() {
-        catInfoRefreshJob?.cancel()
-        catInfoRefreshJob = null
     }
 }

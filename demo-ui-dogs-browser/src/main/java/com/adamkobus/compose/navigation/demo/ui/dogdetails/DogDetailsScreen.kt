@@ -22,24 +22,26 @@ import com.adamkobus.compose.navigation.demo.ui.Paddings
 import com.adamkobus.compose.navigation.demo.ui.dogs.R
 import com.adamkobus.compose.navigation.demo.ui.loading.LoadingScreen
 import com.adamkobus.compose.navigation.democore.data.DogInfo
+import com.adamkobus.compose.navigation.democore.util.AsyncData
 
 @Composable
 fun DogDetailsScreen(dogId: Int) {
     val vm = hiltViewModel<DogDetailsScreenVM>()
     LifecycleAwareComponent(observer = vm)
-    vm.dogId.bind(dogId)
-    val screenState = vm.screenState.value
-    val interactions = vm.interactions
-    DogDetailsScreenContent(screenState, interactions)
+    vm.dogIdParam.bind(dogId)
+    DogDetailsScreenContent(vm.screenState, vm.interactions)
 }
 
 @Composable
-private fun DogDetailsScreenContent(screenState: DogDetailsState, interactions: DogDetailsScreenInteractions) {
+private fun DogDetailsScreenContent(
+    screenState: DogDetailsScreenState,
+    interactions: DogDetailsScreenInteractions
+) {
     DemoAppBackground(usesTopBar = true) {
-        when (screenState) {
-            is DogDetailsState.Loading -> LoadingScreen()
-            is DogDetailsState.Loaded -> DogDetails(screenState.dogInfo, interactions)
-            is DogDetailsState.Error -> DogError()
+        when (val dogInfo = screenState.dogInfo.value) {
+            is AsyncData.Loading -> LoadingScreen()
+            is AsyncData.Present -> DogDetails(dogInfo.data, interactions)
+            is AsyncData.Missing -> DogError()
         }
     }
 }
