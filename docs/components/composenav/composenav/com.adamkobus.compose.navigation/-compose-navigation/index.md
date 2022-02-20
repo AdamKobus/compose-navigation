@@ -18,7 +18,11 @@ Main use of this class is to configure Compose Navigation library with:
 - 
    [ComposeNavigation.setMainDispatcher](set-main-dispatcher.md)
 - 
+   [ComposeNavigation.setIoDispatcher](set-io-dispatcher.md)
+- 
    [ComposeNavigation.disableRestrictedNamesCheck](disable-restricted-names-check.md)
+- 
+   [ComposeNavigation.setNavigationProcessingTimeout](set-navigation-processing-timeout.md)
 
 It also gives you access to:
 
@@ -47,6 +51,8 @@ It also gives you access to:
 | [getNavigationConsumer](get-navigation-consumer.md) | [androidJvm]<br>fun [getNavigationConsumer](get-navigation-consumer.md)(): [NavigationConsumer](../-navigation-consumer/index.md) |
 | [getNavigationStateSource](get-navigation-state-source.md) | [androidJvm]<br>fun [getNavigationStateSource](get-navigation-state-source.md)(navigationId: [NavigationId](../-navigation-id/index.md)): [NavigationStateSource](../-navigation-state-source/index.md) |
 | [reset](reset.md) | [androidJvm]<br>fun [reset](reset.md)()<br>Resets the ComposeNavigation to initial state. This will reset: |
+| [setIoDispatcher](set-io-dispatcher.md) | [androidJvm]<br>fun [setIoDispatcher](set-io-dispatcher.md)(dispatcher: CoroutineDispatcher): [ComposeNavigation](index.md)<br>IO Dispatcher is used to execute navigation actions and intents processing. This has to be set before any navigation processor is created. |
 | [setLogger](set-logger.md) | [androidJvm]<br>fun [setLogger](set-logger.md)(logger: [NavLogger](../../com.adamkobus.compose.navigation.logger/-nav-logger/index.md)): [ComposeNavigation](index.md)<br>Changes the logger used by all [ComposeNavigation](index.md) components to [logger](set-logger.md) |
 | [setLogLevel](set-log-level.md) | [androidJvm]<br>fun [setLogLevel](set-log-level.md)(level: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [ComposeNavigation](index.md)<br>Tells the logger to use this log level. It's up to the logger itself to honor this setting or ignore it. |
 | [setMainDispatcher](set-main-dispatcher.md) | [androidJvm]<br>fun [setMainDispatcher](set-main-dispatcher.md)(dispatcher: CoroutineDispatcher): [ComposeNavigation](index.md)<br>Compose Navigation library interacts with NavHostController on main thread. This is achieved using Dispatchers.Main dispatcher. This method allows you to change the dispatcher to a custom one. |
+| [setNavigationProcessingTimeout](set-navigation-processing-timeout.md) | [androidJvm]<br>fun [setNavigationProcessingTimeout](set-navigation-processing-timeout.md)(value: [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html))<br>This timeout is used to interrupt navigation processing tasks that are running for too long. In theory this should not happen. Timeout mechanism was introduced as a safety layer in case there is a bug in the library. Timeouts are logged as errors via [NavLogger](../../com.adamkobus.compose.navigation.logger/-nav-logger/index.md) |

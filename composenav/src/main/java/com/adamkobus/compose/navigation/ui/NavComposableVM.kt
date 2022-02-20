@@ -32,17 +32,24 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
     private val navigationProcessor: NavigationProcessor?
         get() = navigationId?.let { ComposeNavigation.getNavigationProcessor(it) }
 
+    private val isInitialized = mutableStateOf(false)
+    val state = NavComposableState(
+        isInitialized = isInitialized
+    )
+
     init {
-        runOnStart {
+        runOnCreate {
             try {
                 viewParam.observe().flatMapLatest {
                     navigationId = it.navigationId
-                    ComposeNavigation.getNavigationProcessor(it.navigationId).register(this@NavComposableVM)
+                    ComposeNavigation.getNavigationProcessor(it.navigationId).register(this@NavComposableVM).also {
+                        isInitialized.value = true
+                    }
                 }.collect {
                     processAction(it)
                 }
             } finally {
-                navigationProcessor?.unregister(this@NavComposableVM)
+                unregister()
             }
         }
         runOnCreateDestroy {
@@ -65,17 +72,22 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
 
     override fun onCleared() {
         super.onCleared()
+        unregister()
+        loadingCompletable?.complete(false)
+        loadingCompletable = null
+    }
+
+    private fun unregister() {
         navigationId?.let {
             ComposeNavigation.getNavigationProcessor(it).unregister(this@NavComposableVM)
         }
-        loadingCompletable?.complete(false)
-        loadingCompletable = null
+        isInitialized.value = false
     }
 
     private fun updateGraphRoutes(routes: List<String>) {
         if (routes != supportedGraphsRoutes) {
             supportedGraphsRoutes = routes
-            logger.v("$this Updated tracked graphs to $routes")
+            logger.v("$this: Updated tracked graphs to $routes")
         }
     }
 
@@ -105,7 +117,7 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
         return navigationId?.hashCode() ?: 0
     }
 
-    override fun toString(): String = "[$navigationId]NavComposable"
+    override fun toString(): String = "[$navigationId] NavComposable"
 }
 
 internal data class NavComposableParam(

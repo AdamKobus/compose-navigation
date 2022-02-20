@@ -88,6 +88,8 @@ fun NavGraphBuilder.composableDialog(
     dialogProperties: DialogProperties = DialogProperties(),
     content: @Composable (NavStackEntry?) -> Unit
 ) {
+    ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(destination)
+
     dialog(
         route = destination.route.buildRoute(),
         arguments = arguments,
