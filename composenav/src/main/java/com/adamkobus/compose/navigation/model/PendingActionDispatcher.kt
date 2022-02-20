@@ -22,8 +22,9 @@ internal class PendingActionDispatcher {
     fun register(actionConsumer: ActionConsumer): Flow<NavAction> {
         synchronized(consumers) {
             consumers.find { it.owner == actionConsumer }?.let {
-                logger.w("Registering action consumer that is already registered: $actionConsumer")
-                return it.consumerFlow
+                val message = "Registering an action consumer that is already registered: $actionConsumer"
+                logger.e(message)
+                throw IllegalStateException("Registering an action consumer that is already registered: $actionConsumer")
             }
             val flow = MutableSharedFlow<NavAction>()
             consumers.add(0, PendingActionConsumer(actionConsumer, flow, CoroutineScope(dispatcher + SupervisorJob())))
@@ -56,12 +57,9 @@ internal class PendingActionDispatcher {
         var ret = false
         consumer?.let {
             withContext(it.scope.coroutineContext) {
-                logger.v("Action $action was delivered to ${it.owner}")
                 it.consumerFlow.emit(action)
                 ret = true
             }
-        } ?: run {
-            logger.w("Found no NavComposable that could accept $action")
         }
         return ret
     }

@@ -16,7 +16,7 @@ androidJvm
 | [com.adamkobus.compose.navigation.action.NavigationResult](../../com.adamkobus.compose.navigation.action/-navigation-result/index.md) |  |
 
 [androidJvm]\
-abstract suspend fun [offerBlocking](offer-blocking.md)(action: [NavActionWrapper](../../com.adamkobus.compose.navigation.action/-nav-action-wrapper/index.md)): [NavigationResult](../../com.adamkobus.compose.navigation.action/-navigation-result/index.md)
+abstract suspend fun [offerBlocking](offer-blocking.md)(wrapper: [NavActionWrapper](../../com.adamkobus.compose.navigation.action/-nav-action-wrapper/index.md)): [NavigationResult](../../com.adamkobus.compose.navigation.action/-navigation-result/index.md)
 
 Will offer the embedded action to NavHostController if it's not rejected by any [NavActionVerifier](../-nav-action-verifier/index.md). This call will suspend current coroutine until navigation or timeout happens.
 

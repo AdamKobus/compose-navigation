@@ -20,7 +20,7 @@ interface NavigationConsumer {
     /**
      * Will offer the embedded action to NavHostController if it's not rejected by any [NavActionVerifier].
      **/
-    fun offer(action: NavActionWrapper)
+    fun offer(wrapper: NavActionWrapper)
 
     /**
      * Will offer the action resolved by [NavIntentResolver] to NavHostController if it's not rejected by any [NavActionVerifier].
@@ -41,7 +41,7 @@ interface NavigationConsumer {
      *
      * @see [NavigationResult]
      **/
-    suspend fun offerBlocking(action: NavActionWrapper): NavigationResult
+    suspend fun offerBlocking(wrapper: NavActionWrapper): NavigationResult
 
     /**
      * Will offer the action resolved by [NavIntentResolver] to NavHostController if it's not rejected by any [NavActionVerifier].

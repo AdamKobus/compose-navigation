@@ -2,6 +2,7 @@ package com.adamkobus.compose.navigation.model
 
 import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.ComposeNavigation
+import com.adamkobus.compose.navigation.NavigationId
 import com.adamkobus.compose.navigation.action.DiscardReason
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.action.NavigationResult
@@ -18,18 +19,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
-internal class NavigationProcessor {
+internal class NavigationProcessor(val navigationId: NavigationId) {
 
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val actionBuffer = MutableSharedFlow<ProcessorTask>()
 
     private var onActionPerformed: CompletableDeferred<Unit>? = null
 
-    private val destinationManager: NavDestinationManager
-        get() = ComposeNavigation.getNavDestinationManager()
+    private val stateManager: NavStateManager
+        get() = ComposeNavigation.getNavDestinationManager(navigationId)
+
+    private val knownDestinationsSource: KnownDestinationsSource
+        get() = ComposeNavigation.getKnownDestinationsSource()
 
     private val navState: NavState
-        get() = destinationManager.navState
+        get() = stateManager.navState
 
     private val navIntentResolver: NavIntentResolvingManager
         get() = ComposeNavigation.getNavIntentResolvingManager()
@@ -42,6 +46,8 @@ internal class NavigationProcessor {
 
     private val actionDispatcher: PendingActionDispatcher
         get() = ComposeNavigation.getPendingActionDispatcher()
+
+    private val logPrefix = "[$navigationId]"
 
     init {
         scope.launch {
@@ -78,7 +84,7 @@ internal class NavigationProcessor {
     private suspend fun processIntent(navIntent: NavIntent): NavigationResult {
         val action = navIntentResolver.resolve(navIntent, navState)
         return if (action == null) {
-            logger.w("Intent $navIntent was discarded, because it was not mapped to any action")
+            logger.w("$logPrefix Intent $navIntent was discarded, because it was not mapped to any action")
             NavigationResult.Discarded(DiscardReason.NotMapped)
         } else {
             processAction(action)
@@ -87,32 +93,32 @@ internal class NavigationProcessor {
 
     @Suppress("ReturnCount") // TODO clean up
     private suspend fun processAction(action: NavAction): NavigationResult {
-        destinationManager.addDestinationsFromAction(action)
+        knownDestinationsSource.addDestinationsFromAction(action)
 
-        logger.v("Started processing: $action")
+        logger.v("$logPrefix Started processing: $action")
         if (action.toDestination is GlobalGraph) {
-            logger.e("Discarded: $action | Navigating to GlobalGraph is not allowed")
+            logger.e("$logPrefix Discarded: $action | Navigating to GlobalGraph is not allowed")
             return NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
         val rejectingVerifier = navGatekeeper.isNavActionAllowed(navState, action)
         if (rejectingVerifier != null) {
-            logger.v("Action discarded by verifier: $action")
+            logger.v("$logPrefix Action discarded by verifier: $action")
             return NavigationResult.Discarded(DiscardReason.RejectedByVerifier(rejectingVerifier))
         }
         onActionPerformed = CompletableDeferred()
         return if (actionDispatcher.dispatchAction(action = action)) {
-            logger.v("Action delivered: $action")
+            logger.v("$logPrefix Action delivered: $action")
             onActionPerformed?.await()
-            logger.v("Stopped processing: $action")
+            logger.v("$logPrefix Stopped processing: $action")
             NavigationResult.Accepted
         } else {
-            logger.w("Failed to deliver action: $action")
+            logger.w("$logPrefix Failed to deliver action: $action")
             NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
     }
 
     fun onBackStackEntryUpdated(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
-        destinationManager.onBackStackUpdated(entry, backQueue)
+        stateManager.onBackStackUpdated(entry, backQueue)
         onActionPerformed?.complete(Unit)
         onActionPerformed = null
     }

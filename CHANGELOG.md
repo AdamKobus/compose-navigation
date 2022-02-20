@@ -9,6 +9,8 @@
 - Added `NavDestination.popUpTo` which is equivalent of `NavHostController.popBackStack(route, saveState, inclusive)`
 - `NavRoute` and `NavRouteBuilder` no longer accept custom path separators. Separator is now hardcoded to '/'
 - Added `ComposeNavHost`. It is now a recommended way to declare NavHost
+- Introduced `NavigationId` which should be used to differentiate separate NavHostControllers / NavHosts.
+- `ComposeNavigation.getNavigationStateSource()` now requires `NavigationId` param
 
 # 0.2.0
 

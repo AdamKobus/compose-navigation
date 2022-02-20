@@ -5,46 +5,53 @@ import androidx.navigation.NavBackStackEntry
 import com.adamkobus.android.vm.LifecycleAwareViewModel
 import com.adamkobus.android.vm.ViewParam
 import com.adamkobus.compose.navigation.ComposeNavigation
+import com.adamkobus.compose.navigation.NavigationId
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.logger.NavLogger
 import com.adamkobus.compose.navigation.model.ActionConsumer
 import com.adamkobus.compose.navigation.model.NavigationProcessor
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flatMapLatest
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
 
-    private val id = NavComposableId.next()
-
-    private val navigationProcessor: NavigationProcessor
-        get() = ComposeNavigation.getNavigationProcessor()
+    val viewParam = ViewParam<NavComposableParam>()
 
     private val logger: NavLogger
         get() = ComposeNavigation.getLogger()
 
     private var loadingCompletable: CompletableDeferred<Boolean>? = CompletableDeferred()
-    override var supportedGraphsRoutes: List<String> = emptyList()
 
-    val graphsRoutesParam = ViewParam<List<String>>()
     internal val pendingActionState = mutableStateOf<PendingActionState>(PendingActionState.Missing)
 
+    override var supportedGraphsRoutes: List<String> = emptyList()
+    private var navigationId: NavigationId? = NavigationId.DEFAULT
+
+    private val navigationProcessor: NavigationProcessor?
+        get() = navigationId?.let { ComposeNavigation.getNavigationProcessor(it) }
+
     init {
-        runOnStartStop {
-            onStart = {
-                navigationProcessor.register(this@NavComposableVM).collect {
+        runOnStart {
+            try {
+                viewParam.observe().flatMapLatest {
+                    navigationId = it.navigationId
+                    ComposeNavigation.getNavigationProcessor(it.navigationId).register(this@NavComposableVM)
+                }.collect {
                     processAction(it)
                 }
-            }
-            onStop = {
-                navigationProcessor.unregister(this@NavComposableVM)
+            } finally {
+                navigationProcessor?.unregister(this@NavComposableVM)
             }
         }
         runOnCreateDestroy {
             onCreate = {
                 loadingCompletable = CompletableDeferred()
-                graphsRoutesParam.collect {
-                    updateGraphRoutes(it)
+
+                viewParam.collect { param ->
+                    navigationId = param.navigationId
+                    updateGraphRoutes(param.graphs)
                     loadingCompletable?.complete(true)
                     loadingCompletable = null
                 }
@@ -58,7 +65,9 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
 
     override fun onCleared() {
         super.onCleared()
-        navigationProcessor.unregister(this@NavComposableVM)
+        navigationId?.let {
+            ComposeNavigation.getNavigationProcessor(it).unregister(this@NavComposableVM)
+        }
         loadingCompletable?.complete(false)
         loadingCompletable = null
     }
@@ -75,13 +84,13 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
         pendingActionState.value = PendingActionState.Present(action, completable)
         val backStackModified = completable.await()
         if (!backStackModified) {
-            navigationProcessor.onActionCompletedWithoutBackStackUpdate()
+            navigationProcessor?.onActionCompletedWithoutBackStackUpdate()
         }
         pendingActionState.value = PendingActionState.Missing
     }
 
     fun processBackStackEntry(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
-        navigationProcessor.onBackStackEntryUpdated(entry, backQueue)
+        navigationProcessor?.onBackStackEntryUpdated(entry, backQueue)
     }
 
     override suspend fun awaitUntilReady() {
@@ -89,12 +98,17 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is NavComposableVM && other.id == id
+        return other is NavComposableVM && other.navigationId == navigationId
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        return navigationId?.hashCode() ?: 0
     }
 
-    override fun toString(): String = "NavComposable[$id]"
+    override fun toString(): String = "[$navigationId]NavComposable"
 }
+
+internal data class NavComposableParam(
+    val navigationId: NavigationId,
+    val graphs: List<String>
+)

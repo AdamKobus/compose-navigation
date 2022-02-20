@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.adamkobus.compose.navigation.ComposeNavHost
+import com.adamkobus.compose.navigation.NavigationId
 import com.adamkobus.compose.navigation.demo.nav.appGraph
 import com.adamkobus.compose.navigation.demo.nav.onBoardingGraph
 import com.adamkobus.compose.navigation.demo.nav.petsGraph
@@ -29,6 +30,7 @@ fun DemoAppRoot() {
         ComposeNavHost(
             startGraph = AppGraph,
             controller = controller,
+            navigationId = NavigationId.DEFAULT,
             modifier = Modifier.fillMaxSize()
         ) {
             appGraph()

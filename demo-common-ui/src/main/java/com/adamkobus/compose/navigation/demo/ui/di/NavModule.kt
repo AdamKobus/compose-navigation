@@ -1,6 +1,7 @@
 package com.adamkobus.compose.navigation.demo.ui.di
 
 import com.adamkobus.compose.navigation.ComposeNavigation
+import com.adamkobus.compose.navigation.NavigationId
 import com.adamkobus.compose.navigation.NavigationStateSource
 import dagger.Module
 import dagger.Provides
@@ -12,5 +13,5 @@ import dagger.hilt.components.SingletonComponent
 object NavModule {
 
     @Provides
-    fun provideNavigationStateSource(): NavigationStateSource = ComposeNavigation.getNavigationStateSource()
+    fun provideNavigationStateSource(): NavigationStateSource = ComposeNavigation.getNavigationStateSource(NavigationId.DEFAULT)
 }

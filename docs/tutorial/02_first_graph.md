@@ -137,9 +137,10 @@ class MainActivity : ComponentActivity() {
             ComposeNavHost( // 2
                startGraph = TutorialGraph, // 3
                controller = controller,
+               navigationId = NavigationId.DEFAULT, // 4
                modifier = Modifier.fillMaxSize()
             ) {
-               tutorialGraph() // 4
+               tutorialGraph() // 5
             }
          }
       }
@@ -147,10 +148,12 @@ class MainActivity : ComponentActivity() {
 }
 ```
 1. `rememberAnimatedNavController()` is part of [Accompanist Navigation Animation]
-2. [ComposeNavHost] is a Composable from Compose Navigation Library which is  a wrapper 
+2. [ComposeNavHost] is a Composable from Compose Navigation Library. It acts as a wrapper 
    for AnimatedNavHost from [Accompanist Navigation Animation]. It takes care of configuring [NavComposable] inside it.
 3. startGraph determines where will the user land at the application launch. 
-4. We're using the extension we wrote earlier to build navigation graph
+4. [NavigationId] is used to identify `NavHostController`s and `ComposeNavHost`s across your application.
+   If you're using only single controller in your app, then feel free to provide [NavigationId.DEFAULT] here.
+5. We're using the extension we wrote earlier to build navigation graph
 
 Now just launch the app and marvel at the beauty of what we created:
 
@@ -165,3 +168,5 @@ Now just launch the app and marvel at the beauty of what we created:
 <!-- GENERATED SECTION - DON'T ADD ANY TEXT BELOW THIS TAG -->
 
 [NavGraph]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation.destination/-nav-graph/index.md
+[NavigationId]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-navigation-id/index.md
+[NavigationId.DEFAULT]: ../../docs/components/composenav/composenav/com.adamkobus.compose.navigation/-navigation-id/index.md
