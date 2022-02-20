@@ -3,6 +3,7 @@ package com.adamkobus.compose.navigation.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.adamkobus.compose.navigation.NavigationId
@@ -20,10 +21,39 @@ fun NavComposable(
     navigationId: NavigationId
 ) {
     val vm: NavComposableVM = viewModel()
-    val currentBackStackEntry = navController.currentBackStackEntryAsState()
     LifecycleAwareComponent(vm)
     vm.viewParam.bind(NavComposableParam(navigationId = navigationId, graphs = observedGraphs))
 
+    NavComposableInner(navController, vm)
+}
+
+@Composable
+private fun NavComposableInner(
+    navController: NavHostController,
+    vm: NavComposableVM
+) {
+    CurrentBackStackEntryUpdater(navController, vm)
+    PendingActionProcessor(navController, vm)
+}
+
+@Composable
+private fun CurrentBackStackEntryUpdater(
+    navController: NavHostController,
+    vm: NavComposableVM
+) {
+    val isInitialized = vm.state.isInitialized.value
+    val currentBackStackEntry = navController.currentBackStackEntryAsState().value
+    val updateState = BackStackEntryUpdateState(isInitialized, currentBackStackEntry)
+
+    LaunchedEffect(key1 = updateState) {
+        if (isInitialized) {
+            vm.processBackStackEntry(currentBackStackEntry, navController.backQueue)
+        }
+    }
+}
+
+@Composable
+private fun PendingActionProcessor(navController: NavHostController, vm: NavComposableVM) {
     val pendingAction = vm.pendingActionState.value
     LaunchedEffect(key1 = pendingAction) {
         if (pendingAction is PendingActionState.Present) {
@@ -31,7 +61,9 @@ fun NavComposable(
             pendingAction.complete(backStackModifier)
         }
     }
-    LaunchedEffect(key1 = currentBackStackEntry.value) {
-        vm.processBackStackEntry(currentBackStackEntry.value, navController.backQueue)
-    }
 }
+
+private data class BackStackEntryUpdateState(
+    val isInitialized: Boolean,
+    val currentBackStackEntry: NavBackStackEntry?
+)

@@ -16,6 +16,7 @@ import com.adamkobus.compose.navigation.model.NavigationConsumerImpl
 import com.adamkobus.compose.navigation.model.NavigationProcessor
 import com.adamkobus.compose.navigation.model.PendingActionDispatcher
 import com.adamkobus.compose.navigation.model.ReservedNamesHandler
+import com.adamkobus.compose.navigation.model.provider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -26,7 +27,9 @@ import kotlinx.coroutines.Dispatchers
  * - [ComposeNavigation.setLogger]
  * - [ComposeNavigation.setLogLevel]
  * - [ComposeNavigation.setMainDispatcher]
+ * - [ComposeNavigation.setIoDispatcher]
  * - [ComposeNavigation.disableRestrictedNamesCheck]
+ * - [ComposeNavigation.setNavigationProcessingTimeout]
  *
  * It also gives you access to:
  * - [NavigationConsumer] via [ComposeNavigation.getNavigationConsumer] method
@@ -36,6 +39,7 @@ import kotlinx.coroutines.Dispatchers
 object ComposeNavigation {
 
     private const val DEFAULT_RESERVED_NAMES_ENABLED = true
+    private const val DEFAULT_NAVIGATION_PROCESSING_TIMEOUT_MS = 1000L
 
     /**
      * Default log level to which ComposeNavigation's logger is set to
@@ -56,12 +60,14 @@ object ComposeNavigation {
     private val navIntentResolvingManager = NavIntentResolvingManager()
     private val navGatekeeper = NavGatekeeper()
     private var mainDispatcher: CoroutineDispatcher = Dispatchers.Main
+    private var ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    private val pendingActionDispatcher = PendingActionDispatcher()
     private val navigationConsumer: NavigationConsumer = NavigationConsumerImpl()
     private val knownDestinationsSource = KnownDestinationsSource()
 
     private val components = mutableListOf<NavHostComponents>()
+
+    private var navigationProcessingTimeout: Long = DEFAULT_NAVIGATION_PROCESSING_TIMEOUT_MS
 
     init {
         reset()
@@ -73,15 +79,19 @@ object ComposeNavigation {
      * - navigation actions verifiers
      * - navigation intent resolvers
      * - main dispatcher
+     * - io dispatcher
      * - reserved names flag (it will become enabled again)
+     * - navigation processing timeout
      */
     fun reset() {
         reservedNames.enabled = DEFAULT_RESERVED_NAMES_ENABLED
+        navigationProcessingTimeout = DEFAULT_NAVIGATION_PROCESSING_TIMEOUT_MS
         navLogger = DEFAULT_LOGGER
         logLevel = DEFAULT_LOG_LEVEL
         navGatekeeper.reset()
         navIntentResolvingManager.reset()
         mainDispatcher = Dispatchers.Main
+        ioDispatcher = Dispatchers.IO
     }
 
     /**
@@ -178,6 +188,15 @@ object ComposeNavigation {
     }
 
     /**
+     * IO Dispatcher is used to execute navigation actions and intents processing.
+     * This has to be set before any navigation processor is created.
+     */
+    fun setIoDispatcher(dispatcher: CoroutineDispatcher): ComposeNavigation {
+        ioDispatcher = dispatcher
+        return ComposeNavigation
+    }
+
+    /**
      * @return an instance of [NavigationConsumer] - a class that accepts your navigation actions or intents.
      *
      * @see [NavigationConsumer]
@@ -186,8 +205,19 @@ object ComposeNavigation {
         return navigationConsumer
     }
 
-    internal fun getNavDestinationManager(navigationId: NavigationId): NavStateManager {
-        return getComponentsFor(navigationId).destinationManager
+    /**
+     * This timeout is used to interrupt navigation processing tasks that are running for too long.
+     * In theory this should not happen. Timeout mechanism was introduced as a safety layer in case there is a bug in the library.
+     * Timeouts are logged as errors via [NavLogger]
+     *
+     * @param value timeout in ms
+     */
+    fun setNavigationProcessingTimeout(value: Long) {
+        navigationProcessingTimeout = value
+    }
+
+    internal fun getNavigationProcessingTimeout(): Long {
+        return navigationProcessingTimeout
     }
 
     internal fun getReservedNamesHandler(): ReservedNamesHandler = reservedNames
@@ -196,9 +226,13 @@ object ComposeNavigation {
 
     internal fun getNavGatekeeper(): NavGatekeeper = navGatekeeper
 
-    internal fun getMainDispatcher(): CoroutineDispatcher = mainDispatcher
+    internal fun getIoDispatcher(): CoroutineDispatcher = ioDispatcher
 
-    internal fun getPendingActionDispatcher() = pendingActionDispatcher
+    internal fun createPendingActionDispatcher() = PendingActionDispatcher(
+        mainDispatcher = mainDispatcher,
+        loggerProvider = provider { navLogger },
+        timeoutProvider = provider { navigationProcessingTimeout }
+    )
 
     internal fun getNavigationProcessor(navigationId: NavigationId) = getComponentsFor(navigationId).navigationProcessor
 
@@ -208,6 +242,10 @@ object ComposeNavigation {
         synchronized(components) {
             return components.map { it.navigationProcessor }
         }
+    }
+
+    private fun getNavDestinationManager(navigationId: NavigationId): NavStateManager {
+        return getComponentsFor(navigationId).destinationManager
     }
 
     private fun getComponentsFor(navigationId: NavigationId): NavHostComponents {

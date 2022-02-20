@@ -16,4 +16,8 @@ Resets the ComposeNavigation to initial state. This will reset:
 - 
    main dispatcher
 - 
+   io dispatcher
+- 
    reserved names flag (it will become enabled again)
+- 
+   navigation processing timeout

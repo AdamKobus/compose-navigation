@@ -11,6 +11,10 @@
 - Added `ComposeNavHost`. It is now a recommended way to declare NavHost
 - Introduced `NavigationId` which should be used to differentiate separate NavHostControllers / NavHosts.
 - `ComposeNavigation.getNavigationStateSource()` now requires `NavigationId` param
+- Tasks processing now has a configurable timeout. By default it's set to 1000ms. 
+  You can change it to your own value via `ComposeNavigation.setNavigationProcessingTimeout`
+- Improved stability of navigation processor initialization logic.
+- Added `ComposeNavigation.setIoDispatcher`
 
 # 0.2.0
 
