@@ -54,21 +54,34 @@ internal class NavigationProcessor(
         }
     }
 
+    private var currentActionConsumer: ActionConsumer? = null
+
     fun register(actionConsumer: ActionConsumer): Flow<NavAction> {
+        currentActionConsumer?.let {
+            unregister(it)
+        }
+        currentActionConsumer = actionConsumer
         logger.v("$logPrefix Registering action consumer: $actionConsumer")
         initState.onRegistered()
         return actionDispatcher.register(actionConsumer)
     }
 
     fun unregister(actionConsumer: ActionConsumer) {
-        logger.v("$logPrefix Unregistering action consumer: $actionConsumer")
-        initState.onUnregistered()
-        actionDispatcher.unregister(actionConsumer)
+        this.currentActionConsumer?.let {
+            if (it == actionConsumer) {
+                logger.v("$logPrefix Unregistering action consumer: $actionConsumer")
+                initState.onUnregistered()
+                actionDispatcher.unregister(actionConsumer)
+                currentActionConsumer = null
+            }
+        }
     }
 
     fun postNavAction(navAction: NavAction, onTaskCompleted: CompletableDeferred<NavigationResult>? = null) {
         scope.launch {
-            actionBuffer.emit(ProcessorTask.Action(navAction, onTaskCompleted))
+            if (actionDispatcher.isActionAllowed(navAction)) {
+                actionBuffer.emit(ProcessorTask.Action(navAction, onTaskCompleted))
+            }
         }
     }
 
@@ -89,7 +102,7 @@ internal class NavigationProcessor(
     private suspend fun processIntent(navIntent: NavIntent): NavigationResult {
         logger.v("$logPrefix Started processing intent: $navIntent")
         if (!initState.isInitialized()) {
-            logger.w("$logPrefix Intent $navIntent was discarded, because nav host was closed")
+            logger.w("$logPrefix Intent $navIntent was discarded, because nav host is not available")
             return NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
         val action = navIntentResolver.resolve(navIntent, navState)
@@ -106,7 +119,7 @@ internal class NavigationProcessor(
     private suspend fun processAction(action: NavAction): NavigationResult {
         logger.v("$logPrefix Started processing: $action")
         if (!initState.isInitialized()) {
-            logger.w("$logPrefix Action $action was discarded, because nav host was closed")
+            logger.w("$logPrefix Action $action was discarded, because nav host is not available")
             return NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
         if (action.toDestination is GlobalGraph) {

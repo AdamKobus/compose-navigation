@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,55 +23,60 @@ internal class PendingActionDispatcher(
     private val logger: NavLogger
         get() = loggerProvider.provide()
 
-    private var registeredConsumer: PendingActionConsumer? = null
+    private var consumer: PendingActionConsumer? = null
 
     fun register(actionConsumer: ActionConsumer): Flow<NavAction> {
-        if (registeredConsumer != null) {
-            val message = "Trying to register $actionConsumer when $registeredConsumer is already registered"
-            logger.e(message)
-            throw IllegalStateException(message)
+        consumer?.let {
+            unregister(it.owner)
         }
         val flow = MutableSharedFlow<NavAction>()
-        registeredConsumer = PendingActionConsumer(actionConsumer, flow, CoroutineScope(this.mainDispatcher + SupervisorJob()))
+        consumer = PendingActionConsumer(actionConsumer, flow, CoroutineScope(this.mainDispatcher + SupervisorJob()))
         return flow
     }
 
     fun unregister(actionConsumer: ActionConsumer) {
-        registeredConsumer?.let {
-            if (it.owner == actionConsumer) {
-                registeredConsumer = null
-            } else {
-                throw IllegalStateException("Trying to unregister $actionConsumer when different one is registered ${it.owner}")
-            }
+        consumer?.takeIf {
+            it.owner == actionConsumer
+        }?.let {
+            it.scope.cancel()
+            consumer = null
         }
     }
 
-    suspend fun dispatchAction(action: NavAction): DispatchResult {
-        registeredConsumer?.owner?.awaitUntilReady()
-        val consumer = registeredConsumer?.takeIf {
+    suspend fun dispatchAction(action: NavAction): DispatchResult =
+        getConsumerWithAction(action)?.let {
+            dispatchToConsumer(action, it)
+        } ?: DispatchResult.NotDelivered
+
+    private suspend fun dispatchToConsumer(action: NavAction, consumer: PendingActionConsumer): DispatchResult {
+        var ret = DispatchResult.NotDelivered
+        var job: Job? = null
+        job = consumer.scope.launch {
+            val timeoutJob: Job?
+            timeoutJob = consumer.scope.launch {
+                delay(actionDispatchTimeoutMs)
+                job?.cancel()
+                if (ret == DispatchResult.NotDelivered) {
+                    ret = DispatchResult.Timeout
+                }
+            }
+            consumer.consumerFlow.emit(action)
+            timeoutJob.cancel()
+            ret = DispatchResult.Success
+        }
+        job.join()
+        return ret
+    }
+
+    fun isActionAllowed(navAction: NavAction): Boolean {
+        return getConsumerWithAction(navAction) != null
+    }
+
+    private fun getConsumerWithAction(action: NavAction): PendingActionConsumer? {
+        return consumer?.takeIf {
             it.owner.supportedGraphsRoutes.isEmpty() ||
                 it.owner.supportedGraphsRoutes.contains(action.fromDestination.graph.route.buildRoute())
         }
-        var ret = DispatchResult.NotDelivered
-
-        if (consumer != null) {
-            var job: Job? = null
-            job = consumer.scope.launch {
-                val timeoutJob: Job?
-                timeoutJob = consumer.scope.launch {
-                    delay(actionDispatchTimeoutMs)
-                    job?.cancel()
-                    if (ret == DispatchResult.NotDelivered) {
-                        ret = DispatchResult.Timeout
-                    }
-                }
-                consumer.consumerFlow.emit(action)
-                timeoutJob.cancel()
-                ret = DispatchResult.Success
-            }
-            job.join()
-        }
-        return ret
     }
 }
 

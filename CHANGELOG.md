@@ -15,6 +15,7 @@
   You can change it to your own value via `ComposeNavigation.setNavigationProcessingTimeout`
 - Improved stability of navigation processor initialization logic.
 - Added `ComposeNavigation.setIoDispatcher`
+- Added support for nested Nav Hosts
 
 # 0.2.0
 

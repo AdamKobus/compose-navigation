@@ -1,8 +1,9 @@
 package com.adamkobus.compose.navigation.ui
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
-import com.adamkobus.android.vm.LifecycleAwareViewModel
 import com.adamkobus.android.vm.ViewParam
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.NavigationId
@@ -13,9 +14,10 @@ import com.adamkobus.compose.navigation.model.NavigationProcessor
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
+internal class NavComposableVM : ViewModel(), ActionConsumer {
 
     val viewParam = ViewParam<NavComposableParam>()
 
@@ -38,56 +40,34 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
     )
 
     init {
-        runOnCreate {
+        viewModelScope.launch {
             try {
                 viewParam.observe().flatMapLatest {
                     navigationId = it.navigationId
+                    updateGraphRoutes(it.graphs)
                     ComposeNavigation.getNavigationProcessor(it.navigationId).register(this@NavComposableVM).also {
                         isInitialized.value = true
+                        loadingCompletable?.complete(true)
+                        loadingCompletable = null
                     }
                 }.collect {
                     processAction(it)
                 }
             } finally {
-                unregister()
-            }
-        }
-        runOnCreateDestroy {
-            onCreate = {
-                loadingCompletable = CompletableDeferred()
-
-                viewParam.collect { param ->
-                    navigationId = param.navigationId
-                    updateGraphRoutes(param.graphs)
-                    loadingCompletable?.complete(true)
-                    loadingCompletable = null
+                navigationId?.let {
+                    ComposeNavigation.getNavigationProcessor(it).unregister(this@NavComposableVM)
                 }
-            }
-            onDestroy = {
+                isInitialized.value = false
                 loadingCompletable?.complete(false)
                 loadingCompletable = null
             }
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        unregister()
-        loadingCompletable?.complete(false)
-        loadingCompletable = null
-    }
-
-    private fun unregister() {
-        navigationId?.let {
-            ComposeNavigation.getNavigationProcessor(it).unregister(this@NavComposableVM)
-        }
-        isInitialized.value = false
-    }
-
     private fun updateGraphRoutes(routes: List<String>) {
         if (routes != supportedGraphsRoutes) {
+            logger.v("$this Updating with graphs $routes")
             supportedGraphsRoutes = routes
-            logger.v("$this: Updated tracked graphs to $routes")
         }
     }
 

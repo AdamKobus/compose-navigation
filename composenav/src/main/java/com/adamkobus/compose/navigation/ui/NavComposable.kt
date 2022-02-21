@@ -2,6 +2,7 @@ package com.adamkobus.compose.navigation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -20,8 +21,7 @@ fun NavComposable(
     observedGraphs: List<String> = emptyList(),
     navigationId: NavigationId
 ) {
-    val vm: NavComposableVM = viewModel()
-    LifecycleAwareComponent(vm)
+    val vm: NavComposableVM = viewModel(key = navController.toString())
     vm.viewParam.bind(NavComposableParam(navigationId = navigationId, graphs = observedGraphs))
 
     NavComposableInner(navController, vm)
@@ -32,17 +32,20 @@ private fun NavComposableInner(
     navController: NavHostController,
     vm: NavComposableVM
 ) {
-    CurrentBackStackEntryUpdater(navController, vm)
+    val backStackState = navController.currentBackStackEntryAsState()
+    CurrentBackStackEntryUpdater(navController, vm, backStackState)
     PendingActionProcessor(navController, vm)
 }
 
 @Composable
 private fun CurrentBackStackEntryUpdater(
     navController: NavHostController,
-    vm: NavComposableVM
+    vm: NavComposableVM,
+    backStackState: State<NavBackStackEntry?>
 ) {
     val isInitialized = vm.state.isInitialized.value
-    val currentBackStackEntry = navController.currentBackStackEntryAsState().value
+    val currentBackStackEntry = backStackState.value
+    // thanks to this, any pending back stack update will be postponed until VM is initialized.
     val updateState = BackStackEntryUpdateState(isInitialized, currentBackStackEntry)
 
     LaunchedEffect(key1 = updateState) {
