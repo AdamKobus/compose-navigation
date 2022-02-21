@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.2.6-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:0.2.7-SNAPSHOT"
 }
 ```
 

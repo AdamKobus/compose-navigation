@@ -27,7 +27,7 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
     internal val pendingActionState = mutableStateOf<PendingActionState>(PendingActionState.Missing)
 
     override var supportedGraphsRoutes: List<String> = emptyList()
-    private var navigationId: NavigationId? = NavigationId.DEFAULT
+    private var navigationId: NavigationId? = null
 
     private val navigationProcessor: NavigationProcessor?
         get() = navigationId?.let { ComposeNavigation.getNavigationProcessor(it) }
@@ -107,14 +107,6 @@ internal class NavComposableVM : LifecycleAwareViewModel(), ActionConsumer {
 
     override suspend fun awaitUntilReady() {
         loadingCompletable?.await()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return other is NavComposableVM && other.navigationId == navigationId
-    }
-
-    override fun hashCode(): Int {
-        return navigationId?.hashCode() ?: 0
     }
 
     override fun toString(): String = "[$navigationId] NavComposable"
