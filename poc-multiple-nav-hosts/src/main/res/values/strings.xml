@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">poc-multiple-nav-hosts</string>
+
+    <!-- HomeScreen -->
+    <string name="home_screen_description">The next screen has 2 NavHosts in it, each with its own back stack. Try interacting with them or rotating the screen - their state should be saved during configuration changes.\nCheck the logs (verbose) - you should see that the proper nav hosts are selected for each navigation action automatically.</string>
+    <string name="home_screen_continue_button">Continue</string>
+</resources>

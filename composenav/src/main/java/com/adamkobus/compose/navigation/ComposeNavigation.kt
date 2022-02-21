@@ -234,7 +234,8 @@ object ComposeNavigation {
         timeoutProvider = provider { navigationProcessingTimeout }
     )
 
-    internal fun getNavigationProcessor(navigationId: NavigationId) = getComponentsFor(navigationId).navigationProcessor
+    internal fun getNavigationProcessor(navigationId: NavigationId): NavigationProcessor =
+        getComponentsFor(navigationId).navigationProcessor
 
     internal fun getKnownDestinationsSource() = knownDestinationsSource
 
