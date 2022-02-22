@@ -50,6 +50,7 @@ $dokka.location:com.adamkobus.compose.navigation.action/NavigateAction/arg/#kotl
 $dokka.location:com.adamkobus.compose.navigation.action/NavigateAction/arg/#kotlin.String/PointingToDeclaration/composenav/com.adamkobus.compose.navigation.action/-navigate-action/arg.md
 $dokka.location:com.adamkobus.compose.navigation.action/NavigateAction/equals/#kotlin.Any?/PointingToDeclaration/composenav/com.adamkobus.compose.navigation.action/-navigate-action/equals.md
 $dokka.location:com.adamkobus.compose.navigation.action/NavigateAction/hashCode/#/PointingToDeclaration/composenav/com.adamkobus.compose.navigation.action/-navigate-action/hash-code.md
+$dokka.location:com.adamkobus.compose.navigation.action/NavigateAction/setNavOptions/#kotlin.Function1[com.adamkobus.compose.navigation.action.NavOptionsBuilder,kotlin.Unit]/PointingToDeclaration/composenav/com.adamkobus.compose.navigation.action/-navigate-action/set-nav-options.md
 $dokka.location:com.adamkobus.compose.navigation.action/NavigateAction/toString/#/PointingToDeclaration/composenav/com.adamkobus.compose.navigation.action/-navigate-action/to-string.md
 $dokka.location:com.adamkobus.compose.navigation.action/NavigateAction/withOptions/#com.adamkobus.compose.navigation.action.NavOptions?/PointingToDeclaration/composenav/com.adamkobus.compose.navigation.action/-navigate-action/with-options.md
 $dokka.location:com.adamkobus.compose.navigation.action/NavigationResult.Accepted///PointingToDeclaration/composenav/com.adamkobus.compose.navigation.action/-navigation-result/-accepted/index.md
