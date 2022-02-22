@@ -57,6 +57,19 @@ class NavigateAction(
             options = param
         )
 
+    /**
+     * Uses provided builder to create which will be used by the nav action when navigating.
+     *
+     * @param init those options will be provided to [NavHostController.navigate]
+     */
+    fun setNavOptions(init: NavOptionsBuilder.() -> Unit): NavigateAction =
+        NavigateAction(
+            fromNavDestination,
+            toNavDestination,
+            params,
+            options = navActionOptions(init)
+        )
+
     override fun navigate(controller: NavHostController): Boolean {
         options?.let { builder ->
             controller.navigate(toDestination.route.buildPath(params), navOptions = options.toAndroidNavOptions())

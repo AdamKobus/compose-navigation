@@ -15,12 +15,13 @@ sealed class FromSplash(action: NavAction) : NavActionWrapper(action) {
 
 sealed class FromWelcome(action: NavAction) : NavActionWrapper(action) {
     object ToCatsList : FromWelcome(
-        OnBoardingGraph.WelcomeScreen goTo CatsBrowserGraph withOptions navActionOptions {
-            popUpTo(OnBoardingGraph) {
-                inclusive = true
+        OnBoardingGraph.WelcomeScreen.goTo(CatsBrowserGraph)
+            .setNavOptions {
+                popUpTo(OnBoardingGraph) {
+                    inclusive = true
+                }
+                launchSingleTop = true
             }
-            launchSingleTop = true
-        }
     )
 
     object ToDogsList : FromWelcome(
