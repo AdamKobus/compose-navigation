@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.adamkobus.compose.navigation.ComposeNavHost
@@ -14,11 +12,9 @@ import com.adamkobus.compose.navigation.demo.nav.appGraph
 import com.adamkobus.compose.navigation.demo.nav.onBoardingGraph
 import com.adamkobus.compose.navigation.demo.nav.petsGraph
 import com.adamkobus.compose.navigation.demo.settings.nav.settingsGraph
-import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBar
-import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.nav.AppGraph
 import com.adamkobus.compose.navigation.demo.ui.nav.DemoNavigationId
-import com.adamkobus.compose.navigation.demo.ui.tabhost.DemoTabsNavigation
+import com.adamkobus.compose.navigation.demo.ui.overlay.AppOverlays
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -37,13 +33,15 @@ fun DemoAppRoot() {
             onBoardingGraph()
             petsGraph()
             settingsGraph()
+            vm.applyNavGraphsTask.apply(this)
         }
-        AppOverlays(vm.appBarState)
+        AppOverlays(vm.overlays)
     }
 }
 
 @Composable
-private fun BoxScope.AppOverlays(appBarState: State<AnimatedAppBarState>) {
-    AnimatedAppBar(appBarState = appBarState.value)
-    DemoTabsNavigation(modifier = Modifier.align(Alignment.BottomCenter))
+private fun BoxScope.AppOverlays(overlays: AppOverlays) {
+    overlays.providers.forEach {
+        it.provideOverlay()(this)
+    }
 }

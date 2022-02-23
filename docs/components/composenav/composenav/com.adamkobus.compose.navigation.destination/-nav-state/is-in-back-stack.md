@@ -3,9 +3,9 @@
 # isInBackStack
 
 [androidJvm]\
-fun [isInBackStack](is-in-back-stack.md)(dest: [NavDestination](../-nav-destination/index.md)): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
+fun [isInBackStack](is-in-back-stack.md)(dest: [INavDestination](../-i-nav-destination/index.md)): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
 
-Checks if provided destination is currently in back stack
+Checks if provided destination is currently in back stack of any of the tracked controllers
 
 #### Return
 

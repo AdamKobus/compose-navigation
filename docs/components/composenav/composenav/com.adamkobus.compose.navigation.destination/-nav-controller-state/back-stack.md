@@ -1,4 +1,4 @@
-//[composenav](../../../index.md)/[com.adamkobus.compose.navigation.destination](../index.md)/[NavState](index.md)/[backStack](back-stack.md)
+//[composenav](../../../index.md)/[com.adamkobus.compose.navigation.destination](../index.md)/[NavControllerState](index.md)/[backStack](back-stack.md)
 
 # backStack
 

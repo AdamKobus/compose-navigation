@@ -21,6 +21,8 @@ dependencies {
     implementation project(':demo-ui-on-boarding')
     implementation project(':demo-ui-settings')
 
+    debugImplementation project(':demo-devmenu')
+
     implementation Lib.Google.Material
 
     // hilt

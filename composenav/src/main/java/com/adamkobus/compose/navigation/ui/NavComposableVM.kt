@@ -55,7 +55,10 @@ internal class NavComposableVM : ViewModel(), ActionConsumer {
                 }
             } finally {
                 navigationId?.let {
-                    ComposeNavigation.getNavigationProcessor(it).unregister(this@NavComposableVM)
+                    ComposeNavigation.getNavigationProcessor(it).apply {
+                        onBackStackCleared(this@NavComposableVM)
+                        unregister(this@NavComposableVM)
+                    }
                 }
                 isInitialized.value = false
                 loadingCompletable?.complete(false)

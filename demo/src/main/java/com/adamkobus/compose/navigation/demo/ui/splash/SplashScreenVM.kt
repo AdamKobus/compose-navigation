@@ -26,9 +26,7 @@ class SplashScreenVM @Inject constructor(
             delay(MOCK_DELAY_MS)
             navigationConsumer.offer(FromSplash.ToWelcome)
         }
-    }
 
-    init {
         runOnStart {
             appBarStateSource.offer(appBarState)
         }

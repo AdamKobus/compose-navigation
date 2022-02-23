@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.adamkobus.android.vm.LifecycleAwareViewModel
 import com.adamkobus.compose.navigation.NavigationConsumer
 import com.adamkobus.compose.navigation.NavigationStateSource
+import com.adamkobus.compose.navigation.demo.nav.PetsGraph
 import com.adamkobus.compose.navigation.demo.ui.nav.CatsBrowserGraph
 import com.adamkobus.compose.navigation.demo.ui.nav.DemoIntents
 import com.adamkobus.compose.navigation.demo.ui.nav.DogsBrowserGraph
@@ -51,7 +52,7 @@ class DemoTabsNavigationVM @Inject constructor(
     }
 
     private fun processNavigationUpdate(navState: NavState) {
-        val destination = navState.currentDestination?.destination
+        val destination = navState.find(PetsGraph)?.currentDestination?.destination
         if (destination in CATS_DESTINATIONS) {
             onCatActive()
         } else if (destination in DOGS_DESTINATIONS) {

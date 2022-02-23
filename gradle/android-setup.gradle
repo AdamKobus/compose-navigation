@@ -40,6 +40,22 @@ def configureAndroidProject(Project androidProject, boolean isApplication) {
                 useSupportLibrary true
             }
         }
+        if (isApplication) {
+            signingConfigs {
+                release {
+                    storeFile file(rootProject.file("keystore/release.jks"))
+                    storePassword "debug123"
+                    keyAlias "debug"
+                    keyPassword "debug123"
+                }
+            }
+
+            buildTypes {
+                release {
+                    signingConfig signingConfigs.release
+                }
+            }
+        }
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_11
