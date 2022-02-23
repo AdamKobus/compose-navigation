@@ -62,8 +62,11 @@ open class TabBarIntentResolver(
         val mappedGraph = tabsMapping[intent] ?: return null
         val graphStartDestination = mappedGraph.startDestination()
 
+        // no controller with provided tab host was found
+        val controllerState = navState.find(tabsRootGraph) ?: return null
+
         // this resolver supports only navigation when tab host is already launched (as in, it handles only tab items clicks)
-        val currentDest = navState.currentDestination?.destination ?: return null
+        val currentDest = controllerState.currentDestination?.destination ?: return null
 
         // this resolver supports only navigation when tab host is already launched (as in, it handles only tab items clicks)
         if (!navState.isInBackStack(tabsRootGraph)) return null
@@ -95,8 +98,9 @@ open class TabBarIntentResolver(
     }
 
     private fun handlePopIntent(navState: NavState): ResolveResult {
-        val currentDest = navState.currentDestination ?: return ResolveResult.None
-        navState.backStack.findLast { it.destination.graph in allGraphs }?.let {
+        val controllerState = navState.find(tabsRootGraph) ?: return ResolveResult.None
+        val currentDest = controllerState.currentDestination ?: return ResolveResult.None
+        controllerState.backStack.findLast { it.destination.graph in allGraphs }?.let {
             val ret = currentDest.destination goTo it.destination withOptions navActionOptions {
                 popUpTo(it.destination)
                 launchSingleTop = true

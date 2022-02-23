@@ -64,6 +64,7 @@ object ComposeNavigation {
 
     private val navigationConsumer: NavigationConsumer = NavigationConsumerImpl()
     private val knownDestinationsSource = KnownDestinationsSource()
+    private val navStateManager = NavStateManager()
 
     private val components = mutableListOf<NavHostComponents>()
 
@@ -167,8 +168,8 @@ object ComposeNavigation {
      *
      * @return [NavigationStateSource] managed by [ComposeNavigation]
      */
-    fun getNavigationStateSource(navigationId: NavigationId): NavigationStateSource {
-        return getNavDestinationManager(navigationId)
+    fun getNavigationStateSource(): NavigationStateSource {
+        return navStateManager
     }
 
     /**
@@ -245,14 +246,10 @@ object ComposeNavigation {
         }
     }
 
-    private fun getNavDestinationManager(navigationId: NavigationId): NavStateManager {
-        return getComponentsFor(navigationId).destinationManager
-    }
-
     private fun getComponentsFor(navigationId: NavigationId): NavHostComponents {
         synchronized(components) {
             return components.find { it.navigationId == navigationId } ?: run {
-                val newComponent = NavHostComponents(navigationId)
+                val newComponent = NavHostComponents(navigationId, navStateManager)
                 components.add(newComponent)
                 newComponent
             }

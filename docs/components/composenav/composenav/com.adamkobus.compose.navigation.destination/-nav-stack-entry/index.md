@@ -31,6 +31,12 @@ androidJvm
 | [arguments](arguments.md) | [androidJvm]<br>val [arguments](arguments.md): [Map](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)&gt; |
 | [destination](destination.md) | [androidJvm]<br>val [destination](destination.md): [NavDestination](../-nav-destination/index.md) |
 
+## Functions
+
+| Name | Summary |
+|---|---|
+| [toString](to-string.md) | [androidJvm]<br>open override fun [toString](to-string.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Returns a String representation of [NavStackEntry](index.md) |
+
 ## Extensions
 
 | Name | Summary |

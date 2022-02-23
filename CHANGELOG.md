@@ -16,6 +16,9 @@
 - Improved stability of navigation processor initialization logic.
 - Added `ComposeNavigation.setIoDispatcher`
 - Added support for nested Nav Hosts
+- NavState now has a list of `NavControllerState`s which gives access to information about all used NavHosts
+- `NavIntent` has an additional field now which is called `navigationId`.
+  It's just for informational purpose and doesn't influence the intents processing.
 
 # 0.2.0
 

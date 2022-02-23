@@ -3,7 +3,7 @@
 # getNavigationStateSource
 
 [androidJvm]\
-fun [getNavigationStateSource](get-navigation-state-source.md)(navigationId: [NavigationId](../-navigation-id/index.md)): [NavigationStateSource](../-navigation-state-source/index.md)
+fun [getNavigationStateSource](get-navigation-state-source.md)(): [NavigationStateSource](../-navigation-state-source/index.md)
 
 #### Return
 

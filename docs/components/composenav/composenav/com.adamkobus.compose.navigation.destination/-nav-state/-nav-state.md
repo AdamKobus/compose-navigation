@@ -3,7 +3,7 @@
 # NavState
 
 [androidJvm]\
-fun [NavState](-nav-state.md)(currentDestination: [NavStackEntry](../-nav-stack-entry/index.md)?, backStack: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[NavStackEntry](../-nav-stack-entry/index.md)&gt;)
+fun [NavState](-nav-state.md)(controllersState: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[NavControllerState](../-nav-controller-state/index.md)&gt;)
 
 ## Parameters
 
@@ -11,5 +11,4 @@ androidJvm
 
 | | |
 |---|---|
-| currentDestination | -     the destination that is currently displayed to the user. |
-| backStack | -     all of the destinations that are currently in the back stack, including graphs. |
+| controllersState | Each [NavControllerState](../-nav-controller-state/index.md) represents the back stack state of tracked NavHost. |

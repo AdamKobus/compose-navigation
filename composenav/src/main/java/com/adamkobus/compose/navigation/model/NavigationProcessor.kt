@@ -77,6 +77,14 @@ internal class NavigationProcessor(
         }
     }
 
+    fun onBackStackCleared(actionConsumer: ActionConsumer) {
+        this.currentActionConsumer?.let {
+            if (it == actionConsumer) {
+                stateManager.onBackStackUpdated(navigationId, null, emptyList())
+            }
+        }
+    }
+
     fun postNavAction(navAction: NavAction, onTaskCompleted: CompletableDeferred<NavigationResult>? = null) {
         scope.launch {
             if (actionDispatcher.isActionAllowed(navAction)) {
@@ -155,12 +163,16 @@ internal class NavigationProcessor(
                 logger.w("$logPrefix Failed to deliver action: $action")
                 NavigationResult.Discarded(DiscardReason.NotDelivered)
             }
+            DispatchResult.WrongNavHost -> {
+                logger.v("$logPrefix Action cannot be processed by this NavHost: $action")
+                NavigationResult.Discarded(DiscardReason.NotDelivered)
+            }
         }
     }
 
     fun onBackStackEntryUpdated(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
         if (initState.isRegistered()) {
-            stateManager.onBackStackUpdated(entry, backQueue)
+            stateManager.onBackStackUpdated(navigationId, entry, backQueue)
             initState.onInitComplete()
             onActionPerformed?.complete(true)
             onActionPerformed = null

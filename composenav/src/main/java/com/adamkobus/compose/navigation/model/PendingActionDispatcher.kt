@@ -1,6 +1,10 @@
 package com.adamkobus.compose.navigation.model
 
 import com.adamkobus.compose.navigation.action.NavAction
+import com.adamkobus.compose.navigation.action.NavigateAction
+import com.adamkobus.compose.navigation.action.PopAction
+import com.adamkobus.compose.navigation.action.PopUpToAction
+import com.adamkobus.compose.navigation.destination.GlobalGraph
 import com.adamkobus.compose.navigation.logger.NavLogger
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +50,7 @@ internal class PendingActionDispatcher(
     suspend fun dispatchAction(action: NavAction): DispatchResult =
         getConsumerWithAction(action)?.let {
             dispatchToConsumer(action, it)
-        } ?: DispatchResult.NotDelivered
+        } ?: DispatchResult.WrongNavHost
 
     private suspend fun dispatchToConsumer(action: NavAction, consumer: PendingActionConsumer): DispatchResult {
         var ret = DispatchResult.NotDelivered
@@ -72,10 +76,27 @@ internal class PendingActionDispatcher(
         return getConsumerWithAction(navAction) != null
     }
 
+    @Suppress("ReturnCount") // TODO clean up
     private fun getConsumerWithAction(action: NavAction): PendingActionConsumer? {
-        return consumer?.takeIf {
-            it.owner.supportedGraphsRoutes.isEmpty() ||
-                it.owner.supportedGraphsRoutes.contains(action.fromDestination.graph.route.buildRoute())
+        val actionConsumer = consumer ?: return null
+        val supportedGraphs = actionConsumer.owner.supportedGraphsRoutes
+        if (supportedGraphs.isEmpty() || action.fromDestination == GlobalGraph) {
+            return actionConsumer
+        }
+        if (action is NavigateAction || action is PopUpToAction) {
+            if (action.fromDestination.graph.serializedRoute in supportedGraphs) {
+                if (action.toDestination.graph.serializedRoute !in supportedGraphs) {
+                    logger.e("Action $action toDestination belongs to different NavHost than the fromDestination.")
+                    return null
+                }
+                return actionConsumer
+            } else {
+                return null
+            }
+        } else if (action is PopAction) {
+            return actionConsumer.takeIf { action.fromDestination.graph.serializedRoute in supportedGraphs }
+        } else {
+            return null
         }
     }
 }
@@ -91,6 +112,7 @@ private data class PendingActionConsumer(
 }
 
 internal enum class DispatchResult {
+    WrongNavHost,
     NotDelivered,
     Timeout,
     Success

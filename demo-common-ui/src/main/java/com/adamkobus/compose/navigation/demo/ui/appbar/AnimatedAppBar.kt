@@ -36,10 +36,17 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+
+@Composable
+fun AnimatedAppBar() {
+    val vm: AnimatedAppBarVM = hiltViewModel()
+    AnimatedAppBarContent(appBarState = vm.appBarState.value)
+}
 
 @Suppress("LongParameterList")
 @Composable
-fun AnimatedAppBar(
+private fun AnimatedAppBarContent(
     appBarState: AnimatedAppBarState,
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     contentColor: Color = contentColorFor(backgroundColor),
@@ -66,14 +73,14 @@ fun AnimatedAppBar(
                     .padding(contentPadding),
                 contentAlignment = Alignment.CenterStart
             ) {
-                AnimatedAppBarContent(appBarState)
+                AnimatedAppBarInnerContent(appBarState)
             }
         }
     }
 }
 
 @Composable
-private fun AnimatedAppBarContent(appBarState: AnimatedAppBarState) {
+private fun AnimatedAppBarInnerContent(appBarState: AnimatedAppBarState) {
     val titlePosition = animateDpAsState(targetValue = if (appBarState.iconState != null) TitleIconOffset else TitleNoIconOffset)
     Box(
         modifier = Modifier.fillMaxHeight(),

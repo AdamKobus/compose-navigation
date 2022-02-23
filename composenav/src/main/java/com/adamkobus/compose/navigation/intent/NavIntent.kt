@@ -2,6 +2,7 @@ package com.adamkobus.compose.navigation.intent
 
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.NavIntentResolver
+import com.adamkobus.compose.navigation.NavigationId
 import com.adamkobus.compose.navigation.action.NavOptions
 import com.adamkobus.compose.navigation.destination.NavDestination
 
@@ -17,12 +18,14 @@ import com.adamkobus.compose.navigation.destination.NavDestination
  * @param popOptions if this intent should close a flow, then you can provide options that should result in doing that.
  * Example could be an intent that launches home screen after successful log in.
  * Such intent would contain [popOptions] that remove log in graph.
+ * @param navigationId Might be helpful to some [NavIntentResolver]s to create nav action
  * @param arguments provides a way to add some extra information to the intent
  */
 data class NavIntent(
     val name: String,
     val origin: NavDestination? = null,
     val popOptions: NavOptions? = null,
+    val navigationId: NavigationId? = null,
     private val arguments: MutableMap<String, Any> = mutableMapOf()
 ) {
     /**

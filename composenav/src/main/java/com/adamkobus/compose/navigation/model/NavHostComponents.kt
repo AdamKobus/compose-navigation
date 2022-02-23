@@ -4,14 +4,14 @@ import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.NavigationId
 
 internal class NavHostComponents(
-    val navigationId: NavigationId
+    val navigationId: NavigationId,
+    stateManager: NavStateManager
 ) {
-    val destinationManager = NavStateManager(navigationId)
 
     val navigationProcessor = NavigationProcessor(
         navigationId = navigationId,
         ioDispatcher = ComposeNavigation.getIoDispatcher(),
-        stateManager = destinationManager,
+        stateManager = stateManager,
         navGatekeeper = ComposeNavigation.getNavGatekeeper(),
         navIntentResolver = ComposeNavigation.getNavIntentResolvingManager(),
         actionDispatcher = ComposeNavigation.createPendingActionDispatcher(),
