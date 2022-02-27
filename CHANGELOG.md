@@ -18,7 +18,8 @@
 - Added support for nested Nav Hosts
 - NavState now has a list of `NavControllerState`s which gives access to information about all used NavHosts
 - `NavIntent` has an additional field now which is called `navigationId`.
-  It's just for informational purpose and doesn't influence the intents processing.
+  It's just for informational purpose and it doesn't influence the intents processing.
+- #96 `NavStackEntry` is no longer nullable in `composableDestination` lambda
 
 # 0.2.0
 

@@ -3,7 +3,6 @@ package com.adamkobus.compose.navigation.model
 import android.os.Bundle
 import androidx.navigation.NavBackStackEntry
 import com.adamkobus.compose.navigation.ComposeNavigation
-import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.destination.INavDestination
 import com.adamkobus.compose.navigation.destination.NavDestination
 import com.adamkobus.compose.navigation.destination.NavStackEntry
@@ -12,11 +11,6 @@ import com.adamkobus.compose.navigation.destination.UnknownDestination
 internal class KnownDestinationsSource {
 
     private val knownDestinations = mutableMapOf<String, NavDestination>()
-
-    internal fun addDestinationsFromAction(action: NavAction) {
-        addToKnownDestinations(action.fromDestination)
-        addToKnownDestinations(action.toDestination)
-    }
 
     internal fun addToKnownDestinations(destination: INavDestination) {
         if (destination is NavDestination) {
@@ -32,19 +26,20 @@ internal class KnownDestinationsSource {
         }
     }
 
-    internal fun resolveRouteToDestination(route: String?): NavDestination? =
-        route?.let {
+    internal fun resolveRouteToDestination(route: String): NavDestination =
+        route.let {
             knownDestinations[route] ?: UnknownDestination(it)
         }
 }
 
 internal fun NavBackStackEntry.toNavStackEntry(
     knownDestinationsSource: KnownDestinationsSource = ComposeNavigation.getKnownDestinationsSource()
-): NavStackEntry? =
+): NavStackEntry =
     this.let { entry ->
-        entry.destination.route.let { route ->
+        // Compose library is setting routes for all of the destinations, so there is no risk that this would be null.
+        entry.destination.route!!.let { route ->
             knownDestinationsSource.resolveRouteToDestination(route)
-        }?.let { destination ->
+        }.let { destination ->
             NavStackEntry(
                 destination = destination,
                 arguments = buildArguments(destination, entry.arguments)
