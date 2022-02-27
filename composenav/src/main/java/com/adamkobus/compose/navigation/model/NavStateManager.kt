@@ -27,7 +27,12 @@ internal class NavStateManager : NavigationStateSource {
 
     internal fun onBackStackUpdated(navigationId: NavigationId, entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
         val backStack = backQueue.mapNotNull {
-            it.toNavStackEntry()
+            if (it.destination.id == 0 && it.destination.route == null) {
+                // this is the app's root graph that is not part of the navigation tree
+                null
+            } else {
+                it.toNavStackEntry()
+            }
         }
         updateCurrentDestination(NavControllerState(navigationId, entry?.toNavStackEntry(), backStack))
     }
