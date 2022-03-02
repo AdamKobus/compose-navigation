@@ -61,7 +61,7 @@ object TutorialGraph : NavGraph("tutorialGraph") {
 }
 
 // I recommend adding extensions like this for more convenient access to param's value
-fun NavStackEntry?.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
+fun NavStackEntry.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.tutorialGraph() {

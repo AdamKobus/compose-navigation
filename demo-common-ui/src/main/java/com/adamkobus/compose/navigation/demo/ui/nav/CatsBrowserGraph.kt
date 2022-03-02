@@ -16,4 +16,4 @@ object CatsBrowserGraph : NavGraph("cats") {
     }
 }
 
-fun NavStackEntry?.catId() = getInt(CatsBrowserGraph.PARAM_CAT_ID)
+fun NavStackEntry.catId() = getInt(CatsBrowserGraph.PARAM_CAT_ID)

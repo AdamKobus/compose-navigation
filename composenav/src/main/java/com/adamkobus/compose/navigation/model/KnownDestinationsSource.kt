@@ -30,22 +30,22 @@ internal class KnownDestinationsSource {
         route.let {
             knownDestinations[route] ?: UnknownDestination(it)
         }
+
+    internal fun resolveNavBackStackEntryToDestination(entry: NavBackStackEntry) =
+        entry.destination.route?.let {
+            resolveRouteToDestination(it)
+        } ?: UnknownDestination(entry.destination.id.toString())
 }
 
 internal fun NavBackStackEntry.toNavStackEntry(
     knownDestinationsSource: KnownDestinationsSource = ComposeNavigation.getKnownDestinationsSource()
-): NavStackEntry =
-    this.let { entry ->
-        // Compose library is setting routes for all of the destinations, so there is no risk that this would be null.
-        entry.destination.route!!.let { route ->
-            knownDestinationsSource.resolveRouteToDestination(route)
-        }.let { destination ->
-            NavStackEntry(
-                destination = destination,
-                arguments = buildArguments(destination, entry.arguments)
-            )
-        }
-    }
+): NavStackEntry {
+    val destination = knownDestinationsSource.resolveNavBackStackEntryToDestination(this)
+    return NavStackEntry(
+        destination = destination,
+        arguments = buildArguments(destination, this.arguments)
+    )
+}
 
 private fun buildArguments(destination: NavDestination, arguments: Bundle?): Map<String, String> =
     destination.route.paramNames.associateWith {
