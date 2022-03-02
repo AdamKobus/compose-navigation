@@ -21,6 +21,7 @@
   It's just for informational purpose and it doesn't influence the intents processing.
 - #96 `NavStackEntry` is no longer nullable in `composableDestination` lambda
 - Improved error messages when reading NavStackEntry arguments
+- Added support for Long, Float, Double and Boolean navigation arguments
 
 # 0.2.0
 

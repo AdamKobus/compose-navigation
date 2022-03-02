@@ -3,7 +3,6 @@ package com.adamkobus.compose.navigation.demo.ui.nav
 import com.adamkobus.compose.navigation.destination.NavGraph
 import com.adamkobus.compose.navigation.destination.NavStackEntry
 import com.adamkobus.compose.navigation.destination.ScreenDestination
-import com.adamkobus.compose.navigation.destination.getInt
 
 object DogsBrowserGraph : NavGraph("dogs") {
     const val PARAM_DOG_ID = "dogId"

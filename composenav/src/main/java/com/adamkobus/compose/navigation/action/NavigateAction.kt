@@ -36,6 +36,26 @@ class NavigateAction(
     /**
      * Provided [param] will be delivered to [toDestination]
      */
+    infix fun arg(param: Long): NavigateAction = arg(param.toString())
+
+    /**
+     * Provided [param] will be delivered to [toDestination]
+     */
+    infix fun arg(param: Float): NavigateAction = arg(param.toString())
+
+    /**
+     * Provided [param] will be delivered to [toDestination]
+     */
+    infix fun arg(param: Double): NavigateAction = arg(param.toString())
+
+    /**
+     * Provided [param] will be delivered to [toDestination]
+     */
+    infix fun arg(param: Boolean): NavigateAction = arg(param.toString())
+
+    /**
+     * Provided [param] will be delivered to [toDestination]
+     */
     infix fun arg(param: String): NavigateAction =
         NavigateAction(
             fromNavDestination,
@@ -72,7 +92,7 @@ class NavigateAction(
 
     override fun navigate(controller: NavHostController): Boolean {
         options?.let { builder ->
-            controller.navigate(toDestination.route.buildPath(params), navOptions = options.toAndroidNavOptions())
+            controller.navigate(toDestination.route.buildPath(params), navOptions = builder.toAndroidNavOptions())
         } ?: controller.navigate(toDestination.route.buildPath(params))
         return true
     }
