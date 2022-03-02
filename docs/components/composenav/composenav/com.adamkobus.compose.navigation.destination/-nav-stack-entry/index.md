@@ -7,7 +7,7 @@ data class [NavStackEntry](index.md)(destination: [NavDestination](../-nav-desti
 
 This class holds information about single entry in navigation back stack.
 
-If destination has any arguments in its route, then it's guaranteed that their values will be present in [arguments](arguments.md). That's because Compose Navigation library does not support optional arguments by design. Assumption is that any param that has been declared in the route always receive value. It being optional should be indicated in the serialized value's string itself, i.e. by serializing the value to strings like "missing" and "present(42)"
+If destination has any arguments in its route, then it's guaranteed that their values will be present in [arguments](arguments.md). That's because Compose Navigation library does not support optional arguments by design. Assumption is that any param that has been declared in the route must have a value assigned during navigation.
 
 ## Parameters
 
@@ -35,12 +35,10 @@ androidJvm
 
 | Name | Summary |
 |---|---|
+| [getBoolean](get-boolean.md) | [androidJvm]<br>fun [getBoolean](get-boolean.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) |
+| [getDouble](get-double.md) | [androidJvm]<br>fun [getDouble](get-double.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html) |
+| [getFloat](get-float.md) | [androidJvm]<br>fun [getFloat](get-float.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html) |
+| [getInt](get-int.md) | [androidJvm]<br>fun [getInt](get-int.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
+| [getLong](get-long.md) | [androidJvm]<br>fun [getLong](get-long.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html) |
+| [getString](get-string.md) | [androidJvm]<br>fun [getString](get-string.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
 | [toString](to-string.md) | [androidJvm]<br>open override fun [toString](to-string.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Returns a String representation of [NavStackEntry](index.md) |
-
-## Extensions
-
-| Name | Summary |
-|---|---|
-| [getInt](../get-int.md) | [androidJvm]<br>fun [NavStackEntry](index.md)?.[getInt](../get-int.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
-| [getLong](../get-long.md) | [androidJvm]<br>fun [NavStackEntry](index.md)?.[getLong](../get-long.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html) |
-| [getString](../get-string.md) | [androidJvm]<br>fun [NavStackEntry](index.md)?.[getString](../get-string.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |

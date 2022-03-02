@@ -12,9 +12,7 @@ See [https://github.com/AdamKobus/compose-navigation/issues/63](https://github.c
 
 ## Releases
 
-Current releases can be found at [https://github.com/AdamKobus/compose-navigation/releases](https://github.com/AdamKobus/compose-navigation/releases)
-
-It could potentially remove the need to declare `fun NavGraphBuilder.myGraph()` types of extensions and will also make arguments type safe.
+List of releases can be found at [https://github.com/AdamKobus/compose-navigation/releases](https://github.com/AdamKobus/compose-navigation/releases)
 
 ```groovy
 repositories {
@@ -28,7 +26,7 @@ dependencies {
 
 ## Snapshots
 
-You can find current releases at [Sonatype Snapshots Repository]("https://s01.oss.sonatype.org/content/repositories/snapshots/com/adamkobus/compose-navigation/")
+Past snapshots can be found at [Sonatype Snapshots Repository]("https://s01.oss.sonatype.org/content/repositories/snapshots/com/adamkobus/compose-navigation/")
 
 ```groovy
 repositories {

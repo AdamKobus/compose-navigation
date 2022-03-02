@@ -108,10 +108,10 @@ data class NavStackEntry(
 
     /**
      * @param key Name by which this param can be identified in destination's route
-     * @return Double value embedded into this destination's route
+     * @return Boolean value embedded into this destination's route
      *
      * @throws NavArgumentMissingError if argument with provided key does not exist
-     * @throws NavArgumentFormatInvalidError if argument could not be parsed to Double
+     * @throws NavArgumentFormatInvalidError if argument could not be parsed to Boolean
      */
     fun getBoolean(key: String): Boolean {
         return when (val stringValue = getString(key)) {
