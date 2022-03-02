@@ -32,7 +32,7 @@ object TutorialGraph : NavGraph("tutorialGraph") {
     }.asDialog()
 }
 
-fun NavStackEntry?.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
+fun NavStackEntry.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.tutorialGraph() {

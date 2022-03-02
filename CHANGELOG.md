@@ -20,6 +20,7 @@
 - `NavIntent` has an additional field now which is called `navigationId`.
   It's just for informational purpose and it doesn't influence the intents processing.
 - #96 `NavStackEntry` is no longer nullable in `composableDestination` lambda
+- Improved error messages when reading NavStackEntry arguments
 
 # 0.2.0
 

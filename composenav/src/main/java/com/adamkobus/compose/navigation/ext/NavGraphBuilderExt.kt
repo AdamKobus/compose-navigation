@@ -60,7 +60,7 @@ fun NavGraphBuilder.composableDestination(
     exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    content: @Composable AnimatedVisibilityScope.(NavStackEntry?) -> Unit
+    content: @Composable AnimatedVisibilityScope.(NavStackEntry) -> Unit
 ) {
     ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(destination)
 
@@ -86,7 +86,7 @@ fun NavGraphBuilder.composableDialog(
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     dialogProperties: DialogProperties = DialogProperties(),
-    content: @Composable (NavStackEntry?) -> Unit
+    content: @Composable (NavStackEntry) -> Unit
 ) {
     ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(destination)
 

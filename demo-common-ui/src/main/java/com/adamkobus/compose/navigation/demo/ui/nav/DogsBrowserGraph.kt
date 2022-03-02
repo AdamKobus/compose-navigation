@@ -20,4 +20,4 @@ object DogsBrowserGraph : NavGraph("dogs") {
     }
 }
 
-fun NavStackEntry?.dogId() = getInt(DogsBrowserGraph.PARAM_DOG_ID)
+fun NavStackEntry.dogId() = getInt(DogsBrowserGraph.PARAM_DOG_ID)
