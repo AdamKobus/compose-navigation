@@ -38,7 +38,6 @@ Now we need to add a special destination for this screen to `TutorialGraph`. You
 > `.nav.TutorialGraph.kt`
 ```kotlin
 import com.adamkobus.compose.navigation.destination.NavStackEntry
-import com.adamkobus.compose.navigation.destination.getInt
 
 object TutorialGraph : NavGraph("tutorialGraph") {
     const val PARAM_ITEM_ID = "itemId"
