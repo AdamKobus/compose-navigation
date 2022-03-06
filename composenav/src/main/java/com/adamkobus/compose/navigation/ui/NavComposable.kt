@@ -43,15 +43,12 @@ private fun CurrentBackStackEntryUpdater(
     vm: NavComposableVM,
     backStackState: State<NavBackStackEntry?>
 ) {
-    val isInitialized = vm.state.isInitialized.value
     val currentBackStackEntry = backStackState.value
-    // thanks to this, any pending back stack update will be postponed until VM is initialized.
-    val updateState = BackStackEntryUpdateState(isInitialized, currentBackStackEntry)
+    val queue = navController.backQueue
+    val updateState = BackStackEntryUpdateState(currentBackStackEntry, queue)
 
     LaunchedEffect(key1 = updateState) {
-        if (isInitialized) {
-            vm.processBackStackEntry(currentBackStackEntry, navController.backQueue)
-        }
+        vm.processBackStackEntry(currentBackStackEntry, navController.backQueue)
     }
 }
 
@@ -60,13 +57,13 @@ private fun PendingActionProcessor(navController: NavHostController, vm: NavComp
     val pendingAction = vm.pendingActionState.value
     LaunchedEffect(key1 = pendingAction) {
         if (pendingAction is PendingActionState.Present) {
-            val backStackModifier = pendingAction.action.navigate(navController)
-            pendingAction.complete(backStackModifier)
+            val backStackModified = pendingAction.action.navigate(navController)
+            pendingAction.complete(backStackModified)
         }
     }
 }
 
 private data class BackStackEntryUpdateState(
-    val isInitialized: Boolean,
-    val currentBackStackEntry: NavBackStackEntry?
+    val currentBackStackEntry: NavBackStackEntry?,
+    val queue: List<NavBackStackEntry>
 )

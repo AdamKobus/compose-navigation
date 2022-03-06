@@ -12,9 +12,10 @@ import com.adamkobus.compose.navigation.demo.nav.appGraph
 import com.adamkobus.compose.navigation.demo.nav.onBoardingGraph
 import com.adamkobus.compose.navigation.demo.nav.petsGraph
 import com.adamkobus.compose.navigation.demo.settings.nav.settingsGraph
-import com.adamkobus.compose.navigation.demo.ui.nav.AppGraph
+import com.adamkobus.compose.navigation.demo.ui.nav.AppRootGraph
 import com.adamkobus.compose.navigation.demo.ui.nav.DemoNavigationId
 import com.adamkobus.compose.navigation.demo.ui.overlay.AppOverlays
+import com.adamkobus.compose.navigation.ext.composableNavigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -24,16 +25,18 @@ fun DemoAppRoot() {
     val controller = rememberAnimatedNavController()
     Box(modifier = Modifier.fillMaxSize()) {
         ComposeNavHost(
-            startGraph = AppGraph,
+            startGraph = AppRootGraph,
             controller = controller,
             navigationId = DemoNavigationId,
             modifier = Modifier.fillMaxSize()
         ) {
-            appGraph()
-            onBoardingGraph()
-            petsGraph()
-            settingsGraph()
-            vm.applyNavGraphsTask.apply(this)
+            composableNavigation(AppRootGraph) {
+                appGraph()
+                onBoardingGraph()
+                petsGraph()
+                settingsGraph()
+                vm.applyNavGraphsTask.apply(this)
+            }
         }
         AppOverlays(vm.overlays)
     }

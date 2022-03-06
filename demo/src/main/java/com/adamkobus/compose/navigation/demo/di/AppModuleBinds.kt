@@ -3,6 +3,7 @@ package com.adamkobus.compose.navigation.demo.di
 import com.adamkobus.compose.navigation.NavActionVerifier
 import com.adamkobus.compose.navigation.NavIntentResolver
 import com.adamkobus.compose.navigation.demo.nav.AppNavActionVerifier
+import com.adamkobus.compose.navigation.demo.nav.RestartAppNavIntentResolver
 import com.adamkobus.compose.navigation.demo.nav.tabhost.DemoTabBarIntentResolver
 import com.adamkobus.compose.navigation.demo.ui.DevMenuLauncherOverlayProvider
 import com.adamkobus.compose.navigation.demo.ui.overlay.OverlayProvider
@@ -32,4 +33,8 @@ interface AppModuleBinds {
     @Binds
     @IntoSet
     fun bindsDevMenuLauncherOverlayProvider(impl: DevMenuLauncherOverlayProvider): OverlayProvider
+
+    @Binds
+    @IntoSet
+    fun bindRestartAppNavIntentResolver(impl: RestartAppNavIntentResolver): NavIntentResolver
 }

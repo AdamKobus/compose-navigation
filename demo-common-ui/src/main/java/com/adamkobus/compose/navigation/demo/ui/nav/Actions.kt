@@ -7,7 +7,7 @@ import com.adamkobus.compose.navigation.action.navActionOptions
 sealed class FromSplash(action: NavAction) : NavActionWrapper(action) {
     object ToWelcome : FromSplash(
         AppGraph.SplashScreen goTo OnBoardingGraph withOptions navActionOptions {
-            popUpTo(AppGraph)
+            popUpTo(AppRootGraph)
             launchSingleTop = true
         }
     )
@@ -17,18 +17,14 @@ sealed class FromWelcome(action: NavAction) : NavActionWrapper(action) {
     object ToCatsList : FromWelcome(
         OnBoardingGraph.WelcomeScreen.goTo(CatsBrowserGraph)
             .setNavOptions {
-                popUpTo(OnBoardingGraph) {
-                    inclusive = true
-                }
+                popUpTo(AppRootGraph)
                 launchSingleTop = true
             }
     )
 
     object ToDogsList : FromWelcome(
         OnBoardingGraph.WelcomeScreen goTo DogsBrowserGraph withOptions navActionOptions {
-            popUpTo(OnBoardingGraph) {
-                inclusive = true
-            }
+            popUpTo(AppRootGraph)
             launchSingleTop = true
         }
     )
