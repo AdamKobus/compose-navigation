@@ -10,7 +10,7 @@ import com.adamkobus.compose.navigation.NavigationId
 import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.logger.NavLogger
 import com.adamkobus.compose.navigation.model.ActionConsumer
-import com.adamkobus.compose.navigation.model.NavigationProcessor
+import com.adamkobus.compose.navigation.model.NavDelegate
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
@@ -24,6 +24,9 @@ internal class NavComposableVM : ViewModel(), ActionConsumer {
     private val logger: NavLogger
         get() = ComposeNavigation.getLogger()
 
+    private val logPrefix: String
+        get() = navigationId?.let { "[$it]" } ?: "[???]"
+
     private var loadingCompletable: CompletableDeferred<Boolean>? = CompletableDeferred()
 
     internal val pendingActionState = mutableStateOf<PendingActionState>(PendingActionState.Missing)
@@ -31,46 +34,33 @@ internal class NavComposableVM : ViewModel(), ActionConsumer {
     override var supportedGraphsRoutes: List<String> = emptyList()
     private var navigationId: NavigationId? = null
 
-    private val navigationProcessor: NavigationProcessor?
-        get() = navigationId?.let { ComposeNavigation.getNavigationProcessor(it) }
-
-    private val isInitialized = mutableStateOf(false)
-    val state = NavComposableState(
-        isInitialized = isInitialized
-    )
+    private val navDelegate: NavDelegate?
+        get() = navigationId?.let { ComposeNavigation.getNavDelegate(it) }
 
     init {
         viewModelScope.launch {
             try {
                 viewParam.observe().flatMapLatest {
                     navigationId = it.navigationId
-                    updateGraphRoutes(it.graphs)
-                    ComposeNavigation.getNavigationProcessor(it.navigationId).register(this@NavComposableVM).also {
-                        isInitialized.value = true
-                        loadingCompletable?.complete(true)
-                        loadingCompletable = null
-                    }
+                    supportedGraphsRoutes = it.graphs
+                    logger.d("$logPrefix Init started with supported graphs ${it.graphs}")
+                    ComposeNavigation
+                        .getNavDelegate(it.navigationId)
+                        .register(this@NavComposableVM, supportedGraphsRoutes)
                 }.collect {
                     processAction(it)
                 }
             } finally {
-                navigationId?.let {
-                    ComposeNavigation.getNavigationProcessor(it).apply {
-                        onBackStackCleared(this@NavComposableVM)
-                        unregister(this@NavComposableVM)
-                    }
+                navDelegate?.apply {
+                    onBackStackCleared(this@NavComposableVM)
+                    unregister(this@NavComposableVM)
                 }
-                isInitialized.value = false
-                loadingCompletable?.complete(false)
-                loadingCompletable = null
+                loadingCompletable?.let {
+                    logger.d("$logPrefix Init cancelled")
+                    it.complete(false)
+                    loadingCompletable = null
+                }
             }
-        }
-    }
-
-    private fun updateGraphRoutes(routes: List<String>) {
-        if (routes != supportedGraphsRoutes) {
-            logger.v("$this Updating with graphs $routes")
-            supportedGraphsRoutes = routes
         }
     }
 
@@ -79,13 +69,20 @@ internal class NavComposableVM : ViewModel(), ActionConsumer {
         pendingActionState.value = PendingActionState.Present(action, completable)
         val backStackModified = completable.await()
         if (!backStackModified) {
-            navigationProcessor?.onActionCompletedWithoutBackStackUpdate()
+            navDelegate?.onActionCompletedWithoutBackStackUpdate(this)
         }
         pendingActionState.value = PendingActionState.Missing
     }
 
     fun processBackStackEntry(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
-        navigationProcessor?.onBackStackEntryUpdated(entry, backQueue)
+        navDelegate?.onBackStackEntryUpdated(this@NavComposableVM, entry, backQueue)
+        if (entry != null) {
+            loadingCompletable?.let {
+                logger.d("$logPrefix Init completed")
+                it.complete(true)
+                loadingCompletable = null
+            }
+        }
     }
 
     override suspend fun awaitUntilReady() {

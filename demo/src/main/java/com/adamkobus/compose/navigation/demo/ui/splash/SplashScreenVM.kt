@@ -8,7 +8,6 @@ import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarState
 import com.adamkobus.compose.navigation.demo.ui.appbar.AppBarStateSource
 import com.adamkobus.compose.navigation.demo.ui.nav.FromSplash
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,16 +22,11 @@ class SplashScreenVM @Inject constructor(
 
     init {
         viewModelScope.launch {
-            delay(MOCK_DELAY_MS)
             navigationConsumer.offer(FromSplash.ToWelcome)
         }
 
         runOnStart {
             appBarStateSource.offer(appBarState)
         }
-    }
-
-    companion object {
-        private const val MOCK_DELAY_MS = 1000L
     }
 }

@@ -9,12 +9,11 @@ import com.adamkobus.compose.navigation.logger.NavLogLevel
 import com.adamkobus.compose.navigation.logger.NavLogger
 import com.adamkobus.compose.navigation.logger.NavLoggerImpl
 import com.adamkobus.compose.navigation.model.KnownDestinationsSource
+import com.adamkobus.compose.navigation.model.NavDelegate
 import com.adamkobus.compose.navigation.model.NavGatekeeper
-import com.adamkobus.compose.navigation.model.NavHostComponents
 import com.adamkobus.compose.navigation.model.NavStateManager
 import com.adamkobus.compose.navigation.model.NavigationConsumerImpl
 import com.adamkobus.compose.navigation.model.NavigationProcessor
-import com.adamkobus.compose.navigation.model.PendingActionDispatcher
 import com.adamkobus.compose.navigation.model.ReservedNamesHandler
 import com.adamkobus.compose.navigation.model.provider
 import kotlinx.coroutines.CoroutineDispatcher
@@ -66,9 +65,9 @@ object ComposeNavigation {
     private val knownDestinationsSource = KnownDestinationsSource()
     private val navStateManager = NavStateManager()
 
-    private val components = mutableListOf<NavHostComponents>()
-
     private var navigationProcessingTimeout: Long = DEFAULT_NAVIGATION_PROCESSING_TIMEOUT_MS
+
+    private val navigationProcessor: NavigationProcessor = createNavigationProcessor()
 
     init {
         reset()
@@ -228,31 +227,24 @@ object ComposeNavigation {
     internal fun getNavGatekeeper(): NavGatekeeper = navGatekeeper
 
     internal fun getIoDispatcher(): CoroutineDispatcher = ioDispatcher
-
-    internal fun createPendingActionDispatcher() = PendingActionDispatcher(
-        mainDispatcher = mainDispatcher,
-        loggerProvider = provider { navLogger },
-        timeoutProvider = provider { navigationProcessingTimeout }
-    )
-
-    internal fun getNavigationProcessor(navigationId: NavigationId): NavigationProcessor =
-        getComponentsFor(navigationId).navigationProcessor
+    internal fun getMainDispatcher(): CoroutineDispatcher = mainDispatcher
 
     internal fun getKnownDestinationsSource() = knownDestinationsSource
 
-    internal fun getAllNavProcessors(): List<NavigationProcessor> {
-        synchronized(components) {
-            return components.map { it.navigationProcessor }
-        }
-    }
+    internal fun getNavDelegate(navigationId: NavigationId): NavDelegate =
+        navigationProcessor.getDispatcher(navigationId = navigationId)
 
-    private fun getComponentsFor(navigationId: NavigationId): NavHostComponents {
-        synchronized(components) {
-            return components.find { it.navigationId == navigationId } ?: run {
-                val newComponent = NavHostComponents(navigationId, navStateManager)
-                components.add(newComponent)
-                newComponent
-            }
-        }
-    }
+    private fun createNavigationProcessor(): NavigationProcessor =
+        NavigationProcessor(
+            mainDispatcher = mainDispatcher,
+            ioDispatcher = ioDispatcher,
+            stateManager = navStateManager,
+            timeoutProvider = provider { getNavigationProcessingTimeout() },
+            loggerProvider = provider { getLogger() },
+            navIntentResolver = navIntentResolvingManager,
+            navGatekeeper = navGatekeeper
+        )
+
+    internal fun getNavProcessor(): NavigationProcessor =
+        navigationProcessor
 }
