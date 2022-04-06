@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 internal class DevMenuTabHostIntentResolver @Inject constructor() : TabBarIntentResolver(
     tabsMapping = mapOf(
-        DevMenuTabHostIntents.OpenInfo to DevMenuInfoGraph,
-        DevMenuTabHostIntents.OpenSettings to DevMenuSettingsGraph
+        DevMenuTabHostIntents.OpenInfo.name to DevMenuInfoGraph,
+        DevMenuTabHostIntents.OpenSettings.name to DevMenuSettingsGraph
     ),
     tabStateSavingBehaviour = TabStateSavingBehaviour.SAVE_ALL,
     tabsRootGraph = DevMenuGraph

@@ -41,7 +41,7 @@ import com.adamkobus.compose.navigation.intent.ResolveResult
  */
 @Suppress("ReturnCount")
 open class TabBarIntentResolver(
-    private val tabsMapping: Map<NavIntent, NavGraph>,
+    private val tabsMapping: Map<String, NavGraph>,
     private val tabsRootGraph: NavGraph,
     private val popToTabHostIntent: NavIntent? = null,
     private val tabStateSavingBehaviour: TabStateSavingBehaviour = SAVE_START_DESTINATION
@@ -59,7 +59,10 @@ open class TabBarIntentResolver(
     }
 
     private fun resolveInternal(intent: NavIntent, navState: NavState): NavAction? {
-        val mappedGraph = tabsMapping[intent] ?: return null
+        val mappedGraph = tabsMapping[intent.name] ?: return null
+        intent.origin?.let {
+            if (!navState.isCurrent(it)) return null
+        }
         val graphStartDestination = mappedGraph.startDestination()
 
         // no controller with provided tab host was found
@@ -74,8 +77,16 @@ open class TabBarIntentResolver(
         // we're already at the destination that clicking this tab would take us to
         if (currentDest == graphStartDestination) return null
 
-        // Current destination doesn't belong to tab host at all
-        if (currentDest.graph !in allGraphs) return null
+        val navOptions = if (currentDest.graph !in allGraphs) {
+            intent.popOptions?.copy(launchSingleTop = true)
+        } else {
+            navActionOptions {
+                popUpTo(graphStartDestination)
+                launchSingleTop = true
+            }
+        }
+        // Current destination doesn't belong to tab host and intent didn't provide nav options
+        if (navOptions == null) return null
 
         // tab item's starting destination is already in back stack and we can pop back to it
         if (navState.isInBackStack(graphStartDestination)) {
@@ -90,7 +101,10 @@ open class TabBarIntentResolver(
         return currentDest goTo mappedGraph withOptions navActionOptions {
             popUpTo(tabsRootGraph) {
                 saveState = tabStateSavingBehaviour == SAVE_ALL ||
-                    (tabStateSavingBehaviour == SAVE_START_DESTINATION && currentDest == currentDest.graph.startDestination())
+                    (
+                        tabStateSavingBehaviour == SAVE_START_DESTINATION &&
+                            currentDest == currentDest.graph.startDestination()
+                        )
             }
             restoreState = true
             launchSingleTop = true
@@ -117,7 +131,8 @@ open class TabBarIntentResolver(
  */
 enum class TabStateSavingBehaviour {
     /**
-     * The state of the graph displayed in the current tab will not be saved. It will start from scratch when user navigates back to it
+     * The state of the graph displayed in the current tab will not be saved.
+     * It will start from scratch when user navigates back to it
      */
     DONT_SAVE,
 
