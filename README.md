@@ -100,7 +100,7 @@ val FromImagePreviewNavigateBack = MyGraph.ImagePreview.pop()
 
 ### Discarding navigation actions
 
-With `NavActionVerifier` you can discard `NavActions` that don't meet you criteria.
+With `NavActionVerifier` you can discard `NavActions` that don't meet your criteria.
 
 ```kotlin
 object AppNavActionVerifier : NavActionVerifier {
