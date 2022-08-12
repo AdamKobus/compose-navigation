@@ -131,8 +131,8 @@ data class NavRoute constructor(
         }
 
         private fun ensureGraphNameAdded() {
-            if (parts.isEmpty() || parts[0] !is NavRoutePart.GraphName) {
-                throw IllegalStateException("Must add graphName as first part of the path")
+            check(parts.firstOrNull() is NavRoutePart.GraphName) {
+                "Must add graphName as first part of the path"
             }
         }
 

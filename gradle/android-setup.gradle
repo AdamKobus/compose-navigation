@@ -66,7 +66,7 @@ def configureAndroidProject(Project androidProject, boolean isApplication) {
             compose true
         }
         composeOptions {
-            kotlinCompilerExtensionVersion Lib.COMPOSE_VERSION
+            kotlinCompilerExtensionVersion Lib.COMPOSE_COMPILER_VERSION
         }
 
         packagingOptions {
