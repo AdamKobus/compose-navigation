@@ -3,14 +3,6 @@ naming:
     ignoreAnnotated:
       - Composable
 
-formatting:
-  ArgumentListWrapping:
-    maxLineLength: 140
-  MaximumLineLength:
-    maxLineLength: 140
-  ParameterListWrapping:
-    maxLineLength: 140
-
 style:
   MaxLineLength:
     maxLineLength: 140

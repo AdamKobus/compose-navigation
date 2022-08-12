@@ -6,6 +6,12 @@
 
 ### Changes
 
+
+
+# 0.3.0
+
+### Changes
+
 - Added `NavDestination.popUpTo` which is equivalent of `NavHostController.popBackStack(route, saveState, inclusive)`
 - `NavRoute` and `NavRouteBuilder` no longer accept custom path separators. Separator is now hardcoded to '/'
 - Added `ComposeNavHost`. It is now a recommended way to declare NavHost
@@ -22,6 +28,7 @@
 - #96 `NavStackEntry` is no longer nullable in `composableDestination` lambda
 - Improved error messages when reading NavStackEntry arguments
 - Added support for Long, Float, Double and Boolean navigation arguments
+- updated AGP to 7.2.2, updated other dependencies
 
 # 0.2.0
 
