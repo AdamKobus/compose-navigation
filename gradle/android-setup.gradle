@@ -24,11 +24,11 @@ subprojects { subproject ->
 
 def configureAndroidProject(Project androidProject, boolean isApplication) {
     androidProject.android {
-        compileSdkVersion 32
+        compileSdkVersion 33
 
         defaultConfig {
             minSdkVersion 26
-            targetSdkVersion 32
+            targetSdkVersion 33
             testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
             if (isApplication) {
@@ -58,8 +58,8 @@ def configureAndroidProject(Project androidProject, boolean isApplication) {
         }
 
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_11
-            targetCompatibility JavaVersion.VERSION_11
+            sourceCompatibility JavaVersion.VERSION_17
+            targetCompatibility JavaVersion.VERSION_17
         }
 
         buildFeatures {
@@ -81,18 +81,15 @@ def configureKotlinAndroid(Project kotlinProject) {
     kotlinProject.pluginManager.apply("org.jlleitschuh.gradle.ktlint")
     kotlinProject.android {
         kotlinOptions {
-            jvmTarget = '11'
+            jvmTarget = '17'
         }
     }
     kotlinProject.ktlint {
-        version = Lib.KTLINT_VERSION
         outputColorName = "RED"
         outputToConsole = true
 
         reporters {
-            reporter "checkstyle"
             reporter "plain"
-            reporter "sarif"
         }
         filter {
             exclude("**/generated/**")
