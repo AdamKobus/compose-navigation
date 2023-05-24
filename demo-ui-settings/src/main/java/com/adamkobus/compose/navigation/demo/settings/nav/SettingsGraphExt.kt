@@ -10,7 +10,6 @@ import com.adamkobus.compose.navigation.ext.composableNavigation
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.settingsGraph() {
     composableNavigation(SettingsGraph) {
-
         composableDestination(SettingsGraph.SettingsHome) {
             SettingsHomeScreen()
         }

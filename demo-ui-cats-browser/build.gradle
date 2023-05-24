@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-
+    namespace 'com.adamkobus.compose.navigation.demo.ui.cats'
 }
 
 dependencies {

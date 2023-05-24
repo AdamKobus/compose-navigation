@@ -18,7 +18,7 @@ class NavStackEntryTest {
         "stringArg" to "asdf",
         "floatArg" to "0.5",
         "doubleArg" to "0.123",
-        "booleanArg" to "true",
+        "booleanArg" to "true"
     )
 
     private val testSubject = NavStackEntry(destination, arguments)

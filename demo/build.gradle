@@ -8,6 +8,8 @@ plugins {
 }
 
 android {
+    namespace "com.adamkobus.compose.navigation.demo"
+
     defaultConfig {
         applicationId "com.adamkobus.compose.navigation.demo"
     }

@@ -12,7 +12,6 @@ import com.adamkobus.compose.navigation.ext.composableNavigation
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.catsBrowserGraph() {
     composableNavigation(CatsBrowserGraph) {
-
         composableDestination(CatsBrowserGraph.CatsList) {
             CatsListScreen()
         }

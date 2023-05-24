@@ -24,7 +24,8 @@ class DemoTabsNavigationVM @Inject constructor(
     private val animalsTabHostState = mutableStateOf(
         AnimalsTabHostState(
             items = listOf(
-                DemoTabs.Dogs, DemoTabs.Cats
+                DemoTabs.Dogs,
+                DemoTabs.Cats
             ).sortedBy { it.index },
             selectedIndex = 0
         )

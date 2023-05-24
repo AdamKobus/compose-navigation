@@ -10,7 +10,6 @@ import com.adamkobus.compose.navigation.ext.composableNavigation
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.onBoardingGraph() {
     composableNavigation(OnBoardingGraph) {
-
         composableDestination(OnBoardingGraph.WelcomeScreen) {
             WelcomeScreen()
         }

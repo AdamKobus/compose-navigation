@@ -6,7 +6,14 @@
 
 ### Changes
 
+# 0.3.1
 
+### Changes
+
+- Updated Kotlin version to 1.8.21
+- Updated Jetpack Compose version to 1.4.3
+- Updated Java version to 17
+- Updated Accompanist version to 0.30.1
 
 # 0.3.0
 

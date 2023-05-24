@@ -15,7 +15,7 @@ class NavigateAction(
     private val fromNavDestination: NavDestination,
     private val toNavDestination: NavDestination,
     private val params: List<String> = emptyList(),
-    private val options: NavOptions? = null,
+    private val options: NavOptions? = null
 ) : NavAction(fromDestination = fromNavDestination, toDestination = toNavDestination) {
 
     /**

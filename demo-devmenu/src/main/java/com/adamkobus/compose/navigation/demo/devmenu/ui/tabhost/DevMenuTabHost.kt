@@ -29,7 +29,7 @@ internal fun DevMenuTabHost(modifier: Modifier) {
 private fun DevMenuTabHostContent(
     modifier: Modifier,
     state: DevMenuTabHostState = DevMenuTabHostState.stub(),
-    interactions: DevMenuTabHostInteractions = DevMenuTabHostInteractions.STUB,
+    interactions: DevMenuTabHostInteractions = DevMenuTabHostInteractions.STUB
 ) {
     Box(modifier = modifier) {
         Crossfade(targetState = state.isVisible.value) { renderedIsVisible ->
