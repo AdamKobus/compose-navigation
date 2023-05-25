@@ -28,9 +28,6 @@ jobs:
       - name: Build project
         run: ./gradlew clean :composenav:assembleRelease
 
-      - name: Create source jar
-        run: ./gradlew :composenav:androidSourcesJar
-
       - name: Publish to MavenCentral
         run: ./gradlew :composenav:publishReleasePublicationToSonatypeRepository
         env:
