@@ -124,6 +124,26 @@ object AppNavActionVerifier : NavActionVerifier {
 - handle complex navigation like bottom tab bar 
   (see [TabBarIntentResolver](composenav/src/main/java/com/adamkobus/compose/navigation/TabBarIntentResolver.kt))
 
+### Access to NavDestination used to render the screen
+
+Sometimes you might want to learn what destination was used to render the current screen dynamically,
+i.e. when screen is reused in multiple destinations and you don't want to hardcode it within view or view model.
+
+In such case it's risky to rely on the back stack, because it will change during screen transitions.
+
+This library introduces [LocalNavDestination](composenav/src/main/java/com/adamkobus/compose/navigation/ui/LocalNavDestination.kt) 
+to address this issue.
+
+```kotlin
+// graph
+composableDestination(MyGraph.Home) { HomeScreen() }
+
+// HomeScreen.kt
+fun HomeScreen() {
+    val destination = LocalNavDestination.current // this will return MyGraph.Home
+}
+```
+
 ## Links
 
 - [Documentation with examples](docs/README.md)

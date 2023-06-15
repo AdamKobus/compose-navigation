@@ -6,6 +6,12 @@
 
 ### Changes
 
+# 0.3.2
+
+### Changes
+
+- Added `LocalNavDestination` - composition context that provides the `NavDestination` used to render the current screen
+
 # 0.3.1
 
 ### Changes
