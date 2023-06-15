@@ -6,6 +6,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
@@ -18,6 +19,7 @@ import com.adamkobus.compose.navigation.destination.NavGraph
 import com.adamkobus.compose.navigation.destination.NavStackEntry
 import com.adamkobus.compose.navigation.destination.ScreenDestination
 import com.adamkobus.compose.navigation.model.toNavStackEntry
+import com.adamkobus.compose.navigation.ui.LocalNavDestination
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.navigation
 
@@ -73,7 +75,9 @@ fun NavGraphBuilder.composableDestination(
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
         content = { backStackEntry ->
-            content(backStackEntry.toNavStackEntry())
+            CompositionLocalProvider(LocalNavDestination provides destination) {
+                content(backStackEntry.toNavStackEntry())
+            }
         }
     )
 }
@@ -96,7 +100,9 @@ fun NavGraphBuilder.composableDialog(
         deepLinks = deepLinks,
         dialogProperties = dialogProperties,
         content = { backStackEntry ->
-            content(backStackEntry.toNavStackEntry())
+            CompositionLocalProvider(LocalNavDestination provides destination) {
+                content(backStackEntry.toNavStackEntry())
+            }
         }
     )
 }
