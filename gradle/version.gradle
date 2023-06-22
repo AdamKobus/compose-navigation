@@ -1,4 +1,4 @@
-def VERSION_BASE = "0.3.2"
+def VERSION_BASE = "0.3.3"
 
 rootProject.readParam("mavenSnapshot", true)
 
