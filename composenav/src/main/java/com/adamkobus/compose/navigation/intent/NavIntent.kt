@@ -36,24 +36,22 @@ data class NavIntent(
     /**
      * Creates a copy of [NavIntent] with [pair] added to its arguments
      */
-    operator fun plus(pair: Pair<String, Any>): NavIntent = addArgument(pair.first, pair.second)
-
-    /**
-     * Creates a copy of [NavIntent] with ([key], [value]) pair added to its arguments
-     */
-    fun addArgument(key: String, value: Any): NavIntent = copy(
+    operator fun plus(pair: Pair<String, Any>): NavIntent = copy(
         arguments = arguments.toMutableMap().also {
-            it[key] = value
+            it[pair.first] = pair.second
         }
     )
 
+    fun addArgument(key: String, value: Any) {
+        arguments[key] = value
+    }
+
     /**
      * Returns a value that was previously added via [addArgument] under the same [key]
-     *
-     * @throws NullPointerException if argument was not found
      */
-    operator fun get(key: String): Any {
-        return arguments[key]!!
+    fun <T> getArgument(key: String): T {
+        @Suppress("UNCHECKED_CAST")
+        return arguments[key] as T
     }
 
     /**
@@ -62,7 +60,7 @@ data class NavIntent(
      * @throws NullPointerException if argument was not found
      */
     fun getString(key: String): String {
-        return this[key] as String
+        return this.getArgument(key)
     }
 
     /**
@@ -71,7 +69,7 @@ data class NavIntent(
      * @throws NullPointerException if argument was not found
      */
     fun getInt(key: String): Int {
-        return this[key] as Int
+        return this.getArgument(key)
     }
 
     /**
