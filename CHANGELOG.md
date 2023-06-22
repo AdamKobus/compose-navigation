@@ -11,6 +11,7 @@
 ### Changes
 
 - Added `LocalNavDestination` - composition context that provides the `NavDestination` used to render the current screen
+- Changes in `NavIntent` API - `get` function was renamed to `getArgument` and `addArgument` no longer creates a copy of `NavIntent`
 
 # 0.3.1
 
