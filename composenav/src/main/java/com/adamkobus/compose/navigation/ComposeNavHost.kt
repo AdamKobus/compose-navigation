@@ -1,6 +1,6 @@
 package com.adamkobus.compose.navigation
 
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -34,12 +34,12 @@ fun ComposeNavHost(
     navigationId: NavigationId,
     modifier: Modifier = Modifier,
     contentAlignment: Alignment = Alignment.Center,
-    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition) =
+    enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
         { fadeIn(animationSpec = tween(DEFAULT_ANIM_DURATION_MS)) },
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition) =
+    exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
         { fadeOut(animationSpec = tween(DEFAULT_ANIM_DURATION_MS)) },
-    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition) = enterTransition,
-    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition) = exitTransition,
+    popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) = enterTransition,
+    popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) = exitTransition,
     builder: NavGraphBuilder.() -> Unit
 ) {
     val graphRoutes = remember { NavGraphNamesExtractor.extractGraphNames(controller, startGraph.serializedRoute, builder) }

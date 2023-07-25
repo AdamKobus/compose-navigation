@@ -3,6 +3,7 @@ package com.adamkobus.compose.navigation.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -44,11 +45,11 @@ private fun CurrentBackStackEntryUpdater(
     backStackState: State<NavBackStackEntry?>
 ) {
     val currentBackStackEntry = backStackState.value
-    val queue = navController.backQueue
+    val queue = navController.currentBackStack.collectAsState().value
     val updateState = BackStackEntryUpdateState(currentBackStackEntry, queue)
 
     LaunchedEffect(key1 = updateState) {
-        vm.processBackStackEntry(currentBackStackEntry, navController.backQueue)
+        vm.processBackStackEntry(currentBackStackEntry, queue)
     }
 }
 

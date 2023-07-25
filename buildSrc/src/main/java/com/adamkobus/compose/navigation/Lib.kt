@@ -4,14 +4,14 @@ object Lib {
     /**
      * [Jetpack Compose Releases](https://developer.android.com/jetpack/androidx/versions/all-channel)
      */
-    const val COMPOSE_VERSION = "1.4.3"
+    const val COMPOSE_VERSION = "1.5.0-beta03"
 
-    const val COMPOSE_COMPILER_VERSION = "1.4.7"
+    const val COMPOSE_COMPILER_VERSION = "1.5.0"
 
     /**
      * [Kotlin Releases](https://kotlinlang.org/docs/releases.html#release-details)
      */
-    const val KOTLIN_VERSION = "1.8.21"
+    const val KOTLIN_VERSION = "1.9.0"
 
     /**
      * [Dokka Releases](https://github.com/Kotlin/dokka/releases)
@@ -21,17 +21,17 @@ object Lib {
     /**
      * [Accompanist Version](https://github.com/google/accompanist/releases)
      */
-    const val ACCOMPANIST_VERSION = "0.30.1"
+    const val ACCOMPANIST_VERSION = "0.31.5-beta"
 
     /**
      * [Kotlint Coroutines Releases](https://github.com/Kotlin/kotlinx.coroutines/releases)
      */
-    const val KOTLIN_COROUTINES_VERSION = "1.7.1"
+    const val KOTLIN_COROUTINES_VERSION = "1.7.2"
 
     /**
      * [Hilt Releases](https://github.com/google/dagger/releases)
      */
-    const val HILT_VERSION = "2.46.1"
+    const val HILT_VERSION = "2.47"
 
     /**
      * [Ktlint Releases](https://github.com/pinterest/ktlint/releases)
@@ -51,7 +51,7 @@ object Lib {
         /**
          * [Compose Activity Releases](https://androidx.tech/artifacts/activity/activity-compose/)
          */
-        const val Activity = "androidx.activity:activity-compose:1.7.1"
+        const val Activity = "androidx.activity:activity-compose:1.7.2"
         const val Ui = "androidx.compose.ui:ui:$COMPOSE_VERSION"
         const val Material = "androidx.compose.material:material:$COMPOSE_VERSION"
         const val ToolingPreview = "androidx.compose.ui:ui-tooling-preview:$COMPOSE_VERSION"
