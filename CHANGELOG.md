@@ -6,6 +6,16 @@
 
 ### Changes
 
+# 0.3.4
+
+### Changes
+
+- Updated Kotlin to `1.9.0`
+- Updated Compose to `1.5.0-beta`
+
+Migration:
+- Replace `AnimatedContentScope` with `AnimatedContentTransitionScope`
+
 # 0.3.3
 
 ### Changes
