@@ -23,16 +23,19 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'gradle'
 
       - name: Decrypt secrets
         run: scripts/decrypt-secrets.sh "${{ secrets.SECRETS_PASSPHRASE }}"
 
       - name: Build project
-        run: ./gradlew clean :composenav:assembleRelease
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: clean :composenav:assembleRelease
 
       - name: Publish to MavenCentral
-        run: ./gradlew publishReleasePublicationToSonatypeRepository closeAndReleaseSonatypeStagingRepository --max-workers 1
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: publishReleasePublicationToSonatypeRepository closeAndReleaseSonatypeStagingRepository --max-workers 1
 
       - name: Clean up secrets
         if: always()
