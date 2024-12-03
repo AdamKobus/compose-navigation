@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.3.0"
+    implementation "com.adamkobus:compose-navigation:1.0.0"
 }
 ```
 
@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.adamkobus:compose-navigation:0.3.0-SNAPSHOT"
+    implementation "com.adamkobus:compose-navigation:1.0.0-SNAPSHOT"
 }
 ```
 

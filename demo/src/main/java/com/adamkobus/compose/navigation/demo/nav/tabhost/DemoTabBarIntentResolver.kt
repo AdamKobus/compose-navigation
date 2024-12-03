@@ -11,8 +11,8 @@ import javax.inject.Inject
 class DemoTabBarIntentResolver @Inject constructor() : TabBarIntentResolver(
     mapOf(
         DemoIntents.OpenDogsBrowser.name to DogsBrowserGraph,
-        DemoIntents.OpenCatsBrowser.name to CatsBrowserGraph
+        DemoIntents.OpenCatsBrowser.name to CatsBrowserGraph,
     ),
     AppRootGraph,
-    tabStateSavingBehaviour = TabStateSavingBehaviour.SAVE_START_DESTINATION
+    tabStateSavingBehaviour = TabStateSavingBehaviour.SAVE_START_DESTINATION,
 )

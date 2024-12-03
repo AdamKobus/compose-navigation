@@ -15,7 +15,7 @@ import com.adamkobus.compose.navigation.error.NavArgumentMissingError
  */
 data class NavStackEntry(
     val destination: NavDestination,
-    val arguments: Map<String, String>
+    val arguments: Map<String, String>,
 ) {
     /**
      * Returns a String representation of [NavStackEntry]
@@ -47,7 +47,7 @@ data class NavStackEntry(
             return stringValue.toInt()
         } catch (e: NumberFormatException) {
             throw NavArgumentFormatInvalidError(
-                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Int"
+                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Int",
             )
         }
     }
@@ -65,7 +65,7 @@ data class NavStackEntry(
             return stringValue.toLong()
         } catch (e: NumberFormatException) {
             throw NavArgumentFormatInvalidError(
-                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Long"
+                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Long",
             )
         }
     }
@@ -83,7 +83,7 @@ data class NavStackEntry(
             return stringValue.toFloat()
         } catch (e: NumberFormatException) {
             throw NavArgumentFormatInvalidError(
-                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Float"
+                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Float",
             )
         }
     }
@@ -101,7 +101,7 @@ data class NavStackEntry(
             return stringValue.toDouble()
         } catch (e: NumberFormatException) {
             throw NavArgumentFormatInvalidError(
-                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Double"
+                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Double",
             )
         }
     }
@@ -118,7 +118,7 @@ data class NavStackEntry(
             "true" -> true
             "false" -> false
             else -> throw NavArgumentFormatInvalidError(
-                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Boolean"
+                "Value '$stringValue' of argument '$key' in destination '${this.destination}' could not be parsed to Boolean",
             )
         }
     }

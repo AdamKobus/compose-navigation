@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,15 +28,17 @@ fun HomeScreen() {
 fun HomeScreenContent(interactions: HomeScreenInteractions) {
     ScreenBackground {
         Column(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
-                .padding(Paddings.Screen)
+                .padding(Paddings.Screen),
         ) {
             Text(
                 text = stringResource(id = R.string.home_screen_description),
-                modifier = Modifier
+                modifier =
+                Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(45.dp))
             Button(onClick = interactions.onContinueClicked, modifier = Modifier.fillMaxWidth()) {

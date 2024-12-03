@@ -11,7 +11,6 @@ import org.junit.Before
 import org.junit.Test
 
 class NavigateActionTest {
-
     private val controller: NavHostController = mockk()
     private val fromDestination: NavDestination = mockk()
     private val toDestination: NavDestination = mockk()

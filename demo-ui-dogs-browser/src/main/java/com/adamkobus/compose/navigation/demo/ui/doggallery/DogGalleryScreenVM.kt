@@ -18,21 +18,22 @@ import javax.inject.Inject
 @HiltViewModel
 class DogGalleryScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
-    private val topBarState: AppBarStateSource
+    private val topBarState: AppBarStateSource,
 ) : LifecycleAwareViewModel() {
-
     val dogId = ViewParam<Int>()
 
-    private val appBarState = AnimatedAppBarState(
-        titleState = AppBarTitleState(titleResId = R.string.dog_gallery_title),
-        iconState = AppBarIconState.back { onBackPressed() }
-    )
+    private val appBarState =
+        AnimatedAppBarState(
+            titleState = AppBarTitleState(titleResId = R.string.dog_gallery_title),
+            iconState = AppBarIconState.back { onBackPressed() },
+        )
 
-    val interactions = DogGalleryScreenInteractions(
-        onBackToListClicked = {
-            navigationConsumer.offer(FromDogsGallery.ToList)
-        }
-    )
+    val interactions =
+        DogGalleryScreenInteractions(
+            onBackToListClicked = {
+                navigationConsumer.offer(FromDogsGallery.ToList)
+            },
+        )
 
     init {
         runOnStart {

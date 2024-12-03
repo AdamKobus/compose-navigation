@@ -15,9 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
-    private val appBarStateSource: AppBarStateSource
+    private val appBarStateSource: AppBarStateSource,
 ) : LifecycleAwareViewModel() {
-
     private val appBarState = AnimatedAppBarState()
 
     init {

@@ -3,8 +3,8 @@ package com.adamkobus.compose.navigation.demo.ui.doggallery
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,9 +33,10 @@ private fun DogGalleryScreenContent(interactions: DogGalleryScreenInteractions) 
 @Composable
 fun InnerContent(interactions: DogGalleryScreenInteractions) {
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
-            .padding(Paddings.ScreenWithTabHostInsets)
+            .padding(Paddings.ScreenWithTabHostInsets),
     ) {
         Button(onClick = interactions.onBackToListClicked, modifier = Modifier.align(Alignment.BottomCenter)) {
             Text(text = stringResource(id = R.string.dog_gallery_back_to_list_button))

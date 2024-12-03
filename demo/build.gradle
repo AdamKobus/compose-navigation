@@ -1,10 +1,9 @@
-import com.adamkobus.compose.navigation.Lib
-
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -25,16 +24,13 @@ dependencies {
 
     debugImplementation project(':demo-devmenu')
 
-    implementation Lib.Google.Material
+    implementation libs.compose.material3
 
     // hilt
-    implementation Lib.Google.Hilt
-    kapt Lib.Google.HiltCompiler
-
-    // compose
-    implementation Lib.Accompanist.NavigationAnimation
+    implementation libs.google.hilt.core
+    ksp libs.google.hilt.compiler
 
     // testing
-    testImplementation Lib.Test.JUnit
-    testImplementation Lib.Test.Mockk
+    testImplementation libs.test.junit
+    testImplementation libs.test.mockk
 }

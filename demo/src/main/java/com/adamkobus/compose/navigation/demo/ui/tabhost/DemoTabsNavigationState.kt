@@ -4,15 +4,15 @@ import androidx.compose.runtime.State
 
 data class DemoTabsNavigationState(
     val tabHostType: State<TabHostType>,
-    val animalsTabHostState: State<AnimalsTabHostState>
+    val animalsTabHostState: State<AnimalsTabHostState>,
 )
 
 data class AnimalsTabHostState(
     val items: List<DemoTabData>,
-    val selectedIndex: Int
+    val selectedIndex: Int,
 )
 
 enum class TabHostType {
     NONE,
-    ANIMALS
+    ANIMALS,
 }

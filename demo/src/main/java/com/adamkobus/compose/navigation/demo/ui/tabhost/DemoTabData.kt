@@ -7,7 +7,6 @@ data class DemoTabData(
     val index: Int,
     @DrawableRes
     val iconResId: Int,
-
     @StringRes
-    val titleResId: Int
+    val titleResId: Int,
 )

@@ -7,7 +7,6 @@ import com.adamkobus.compose.navigation.action.NavAction
  * Produced as a result of [NavIntent] processing by [NavIntentResolver]s
  */
 sealed class ResolveResult {
-
     /**
      * Indicates that [NavIntent] was resolved to the [action]
      *

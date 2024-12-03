@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class YellowDialogVM @Inject constructor(
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-
-    val interactions = YellowDialogInteractions(
-        onDismissClicked = {
-            navigationConsumer.offer(YellowGraph.Dialog.pop())
-        }
-    )
+    val interactions =
+        YellowDialogInteractions(
+            onDismissClicked = {
+                navigationConsumer.offer(YellowGraph.Dialog.pop())
+            },
+        )
 }

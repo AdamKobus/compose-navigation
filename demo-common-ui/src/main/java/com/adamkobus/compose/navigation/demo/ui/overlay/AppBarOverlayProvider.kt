@@ -7,9 +7,10 @@ import javax.inject.Inject
 
 class AppBarOverlayProvider @Inject constructor() : OverlayProvider {
     @Composable
-    override fun provideOverlay(): @Composable BoxScope.() -> Unit = {
-        AnimatedAppBar()
-    }
+    override fun provideOverlay(): @Composable BoxScope.() -> Unit =
+        {
+            AnimatedAppBar()
+        }
 
     override val priority: Int
         get() = PRIORITY

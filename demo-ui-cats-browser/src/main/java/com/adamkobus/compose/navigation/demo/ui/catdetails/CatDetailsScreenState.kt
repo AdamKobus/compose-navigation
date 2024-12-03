@@ -5,5 +5,5 @@ import com.adamkobus.compose.navigation.democore.data.CatInfo
 import com.adamkobus.compose.navigation.democore.util.AsyncData
 
 data class CatDetailsScreenState(
-    val catInfo: State<AsyncData<CatInfo, Throwable>>
+    val catInfo: State<AsyncData<CatInfo, Throwable>>,
 )

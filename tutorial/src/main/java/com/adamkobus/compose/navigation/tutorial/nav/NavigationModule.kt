@@ -10,7 +10,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module
 object NavigationModule {
-
     @Provides
     fun providesNavigationConsumer(): NavigationConsumer = ComposeNavigation.getNavigationConsumer()
 }

@@ -5,7 +5,6 @@ import org.junit.After
 import org.junit.Test
 
 class ComposeNavigationTest {
-
     @After
     fun cleanUp() {
         ComposeNavigation.reset()

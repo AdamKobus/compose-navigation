@@ -4,7 +4,6 @@ import android.util.Log
 import com.adamkobus.compose.navigation.ComposeNavigation
 
 internal object NavLoggerImpl : NavLogger {
-
     private const val TAG = "Navigation"
 
     private var logLevel: Int = ComposeNavigation.DEFAULT_LOG_LEVEL
@@ -15,7 +14,10 @@ internal object NavLoggerImpl : NavLogger {
         }
     }
 
-    override fun v(error: Throwable, message: String) {
+    override fun v(
+        error: Throwable,
+        message: String,
+    ) {
         if (canLog(Log.VERBOSE)) {
             Log.v(TAG, message, error)
         }
@@ -27,7 +29,10 @@ internal object NavLoggerImpl : NavLogger {
         }
     }
 
-    override fun d(error: Throwable, message: String) {
+    override fun d(
+        error: Throwable,
+        message: String,
+    ) {
         if (canLog(Log.DEBUG)) {
             Log.d(TAG, message, error)
         }
@@ -39,7 +44,10 @@ internal object NavLoggerImpl : NavLogger {
         }
     }
 
-    override fun w(error: Throwable, message: String) {
+    override fun w(
+        error: Throwable,
+        message: String,
+    ) {
         if (canLog(Log.WARN)) {
             Log.w(TAG, message, error)
         }
@@ -51,7 +59,10 @@ internal object NavLoggerImpl : NavLogger {
         }
     }
 
-    override fun e(error: Throwable, message: String) {
+    override fun e(
+        error: Throwable,
+        message: String,
+    ) {
         if (canLog(Log.ERROR)) {
             Log.e(TAG, message, error)
         }
@@ -61,5 +72,7 @@ internal object NavLoggerImpl : NavLogger {
         logLevel = level
     }
 
-    private fun canLog(@NavLogLevel level: Int) = level >= logLevel
+    private fun canLog(
+        @NavLogLevel level: Int,
+    ) = level >= logLevel
 }

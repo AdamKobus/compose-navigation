@@ -14,13 +14,13 @@ import javax.inject.Inject
 @HiltViewModel
 internal class HomeScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
-    private val appBarStateSource: AppBarStateSource
+    private val appBarStateSource: AppBarStateSource,
 ) : LifecycleAwareViewModel() {
-
-    private val appBarState = AnimatedAppBarState(
-        titleState = AppBarTitleState(titleResId = R.string.settings_title),
-        iconState = AppBarIconState.back { onBackClicked() }
-    )
+    private val appBarState =
+        AnimatedAppBarState(
+            titleState = AppBarTitleState(titleResId = R.string.settings_title),
+            iconState = AppBarIconState.back { onBackClicked() },
+        )
 
     init {
         runOnStart {

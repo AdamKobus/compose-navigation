@@ -6,18 +6,18 @@ package com.adamkobus.compose.navigation.destination
  * @param parts Initial parts
  */
 data class NavRoute constructor(
-    private val parts: List<NavRoutePart>
+    private val parts: List<NavRoutePart>,
 ) {
-
     private val paramsCount: Int by lazy { parts.count { it is NavRoutePart.Param } }
 
     /**
      * Returns the names of all of the params present in this route.
      */
     val paramNames: List<String>
-        get() = parts.mapNotNull { part ->
-            part as? NavRoutePart.Param
-        }.map { it.paramName }
+        get() =
+            parts.mapNotNull { part ->
+                part as? NavRoutePart.Param
+            }.map { it.paramName }
 
     /**
      * @return route definition that can be later used with TODO refer class from Jetpack navigation
@@ -39,8 +39,8 @@ data class NavRoute constructor(
      * @throws [IllegalArgumentException] if number of provided params doesn't match the expected params count.
      */
     fun buildPath(params: List<String>): String {
-        if (params.size != paramsCount) {
-            throw IllegalArgumentException("Wrong number of params, expected $paramsCount but got ${params.size} | $params")
+        require(params.size == paramsCount) {
+            "Wrong number of params, expected $paramsCount but got ${params.size} | $params"
         }
         var currentParamIndex = 0
         return parts.joinToString(separator = PART_SEPARATOR) {
@@ -55,10 +55,12 @@ data class NavRoute constructor(
     /**
      * Starts building a new route using builder that is populated with [NavRoutePart]s from the [NavRoute] on which [next] was invoked.
      */
-    fun next(init: Builder.() -> Unit = {}): NavRoute =
-        next(reservedNamesCheck = true, init)
+    fun next(init: Builder.() -> Unit = {}): NavRoute = next(reservedNamesCheck = true, init)
 
-    internal fun next(reservedNamesCheck: Boolean = true, init: Builder.() -> Unit = {}): NavRoute {
+    internal fun next(
+        reservedNamesCheck: Boolean = true,
+        init: Builder.() -> Unit = {},
+    ): NavRoute {
         val builder = Builder(parts, reservedNamesCheck = reservedNamesCheck)
         builder.init()
         return builder.build()
@@ -96,7 +98,7 @@ data class NavRoute constructor(
 
         internal constructor(graphName: String, pathName: String, reservedNamesCheck: Boolean) : this(
             emptyList(),
-            reservedNamesCheck = reservedNamesCheck
+            reservedNamesCheck = reservedNamesCheck,
         ) {
             graphName(graphName)
             path(pathName)
@@ -125,8 +127,8 @@ data class NavRoute constructor(
         }
 
         private fun ensureNameNotEmpty(name: String) {
-            if (name.isEmpty()) {
-                throw IllegalArgumentException("Name must not be empty")
+            require(name.isNotEmpty()) {
+                "Name must not be empty"
             }
         }
 
@@ -155,13 +157,15 @@ data class NavRoute constructor(
  *
  * @param graphName Name of the graph the builder will be initialized with
  */
-fun navRoute(graphName: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute =
-    navRoute(graphName = graphName, reservedNamesCheck = true, init = init)
+fun navRoute(
+    graphName: String,
+    init: NavRoute.Builder.() -> Unit = {},
+): NavRoute = navRoute(graphName = graphName, reservedNamesCheck = true, init = init)
 
 internal fun navRoute(
     graphName: String,
     reservedNamesCheck: Boolean = true,
-    init: NavRoute.Builder.() -> Unit = {}
+    init: NavRoute.Builder.() -> Unit = {},
 ): NavRoute {
     val builder = NavRoute.Builder(graphName = graphName, reservedNamesCheck = reservedNamesCheck)
     builder.init()
@@ -174,14 +178,17 @@ internal fun navRoute(
  * @param graphName Name of the graph the builder will be initialized with
  * @param path Path to initialize the builder with
  */
-fun navRoute(graphName: String, path: String, init: NavRoute.Builder.() -> Unit = {}): NavRoute =
-    navRoute(graphName = graphName, path = path, reservedNamesCheck = true, init = init)
+fun navRoute(
+    graphName: String,
+    path: String,
+    init: NavRoute.Builder.() -> Unit = {},
+): NavRoute = navRoute(graphName = graphName, path = path, reservedNamesCheck = true, init = init)
 
 internal fun navRoute(
     graphName: String,
     path: String,
     reservedNamesCheck: Boolean = true,
-    init: NavRoute.Builder.() -> Unit = {}
+    init: NavRoute.Builder.() -> Unit = {},
 ): NavRoute {
     val builder = NavRoute.Builder(graphName = graphName, pathName = path, reservedNamesCheck = reservedNamesCheck)
     builder.init()

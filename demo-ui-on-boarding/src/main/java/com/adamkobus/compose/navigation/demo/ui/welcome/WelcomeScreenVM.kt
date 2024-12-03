@@ -11,17 +11,17 @@ import javax.inject.Inject
 @HiltViewModel
 class WelcomeScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
-    private val appBarStateSource: AppBarStateSource
+    private val appBarStateSource: AppBarStateSource,
 ) : LifecycleAwareViewModel() {
-
-    val interactions = WelcomeScreenInteractions(
-        onDogsSelected = {
-            navigationConsumer.offer(FromWelcome.ToDogsList)
-        },
-        onCatsSelected = {
-            navigationConsumer.offer(FromWelcome.ToCatsList)
-        }
-    )
+    val interactions =
+        WelcomeScreenInteractions(
+            onDogsSelected = {
+                navigationConsumer.offer(FromWelcome.ToDogsList)
+            },
+            onCatsSelected = {
+                navigationConsumer.offer(FromWelcome.ToCatsList)
+            },
+        )
 
     private val appBatState = AnimatedAppBarState()
 

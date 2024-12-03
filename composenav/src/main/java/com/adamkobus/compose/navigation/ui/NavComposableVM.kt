@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class NavComposableVM : ViewModel(), ActionConsumer {
-
     val viewParam = ViewParam<NavComposableParam>()
 
     private val logger: NavLogger
@@ -74,7 +73,10 @@ internal class NavComposableVM : ViewModel(), ActionConsumer {
         pendingActionState.value = PendingActionState.Missing
     }
 
-    fun processBackStackEntry(entry: NavBackStackEntry?, backQueue: List<NavBackStackEntry>) {
+    fun processBackStackEntry(
+        entry: NavBackStackEntry?,
+        backQueue: List<NavBackStackEntry>,
+    ) {
         navDelegate?.onBackStackEntryUpdated(this@NavComposableVM, entry, backQueue)
         if (entry != null) {
             loadingCompletable?.let {
@@ -94,5 +96,5 @@ internal class NavComposableVM : ViewModel(), ActionConsumer {
 
 internal data class NavComposableParam(
     val navigationId: NavigationId,
-    val graphs: List<String>
+    val graphs: List<String>,
 )

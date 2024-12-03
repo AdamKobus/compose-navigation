@@ -26,11 +26,11 @@ internal class NavIntentHistory(startingIntent: NavIntent) {
 
     fun popNode(intent: NavIntent) {
         if (nodes.last() == intent) {
-            nodes.removeLast()
+            nodes.removeAt(nodes.lastIndex)
         } else {
             throw IllegalStateException(
                 "Last node is different from the one that should be removed. " +
-                    "Current last: ${nodes.last()} | node to remove $intent"
+                    "Current last: ${nodes.last()} | node to remove $intent",
             )
         }
     }

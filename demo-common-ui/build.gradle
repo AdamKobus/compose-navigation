@@ -1,10 +1,9 @@
-import com.adamkobus.compose.navigation.Lib
-
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -15,24 +14,27 @@ dependencies {
     api project(':demo-core')
     api project(':composenav')
 
-    api Lib.AndroidX.Core
-    api Lib.AndroidX.Appcompat
-    api Lib.Kotlin.Coroutines
-    api Lib.AdamKobus.LifecycleAwareViewModel
+    api libs.androidx.core
+    api libs.androidx.appcompat
+
+    api libs.kotlin.coroutines
+    api libs.ak.lifecycle.vm
 
     // hilt
-    implementation Lib.Google.Hilt
-    api Lib.Google.HiltNavigationCompose
-    kapt Lib.Google.HiltCompiler
+    implementation libs.google.hilt.core
+    ksp libs.google.hilt.compiler
 
     // compose
-    api Lib.Compose.Ui
-    api Lib.Compose.Activity
-    api Lib.Compose.Material
-    api Lib.Compose.ToolingPreview
-    debugApi Lib.Compose.UiTooling
+    api platform(libs.compose.bom)
+    api libs.compose.ui
+    api libs.compose.activity
+    api libs.compose.material
+    api libs.compose.material3
+    api libs.compose.tooling.preview
+    api libs.compose.hilt
+    debugApi libs.compose.tooling.ui
 
     // testing
-    testImplementation Lib.Test.JUnit
-    testImplementation Lib.Test.Mockk
+    testImplementation libs.test.junit
+    testImplementation libs.test.mockk
 }

@@ -11,7 +11,6 @@ import junit.framework.TestCase.assertNull
 import org.junit.Test
 
 class NavGatekeeperTest {
-
     @Test
     fun `GIVEN at least one verifier returns false WHEN isNavActionAllowed THEN returns false`() {
         // given

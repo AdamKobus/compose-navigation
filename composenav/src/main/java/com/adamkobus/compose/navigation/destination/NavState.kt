@@ -8,7 +8,7 @@ import com.adamkobus.compose.navigation.NavigationId
  * @param controllersState Each [NavControllerState] represents the back stack state of tracked NavHost.
  */
 data class NavState(
-    val controllersState: List<NavControllerState>
+    val controllersState: List<NavControllerState>,
 ) {
     /**
      * Checks if provided destination is currently in back stack of any of the tracked controllers
@@ -51,7 +51,7 @@ data class NavState(
 data class NavControllerState(
     val navId: NavigationId,
     val currentDestination: NavStackEntry?,
-    val backStack: List<NavStackEntry>
+    val backStack: List<NavStackEntry>,
 ) {
     /**
      * Checks if provided destination is currently in back stack

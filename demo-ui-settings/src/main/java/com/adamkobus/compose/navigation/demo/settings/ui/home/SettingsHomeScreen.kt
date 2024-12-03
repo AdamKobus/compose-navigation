@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,11 +29,12 @@ internal fun SettingsHomeScreen() {
 @Composable
 fun HomeScreenContent() {
     Column(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
-            .padding(Paddings.Screen)
+            .padding(Paddings.Screen),
     ) {
-        Text(text = stringResource(id = R.string.settings_title), style = MaterialTheme.typography.h5)
+        Text(text = stringResource(id = R.string.settings_title), style = MaterialTheme.typography.titleSmall)
         Spacer(modifier = Modifier.height(30.dp))
         Text(text = stringResource(id = R.string.settings_dev_menu_info))
     }

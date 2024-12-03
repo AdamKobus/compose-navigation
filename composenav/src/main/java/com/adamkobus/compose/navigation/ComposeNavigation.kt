@@ -36,7 +36,6 @@ import kotlinx.coroutines.Dispatchers
  * - Current [NavLogger] via [ComposeNavigation.getLogger]
  */
 object ComposeNavigation {
-
     private const val DEFAULT_RESERVED_NAMES_ENABLED = true
     private const val DEFAULT_NAVIGATION_PROCESSING_TIMEOUT_MS = 1000L
 
@@ -113,7 +112,9 @@ object ComposeNavigation {
      *
      * @see [NavLogLevel]
      */
-    fun setLogLevel(@NavLogLevel level: Int): ComposeNavigation {
+    fun setLogLevel(
+        @NavLogLevel level: Int,
+    ): ComposeNavigation {
         this.logLevel = level
         navLogger.setLogLevel(level)
         return this
@@ -227,12 +228,12 @@ object ComposeNavigation {
     internal fun getNavGatekeeper(): NavGatekeeper = navGatekeeper
 
     internal fun getIoDispatcher(): CoroutineDispatcher = ioDispatcher
+
     internal fun getMainDispatcher(): CoroutineDispatcher = mainDispatcher
 
     internal fun getKnownDestinationsSource() = knownDestinationsSource
 
-    internal fun getNavDelegate(navigationId: NavigationId): NavDelegate =
-        navigationProcessor.getDispatcher(navigationId = navigationId)
+    internal fun getNavDelegate(navigationId: NavigationId): NavDelegate = navigationProcessor.getDispatcher(navigationId = navigationId)
 
     private fun createNavigationProcessor(): NavigationProcessor =
         NavigationProcessor(
@@ -242,9 +243,8 @@ object ComposeNavigation {
             timeoutProvider = provider { getNavigationProcessingTimeout() },
             loggerProvider = provider { getLogger() },
             navIntentResolver = navIntentResolvingManager,
-            navGatekeeper = navGatekeeper
+            navGatekeeper = navGatekeeper,
         )
 
-    internal fun getNavProcessor(): NavigationProcessor =
-        navigationProcessor
+    internal fun getNavProcessor(): NavigationProcessor = navigationProcessor
 }

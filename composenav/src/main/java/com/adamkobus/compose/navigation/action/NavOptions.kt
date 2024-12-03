@@ -19,7 +19,7 @@ data class NavOptions internal constructor(
     val launchSingleTop: Boolean,
     val restoreState: Boolean,
     val popOptions: PopOptions?,
-    val anim: AnimBuilder?
+    val anim: AnimBuilder?,
 ) {
     /**
      * [NavOptions] were introduced for internal use by Compose Navigation library.
@@ -60,9 +60,8 @@ data class NavOptionsBuilder internal constructor(
     var launchSingleTop: Boolean = false,
     var restoreState: Boolean = false,
     private var popOptions: PopOptions? = null,
-    private var animBuilder: AnimBuilder? = null
+    private var animBuilder: AnimBuilder? = null,
 ) {
-
     /**
      * Creates [PopOptions]
      *
@@ -82,7 +81,10 @@ data class NavOptionsBuilder internal constructor(
      *
      * @see [androidx.navigation.NavOptionsBuilder.popUpTo]
      */
-    fun popUpTo(destination: NavDestination, init: PopOptionsBuilder.() -> Unit) {
+    fun popUpTo(
+        destination: NavDestination,
+        init: PopOptionsBuilder.() -> Unit,
+    ) {
         this.popOptions = PopOptionsBuilder(destination).apply(init).build()
     }
 
@@ -116,7 +118,7 @@ data class NavOptionsBuilder internal constructor(
             launchSingleTop = launchSingleTop,
             restoreState = restoreState,
             popOptions = popOptions,
-            anim = animBuilder
+            anim = animBuilder,
         )
 }
 
@@ -136,7 +138,7 @@ data class NavOptionsBuilder internal constructor(
 data class PopOptions internal constructor(
     val destination: NavDestination,
     val saveState: Boolean,
-    val inclusive: Boolean
+    val inclusive: Boolean,
 )
 
 /**
@@ -160,13 +162,13 @@ data class PopOptions internal constructor(
 data class PopOptionsBuilder internal constructor(
     var destination: NavDestination,
     var saveState: Boolean = false,
-    var inclusive: Boolean = false
+    var inclusive: Boolean = false,
 ) {
     internal fun build(): PopOptions =
         PopOptions(
             destination = destination,
             saveState = saveState,
-            inclusive = inclusive
+            inclusive = inclusive,
         )
 }
 
@@ -178,5 +180,4 @@ data class PopOptionsBuilder internal constructor(
  * @see NavOptions
  * @see NavOptionsBuilder
  */
-fun navActionOptions(init: NavOptionsBuilder.() -> Unit): NavOptions =
-    NavOptionsBuilder().apply(init).build()
+fun navActionOptions(init: NavOptionsBuilder.() -> Unit): NavOptions = NavOptionsBuilder().apply(init).build()

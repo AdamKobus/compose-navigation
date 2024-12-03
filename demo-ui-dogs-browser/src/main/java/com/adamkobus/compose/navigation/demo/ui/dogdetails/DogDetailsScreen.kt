@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +35,7 @@ fun DogDetailsScreen(dogId: Int) {
 @Composable
 private fun DogDetailsScreenContent(
     screenState: DogDetailsScreenState,
-    interactions: DogDetailsScreenInteractions
+    interactions: DogDetailsScreenInteractions,
 ) {
     DemoAppBackground(usesTopBar = true) {
         when (val dogInfo = screenState.dogInfo.value) {
@@ -47,9 +47,12 @@ private fun DogDetailsScreenContent(
 }
 
 @Composable
-private fun DogDetails(dogInfo: DogInfo, interactions: DogDetailsScreenInteractions) {
+private fun DogDetails(
+    dogInfo: DogInfo,
+    interactions: DogDetailsScreenInteractions,
+) {
     Column(modifier = Modifier.padding(Paddings.Screen)) {
-        Text(text = dogInfo.name, style = MaterialTheme.typography.h2)
+        Text(text = dogInfo.name, style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.height(60.dp))
         Button(onClick = interactions.onOpenDialogClicked, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(id = R.string.dog_details_open_dialog_button))
@@ -64,10 +67,11 @@ private fun DogDetails(dogInfo: DogInfo, interactions: DogDetailsScreenInteracti
 @Composable
 private fun DogError() {
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
-            .padding(Paddings.Screen)
+            .padding(Paddings.Screen),
     ) {
-        Text(text = stringResource(id = R.string.dog_details_error), style = MaterialTheme.typography.h2, color = Color.Red)
+        Text(text = stringResource(id = R.string.dog_details_error), style = MaterialTheme.typography.titleMedium, color = Color.Red)
     }
 }

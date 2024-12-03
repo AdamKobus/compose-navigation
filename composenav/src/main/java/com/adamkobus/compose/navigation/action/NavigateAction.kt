@@ -15,9 +15,8 @@ class NavigateAction(
     private val fromNavDestination: NavDestination,
     private val toNavDestination: NavDestination,
     private val params: List<String> = emptyList(),
-    private val options: NavOptions? = null
+    private val options: NavOptions? = null,
 ) : NavAction(fromDestination = fromNavDestination, toDestination = toNavDestination) {
-
     /**
      * This constructor allows you to copy other [NavigateAction]
      */
@@ -25,7 +24,7 @@ class NavigateAction(
         navAction.fromNavDestination,
         navAction.toNavDestination,
         navAction.params,
-        navAction.options
+        navAction.options,
     )
 
     /**
@@ -61,7 +60,7 @@ class NavigateAction(
             fromNavDestination,
             toNavDestination,
             params = this.params + param,
-            options = options
+            options = options,
         )
 
     /**
@@ -74,7 +73,7 @@ class NavigateAction(
             fromNavDestination,
             toNavDestination,
             params,
-            options = param
+            options = param,
         )
 
     /**
@@ -87,7 +86,7 @@ class NavigateAction(
             fromNavDestination,
             toNavDestination,
             params,
-            options = navActionOptions(init)
+            options = navActionOptions(init),
         )
 
     override fun navigate(controller: NavHostController): Boolean {

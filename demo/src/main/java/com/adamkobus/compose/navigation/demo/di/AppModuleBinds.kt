@@ -17,7 +17,6 @@ import dagger.multibindings.IntoSet
 @InstallIn(SingletonComponent::class)
 @Module
 interface AppModuleBinds {
-
     @Binds
     @IntoSet
     fun bindsAppNavActionVerifier(impl: AppNavActionVerifier): NavActionVerifier

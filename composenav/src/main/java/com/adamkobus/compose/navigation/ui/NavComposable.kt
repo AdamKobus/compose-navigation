@@ -1,5 +1,6 @@
 package com.adamkobus.compose.navigation.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -20,7 +21,7 @@ import com.adamkobus.compose.navigation.NavigationId
 fun NavComposable(
     navController: NavHostController,
     observedGraphs: List<String> = emptyList(),
-    navigationId: NavigationId
+    navigationId: NavigationId,
 ) {
     val vm: NavComposableVM = viewModel(key = navController.toString())
     vm.viewParam.bind(NavComposableParam(navigationId = navigationId, graphs = observedGraphs))
@@ -31,18 +32,19 @@ fun NavComposable(
 @Composable
 private fun NavComposableInner(
     navController: NavHostController,
-    vm: NavComposableVM
+    vm: NavComposableVM,
 ) {
     val backStackState = navController.currentBackStackEntryAsState()
     CurrentBackStackEntryUpdater(navController, vm, backStackState)
     PendingActionProcessor(navController, vm)
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 private fun CurrentBackStackEntryUpdater(
     navController: NavHostController,
     vm: NavComposableVM,
-    backStackState: State<NavBackStackEntry?>
+    backStackState: State<NavBackStackEntry?>,
 ) {
     val currentBackStackEntry = backStackState.value
     val queue = navController.currentBackStack.collectAsState().value
@@ -54,7 +56,10 @@ private fun CurrentBackStackEntryUpdater(
 }
 
 @Composable
-private fun PendingActionProcessor(navController: NavHostController, vm: NavComposableVM) {
+private fun PendingActionProcessor(
+    navController: NavHostController,
+    vm: NavComposableVM,
+) {
     val pendingAction = vm.pendingActionState.value
     LaunchedEffect(key1 = pendingAction) {
         if (pendingAction is PendingActionState.Present) {
@@ -66,5 +71,5 @@ private fun PendingActionProcessor(navController: NavHostController, vm: NavComp
 
 private data class BackStackEntryUpdateState(
     val currentBackStackEntry: NavBackStackEntry?,
-    val queue: List<NavBackStackEntry>
+    val queue: List<NavBackStackEntry>,
 )

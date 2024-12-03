@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
@@ -29,7 +29,7 @@ fun ListScreen() {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         items(vm.listContent.value, key = { it.id }) { itemData ->
             ListElement(itemData, vm.interactions.onItemSelected)
@@ -38,11 +38,15 @@ fun ListScreen() {
 }
 
 @Composable
-private fun ListElement(data: ListItemData, onItemClicked: (ListItemData) -> Unit) {
+private fun ListElement(
+    data: ListItemData,
+    onItemClicked: (ListItemData) -> Unit,
+) {
     Card(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
-            .clickable { onItemClicked(data) }
+            .clickable { onItemClicked(data) },
     ) {
         Text(text = data.title, modifier = Modifier.padding(14.dp))
     }
@@ -50,24 +54,26 @@ private fun ListElement(data: ListItemData, onItemClicked: (ListItemData) -> Uni
 
 @HiltViewModel
 class ListScreenVM @Inject constructor(
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : ViewModel() {
-    val listContent = mutableStateOf(
-        // will generate 50 list elements numbered from 1 to 50
-        generateSequence(1) { it + 1 }.take(50).map { ListItemData(it, "List item #$it") }.toList()
-    )
-    val interactions = ListScreenInteractions(
-        onItemSelected = {
-            navigationConsumer.offer(TutorialNavActions.fromListToDetail(it.id))
-        }
-    )
+    val listContent =
+        mutableStateOf(
+            // will generate 50 list elements numbered from 1 to 50
+            generateSequence(1) { it + 1 }.take(50).map { ListItemData(it, "List item #$it") }.toList(),
+        )
+    val interactions =
+        ListScreenInteractions(
+            onItemSelected = {
+                navigationConsumer.offer(TutorialNavActions.fromListToDetail(it.id))
+            },
+        )
 }
 
 data class ListScreenInteractions(
-    val onItemSelected: (ListItemData) -> Unit
+    val onItemSelected: (ListItemData) -> Unit,
 )
 
 data class ListItemData(
     val id: Int,
-    val title: String
+    val title: String,
 )

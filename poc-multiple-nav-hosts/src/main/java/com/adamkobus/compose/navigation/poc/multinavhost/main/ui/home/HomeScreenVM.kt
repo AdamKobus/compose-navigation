@@ -8,11 +8,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenVM @Inject constructor(
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-    val interactions = HomeScreenInteractions(
-        onContinueClicked = {
-            navigationConsumer.offer(PocGraph.Home goTo PocGraph.Demo)
-        }
-    )
+    val interactions =
+        HomeScreenInteractions(
+            onContinueClicked = {
+                navigationConsumer.offer(PocGraph.Home goTo PocGraph.Demo)
+            },
+        )
 }

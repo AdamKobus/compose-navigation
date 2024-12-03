@@ -4,7 +4,6 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class NavIntentTest {
-
     @Test
     fun `GIVEN nav intent has argument WHEN get THEN argument value is returned`() {
         // given

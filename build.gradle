@@ -1,60 +1,18 @@
-import com.adamkobus.compose.navigation.Lib
-
-apply plugin: "io.github.gradle-nexus.publish-plugin"
-apply plugin: "com.github.ben-manes.versions"
-
-buildscript {
-    ext {
-        // https://github.com/JLLeitschuh/ktlint-gradle/releases
-        ktlintPluginVersion = "11.5.0"
-
-        // https://github.com/detekt/detekt/releases
-        detektPluginVersion = "1.21.0"
-
-        // https://github.com/ben-manes/gradle-versions-plugin/releases
-        versionsPluginVersion = "0.47.0"
-
-        // https://github.com/gradle-nexus/publish-plugin/releases
-        publishPluginVersion = "1.3.0"
-
-        // https://developer.android.com/studio/releases/gradle-plugin
-        androidBuildtoolsPluginVersion = '8.0.2'
-    }
-
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:$androidBuildtoolsPluginVersion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Lib.KOTLIN_VERSION}"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:${Lib.HILT_VERSION}"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintPluginVersion"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektPluginVersion"
-        classpath "com.github.ben-manes:gradle-versions-plugin:$versionsPluginVersion"
-        classpath "io.github.gradle-nexus:publish-plugin:$publishPluginVersion"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${Lib.DOKKA_VERSION}"
-    }
-    rootProject.ext
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-allprojects {
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
-            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-        }
-    }
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.kotlin.ksp) apply false
+    alias(libs.plugins.nexus.publish)
 }
 
 apply from: "gradle/utils.gradle"
 apply from: "gradle/version.gradle"
-apply from: "gradle/dependency-updates.gradle"
 apply from: "gradle/android-setup.gradle"
 apply from: "gradle/publishing-root.gradle"
 apply from: "gradle/dokka-config.gradle"

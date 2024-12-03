@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.adamkobus.compose.navigation.poc.multinavhost.green.nav.GreenNavHost
 import com.adamkobus.compose.navigation.poc.multinavhost.ui.common.ScreenBackground
 import com.adamkobus.compose.navigation.poc.multinavhost.yellow.nav.YellowNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @Composable
 fun DemoScreen() {
@@ -26,8 +26,8 @@ fun DemoScreen() {
 private fun DemoScreenContent() {
     ScreenBackground {
         val configuration = LocalConfiguration.current
-        val greenController = rememberAnimatedNavController()
-        val yellowController = rememberAnimatedNavController()
+        val greenController = rememberNavController()
+        val yellowController = rememberNavController()
         when (configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> LandscapeContent(greenController, yellowController)
             else -> PortraitContent(greenController, yellowController)
@@ -37,37 +37,47 @@ private fun DemoScreenContent() {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun PortraitContent(greenController: NavHostController, yellowController: NavHostController) {
+private fun PortraitContent(
+    greenController: NavHostController,
+    yellowController: NavHostController,
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         GreenScreen(
             greenController,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(1f),
         )
         YellowScreen(
             yellowController,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(1f),
         )
     }
 }
 
 @Composable
-private fun LandscapeContent(greenController: NavHostController, yellowController: NavHostController) {
+private fun LandscapeContent(
+    greenController: NavHostController,
+    yellowController: NavHostController,
+) {
     Row(modifier = Modifier.fillMaxSize()) {
         GreenScreen(
             greenController,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxHeight()
-                .weight(1f)
+                .weight(1f),
         )
         YellowScreen(
             yellowController,
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxHeight()
-                .weight(1f)
+                .weight(1f),
         )
     }
 }
@@ -76,7 +86,7 @@ private fun LandscapeContent(greenController: NavHostController, yellowControlle
 @Composable
 private fun GreenScreen(
     controller: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     GreenNavHost(controller = controller, modifier = modifier)
 }
@@ -85,7 +95,7 @@ private fun GreenScreen(
 @Composable
 private fun YellowScreen(
     controller: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     YellowNavHost(controller = controller, modifier = modifier)
 }

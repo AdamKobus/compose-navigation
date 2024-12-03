@@ -14,32 +14,26 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: gradle/wrapper-validation-action@v1
+      - uses: actions/checkout@v4
 
       - name: Configure JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Set Up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-          bundler-cache: true
-
-      - name: Danger Checks
-        run: |
-          ./gradlew dependencyUpdates -DoutputDir=build/danger
-          bundle exec danger
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Run tests
         run: ./gradlew testDebugUnitTest
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: success() || failure()
+        with:
+          report_paths: '**/build/test-results/**/TEST-*.xml'
 
       - name: Run static analysis
         run: ./gradlew ktlintCheck detekt

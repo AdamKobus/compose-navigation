@@ -10,7 +10,6 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class DemoApp : Application() {
-
     @Inject
     lateinit var intentResolvers: Set<@JvmSuppressWildcards NavIntentResolver>
 

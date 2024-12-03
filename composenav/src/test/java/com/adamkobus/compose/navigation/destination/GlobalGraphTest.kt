@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class GlobalGraphTest {
-
     @Test
     fun `WHEN startDestination THEN proper destination is returned`() {
         assertEquals("__global__/__root__", GlobalGraph.startDestination().route.buildRoute())

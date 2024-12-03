@@ -10,7 +10,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module(includes = [NavModuleInternalBinds::class])
 object NavModule {
-
     @Provides
     fun provideNavigationStateSource(): NavigationStateSource = ComposeNavigation.getNavigationStateSource()
 }

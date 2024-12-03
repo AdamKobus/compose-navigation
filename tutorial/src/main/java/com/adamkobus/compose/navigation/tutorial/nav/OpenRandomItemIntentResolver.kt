@@ -9,7 +9,10 @@ import kotlin.random.Random
 object OpenRandomItemIntentResolver : NavIntentResolver {
     private val random = Random.Default
 
-    override suspend fun resolve(intent: NavIntent, navState: NavState): ResolveResult =
+    override suspend fun resolve(
+        intent: NavIntent,
+        navState: NavState,
+    ): ResolveResult =
         intent.origin?.takeIf {
             intent.name == TutorialIntents.OPEN_RANDOM_ITEM_INTENT
         }?.let { origin ->

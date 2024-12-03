@@ -14,7 +14,6 @@ import dagger.multibindings.IntoSet
 @InstallIn(SingletonComponent::class)
 @Module
 internal interface DevMenuModuleInternalBinds {
-
     @Binds
     @IntoSet
     fun bindsDevMenuNavIntentResolver(impl: DevMenuNavIntentResolver): NavIntentResolver

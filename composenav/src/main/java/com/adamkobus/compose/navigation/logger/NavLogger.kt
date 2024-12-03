@@ -9,7 +9,6 @@ import com.adamkobus.compose.navigation.ComposeNavigation
  * You can provide your own implementation via [ComposeNavigation.setLogger]
  */
 interface NavLogger {
-
     /**
      * Used to log details about navigation actions processing, i.e. when processing of the new actions has started and finished
      */
@@ -18,7 +17,10 @@ interface NavLogger {
     /**
      * Used to log details about navigation actions processing, i.e. when processing of the new actions has started and finished
      */
-    fun v(error: Throwable, message: String)
+    fun v(
+        error: Throwable,
+        message: String,
+    )
 
     /**
      * Used to log current destination changes
@@ -28,7 +30,10 @@ interface NavLogger {
     /**
      * Used to log current destination changes
      */
-    fun d(error: Throwable, message: String)
+    fun d(
+        error: Throwable,
+        message: String,
+    )
 
     /**
      * Used to log warnings, i.e. about intents or actions that were discarded
@@ -38,7 +43,10 @@ interface NavLogger {
     /**
      * Used to log warnings, i.e. about intents or actions that were discarded
      */
-    fun w(error: Throwable, message: String)
+    fun w(
+        error: Throwable,
+        message: String,
+    )
 
     /**
      * Used to log unexpected errors
@@ -48,7 +56,10 @@ interface NavLogger {
     /**
      * Used to log unexpected errors
      */
-    fun e(error: Throwable, message: String)
+    fun e(
+        error: Throwable,
+        message: String,
+    )
 
     /**
      * When set, then logger should log only the messages with matching or higher importance than [level].
@@ -57,7 +68,9 @@ interface NavLogger {
      * @see [android.util.Log]
      * @see [NavLogLevel]
      */
-    fun setLogLevel(@NavLogLevel level: Int)
+    fun setLogLevel(
+        @NavLogLevel level: Int,
+    )
 
     companion object {
         /**

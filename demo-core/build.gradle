@@ -1,10 +1,9 @@
-import com.adamkobus.compose.navigation.Lib
-
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -12,16 +11,18 @@ android {
 }
 
 dependencies {
-    api Lib.AndroidX.Core
-    api Lib.AndroidX.Appcompat
-    api Lib.Kotlin.Coroutines
+    api libs.androidx.core
+    api libs.androidx.appcompat
+    api libs.kotlin.coroutines
 
     // hilt
-    implementation Lib.Google.Hilt
-    api Lib.Google.HiltNavigationCompose
-    kapt Lib.Google.HiltCompiler
+    implementation libs.google.hilt.core
+    ksp libs.google.hilt.compiler
+
+    // compose
+    api libs.compose.hilt
 
     // testing
-    testImplementation Lib.Test.JUnit
-    testImplementation Lib.Test.Mockk
+    testImplementation libs.test.junit
+    testImplementation libs.test.mockk
 }

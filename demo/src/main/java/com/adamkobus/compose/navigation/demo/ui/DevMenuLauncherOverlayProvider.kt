@@ -18,11 +18,11 @@ import com.adamkobus.compose.navigation.intent.NavIntent
 import javax.inject.Inject
 
 class DevMenuLauncherOverlayProvider @Inject constructor() : OverlayProvider {
-
     @Composable
-    override fun provideOverlay(): @Composable BoxScope.() -> Unit = {
-        Launcher()
-    }
+    override fun provideOverlay(): @Composable BoxScope.() -> Unit =
+        {
+            Launcher()
+        }
 
     override val priority: Int
         get() = PRIORITY
@@ -35,7 +35,8 @@ class DevMenuLauncherOverlayProvider @Inject constructor() : OverlayProvider {
 @Composable
 private fun BoxScope.Launcher() {
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .height(56.dp)
             .fillMaxWidth(LAUNCHER_WIDTH_FACTOR)
             .align(Alignment.TopCenter)
@@ -45,9 +46,9 @@ private fun BoxScope.Launcher() {
                         ComposeNavigation
                             .getNavigationConsumer()
                             .offer(NavIntent(DemoIntents.OPEN_DEV_MENU, navigationId = DemoNavigationId))
-                    }
+                    },
                 )
-            }
+            },
     )
 }
 

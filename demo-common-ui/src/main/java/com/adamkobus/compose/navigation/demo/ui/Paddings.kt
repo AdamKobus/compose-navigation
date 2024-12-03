@@ -8,10 +8,11 @@ object Paddings {
     val CardPadding = 14.dp
     val TabHostSpacing = 64.dp
 
-    val ScreenWithTabHostInsets = PaddingValues(
-        top = Screen,
-        start = Screen,
-        end = Screen,
-        bottom = TabHostSpacing
-    )
+    val ScreenWithTabHostInsets =
+        PaddingValues(
+            top = Screen,
+            start = Screen,
+            end = Screen,
+            bottom = TabHostSpacing,
+        )
 }

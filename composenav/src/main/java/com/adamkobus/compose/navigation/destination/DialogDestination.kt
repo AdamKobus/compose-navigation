@@ -8,9 +8,8 @@ package com.adamkobus.compose.navigation.destination
  */
 open class DialogDestination(
     override val graph: NavGraph,
-    override val route: NavRoute
+    override val route: NavRoute,
 ) : NavDestination {
-
     /**
      * @return formatted String representation of [DialogDestination]
      */
@@ -39,7 +38,7 @@ internal fun dialogDestination(
     graph: NavGraph,
     pathName: String,
     reservedNameCheck: Boolean = true,
-    init: NavRoute.Builder.() -> Unit = {}
+    init: NavRoute.Builder.() -> Unit = {},
 ): DialogDestination {
     val route = navRoute(graphName = graph.name, path = pathName, reservedNamesCheck = reservedNameCheck, init)
     return DialogDestination(graph, route)

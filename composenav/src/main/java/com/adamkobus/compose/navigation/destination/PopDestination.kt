@@ -7,9 +7,8 @@ import com.adamkobus.compose.navigation.action.PopAction
  */
 data class PopDestination(
     override val graph: NavGraph,
-    override val route: NavRoute = navRoute(graph.name, path = "__back__", reservedNamesCheck = false)
+    override val route: NavRoute = navRoute(graph.name, path = "__back__", reservedNamesCheck = false),
 ) : INavDestination {
-
     /**
      * @return formatted string representation of [PopDestination]
      */

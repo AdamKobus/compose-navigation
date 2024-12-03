@@ -3,7 +3,6 @@ package com.adamkobus.compose.navigation.model
 import kotlinx.coroutines.CompletableDeferred
 
 internal class ProcessorInitializedState {
-
     private var state: State = State.Unregistered
 
     private var initializedDeferred: CompletableDeferred<Boolean> = CompletableDeferred()
@@ -33,6 +32,6 @@ internal class ProcessorInitializedState {
 
     private enum class State {
         Registered,
-        Unregistered
+        Unregistered,
     }
 }

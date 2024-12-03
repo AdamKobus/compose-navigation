@@ -10,11 +10,15 @@ import com.adamkobus.compose.navigation.intent.ResolveResult
 import javax.inject.Inject
 
 class RestartAppNavIntentResolver @Inject constructor() : NavIntentResolver {
-    override suspend fun resolve(intent: NavIntent, navState: NavState): ResolveResult =
+    override suspend fun resolve(
+        intent: NavIntent,
+        navState: NavState,
+    ): ResolveResult =
         intent.takeIf { it.name == DemoIntents.RESTART_APP }?.origin?.let {
-            val action = it.goTo(AppGraph.SplashScreen).setNavOptions {
-                popUpTo(AppRootGraph)
-            }
+            val action =
+                it.goTo(AppGraph.SplashScreen).setNavOptions {
+                    popUpTo(AppRootGraph)
+                }
             action.asResult()
         } ?: ResolveResult.None
 }

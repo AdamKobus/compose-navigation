@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import com.adamkobus.compose.navigation.ComposeNavHost
 import com.adamkobus.compose.navigation.demo.nav.appGraph
 import com.adamkobus.compose.navigation.demo.nav.onBoardingGraph
@@ -16,19 +17,18 @@ import com.adamkobus.compose.navigation.demo.ui.nav.AppRootGraph
 import com.adamkobus.compose.navigation.demo.ui.nav.DemoNavigationId
 import com.adamkobus.compose.navigation.demo.ui.overlay.AppOverlays
 import com.adamkobus.compose.navigation.ext.composableNavigation
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DemoAppRoot() {
     val vm = hiltViewModel<DemoAppRootVM>()
-    val controller = rememberAnimatedNavController()
+    val controller = rememberNavController()
     Box(modifier = Modifier.fillMaxSize()) {
         ComposeNavHost(
             startGraph = AppRootGraph,
             controller = controller,
             navigationId = DemoNavigationId,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             composableNavigation(AppRootGraph) {
                 appGraph()

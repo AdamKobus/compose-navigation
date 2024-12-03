@@ -12,7 +12,9 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.compose.navigation
 import com.adamkobus.compose.navigation.ComposeNavigation
 import com.adamkobus.compose.navigation.destination.DialogDestination
 import com.adamkobus.compose.navigation.destination.NavGraph
@@ -20,8 +22,6 @@ import com.adamkobus.compose.navigation.destination.NavStackEntry
 import com.adamkobus.compose.navigation.destination.ScreenDestination
 import com.adamkobus.compose.navigation.model.toNavStackEntry
 import com.adamkobus.compose.navigation.ui.LocalNavDestination
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.navigation
 
 /**
  * @see [navigation]
@@ -34,7 +34,7 @@ fun NavGraphBuilder.composableNavigation(
     exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    builder: NavGraphBuilder.() -> Unit
+    builder: NavGraphBuilder.() -> Unit,
 ) {
     ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(graph)
 
@@ -45,7 +45,7 @@ fun NavGraphBuilder.composableNavigation(
         exitTransition = exitTransition,
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
-        builder = builder
+        builder = builder,
     )
 }
 
@@ -62,7 +62,7 @@ fun NavGraphBuilder.composableDestination(
     exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    content: @Composable AnimatedVisibilityScope.(NavStackEntry) -> Unit
+    content: @Composable AnimatedVisibilityScope.(NavStackEntry) -> Unit,
 ) {
     ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(destination)
 
@@ -78,7 +78,7 @@ fun NavGraphBuilder.composableDestination(
             CompositionLocalProvider(LocalNavDestination provides destination) {
                 content(backStackEntry.toNavStackEntry())
             }
-        }
+        },
     )
 }
 
@@ -90,7 +90,7 @@ fun NavGraphBuilder.composableDialog(
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     dialogProperties: DialogProperties = DialogProperties(),
-    content: @Composable (NavStackEntry) -> Unit
+    content: @Composable (NavStackEntry) -> Unit,
 ) {
     ComposeNavigation.getKnownDestinationsSource().addToKnownDestinations(destination)
 
@@ -103,6 +103,6 @@ fun NavGraphBuilder.composableDialog(
             CompositionLocalProvider(LocalNavDestination provides destination) {
                 content(backStackEntry.toNavStackEntry())
             }
-        }
+        },
     )
 }

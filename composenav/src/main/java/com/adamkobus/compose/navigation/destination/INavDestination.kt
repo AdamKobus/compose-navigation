@@ -4,7 +4,6 @@ package com.adamkobus.compose.navigation.destination
  * Base type for all of the destinations.
  */
 interface INavDestination {
-
     /**
      * Graph that this destination belongs to
      */

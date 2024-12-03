@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimatedAppBarVM @Inject constructor(
-    appBarStateSource: AppBarStateSource
+    appBarStateSource: AppBarStateSource,
 ) : ViewModel() {
     val appBarState = appBarStateSource.appBarState
 }

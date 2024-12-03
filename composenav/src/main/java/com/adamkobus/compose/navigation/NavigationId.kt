@@ -12,7 +12,7 @@ import com.adamkobus.compose.navigation.ui.NavComposable
  * @param id value of this field will be used to identify [ComposeNavHost] or [NavComposable]
  */
 data class NavigationId(
-    val id: String
+    val id: String,
 ) {
     /**
      * Returns string representation of [NavigationId]

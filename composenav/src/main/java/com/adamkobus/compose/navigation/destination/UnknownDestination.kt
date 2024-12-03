@@ -8,7 +8,7 @@ import com.adamkobus.compose.navigation.NavigationStateSource
  * @param path Raw path string that was encountered by [NavigationStateSource]
  */
 data class UnknownDestination internal constructor(
-    val path: String
+    val path: String,
 ) : NavDestination {
     /**
      * Fixed value - [UnknownGraph]

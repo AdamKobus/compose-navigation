@@ -5,7 +5,6 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class NavRoutePartTest {
-
     @Test(expected = ReservedNameError::class)
     fun `GIVEN reserved graph name WHEN GraphName THEN ReservedNameError is thrown`() {
         NavRoutePart.GraphName("__reserved")

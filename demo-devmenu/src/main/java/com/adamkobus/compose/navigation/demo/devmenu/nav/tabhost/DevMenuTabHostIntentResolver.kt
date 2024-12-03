@@ -6,10 +6,11 @@ import com.adamkobus.compose.navigation.demo.devmenu.nav.DevMenuGraph
 import javax.inject.Inject
 
 internal class DevMenuTabHostIntentResolver @Inject constructor() : TabBarIntentResolver(
-    tabsMapping = mapOf(
+    tabsMapping =
+    mapOf(
         DevMenuTabHostIntents.OpenInfo.name to DevMenuInfoGraph,
-        DevMenuTabHostIntents.OpenSettings.name to DevMenuSettingsGraph
+        DevMenuTabHostIntents.OpenSettings.name to DevMenuSettingsGraph,
     ),
     tabStateSavingBehaviour = TabStateSavingBehaviour.SAVE_ALL,
-    tabsRootGraph = DevMenuGraph
+    tabsRootGraph = DevMenuGraph,
 )

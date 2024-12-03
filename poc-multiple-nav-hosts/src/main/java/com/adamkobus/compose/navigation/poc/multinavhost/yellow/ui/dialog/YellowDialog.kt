@@ -4,10 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,10 +24,8 @@ fun YellowDialog() {
 }
 
 @Composable
-private fun YellowDialogContent(
-    interactions: YellowDialogInteractions
-) {
-    Card(backgroundColor = MaterialTheme.colors.background) {
+private fun YellowDialogContent(interactions: YellowDialogInteractions) {
+    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)) {
         Column(modifier = Modifier.padding(Paddings.Screen), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "Yellow dialog")
             Spacer(modifier = Modifier.height(45.dp))

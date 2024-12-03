@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +31,7 @@ fun DemoDialog() {
 private fun DemoDialogContent(onCancelClicked: () -> Unit) {
     Box(
         modifier = Modifier.padding(vertical = Paddings.Screen),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Card(modifier = Modifier.widthIn(0.dp, 350.dp)) {
             DialogCardContent(onCancelClicked)
@@ -42,9 +42,10 @@ private fun DemoDialogContent(onCancelClicked: () -> Unit) {
 @Composable
 private fun DialogCardContent(onCancelClicked: () -> Unit) {
     Column(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
-            .padding(Paddings.Screen)
+            .padding(Paddings.Screen),
     ) {
         Text(text = stringResource(id = R.string.demo_dialog_text))
         Spacer(modifier = Modifier.height(24.dp))
