@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import javax.inject.Inject
 
 class ApplyNavGraphsTask @Inject constructor(
-    private val graphs: Set<@JvmSuppressWildcards NavGraphApplier>
+    private val graphs: Set<@JvmSuppressWildcards NavGraphApplier>,
 ) {
     @OptIn(ExperimentalAnimationApi::class)
     fun apply(builder: NavGraphBuilder) {

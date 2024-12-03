@@ -8,7 +8,6 @@ import com.adamkobus.compose.navigation.ext.composableDestination
 import com.adamkobus.compose.navigation.ext.composableNavigation
 
 internal object DevMenuSettingsGraph : NavGraph("devMenuSettings") {
-
     override fun startDestination() = Home
 
     val Home = screenDestination("home")

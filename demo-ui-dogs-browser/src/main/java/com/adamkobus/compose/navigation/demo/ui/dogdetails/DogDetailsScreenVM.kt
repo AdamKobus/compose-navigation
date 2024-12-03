@@ -24,34 +24,36 @@ import javax.inject.Inject
 class DogDetailsScreenVM @Inject constructor(
     private val dogsSource: DogsSource,
     private val appBarStateSource: AppBarStateSource,
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-
     val dogIdParam = ViewParam<Int>()
 
     private val dogInfo = mutableStateOf<AsyncData<DogInfo, Throwable>>(AsyncData.Loading())
-    val screenState = DogDetailsScreenState(
-        dogInfo = dogInfo
-    )
+    val screenState =
+        DogDetailsScreenState(
+            dogInfo = dogInfo,
+        )
 
-    val interactions = DogDetailsScreenInteractions(
-        onOpenDialogClicked = {
-            viewModelScope.launch {
-                navigationConsumer.offer(FromDogDetails.ToDemoDialog)
-            }
-        },
-        onOpenGalleryClicked = {
-            viewModelScope.launch {
-                val id = dogIdParam.observe().first()
-                navigationConsumer.offer(FromDogDetails.ToGallery(id))
-            }
-        }
-    )
+    val interactions =
+        DogDetailsScreenInteractions(
+            onOpenDialogClicked = {
+                viewModelScope.launch {
+                    navigationConsumer.offer(FromDogDetails.ToDemoDialog)
+                }
+            },
+            onOpenGalleryClicked = {
+                viewModelScope.launch {
+                    val id = dogIdParam.observe().first()
+                    navigationConsumer.offer(FromDogDetails.ToGallery(id))
+                }
+            },
+        )
 
-    private val appBarState = AnimatedAppBarState(
-        titleState = AppBarTitleState(titleResId = R.string.dog_details_title),
-        iconState = AppBarIconState.back { onBackPressed() }
-    )
+    private val appBarState =
+        AnimatedAppBarState(
+            titleState = AppBarTitleState(titleResId = R.string.dog_details_title),
+            iconState = AppBarIconState.back { onBackPressed() },
+        )
 
     private fun onBackPressed() {
         navigationConsumer.offer(DogsBrowserGraph.DogDetails.pop())

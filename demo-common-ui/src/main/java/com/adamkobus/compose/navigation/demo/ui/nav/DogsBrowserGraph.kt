@@ -10,13 +10,15 @@ object DogsBrowserGraph : NavGraph("dogs") {
     override fun startDestination(): ScreenDestination = DogsList
 
     val DogsList = screenDestination("dogsList")
-    val DogDetails = DogsList.next {
-        param(PARAM_DOG_ID)
-    }
+    val DogDetails =
+        DogsList.next {
+            param(PARAM_DOG_ID)
+        }
     val DemoDialog = dialogDestination("demoDialog")
-    val DogGallery = DogDetails.next {
-        path("gallery")
-    }
+    val DogGallery =
+        DogDetails.next {
+            path("gallery")
+        }
 }
 
 fun NavStackEntry.dogId() = getInt(DogsBrowserGraph.PARAM_DOG_ID)

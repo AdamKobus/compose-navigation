@@ -8,9 +8,8 @@ package com.adamkobus.compose.navigation.destination
  */
 open class ScreenDestination(
     override val graph: NavGraph,
-    override val route: NavRoute
+    override val route: NavRoute,
 ) : NavDestination {
-
     /**
      * Creates a new [ScreenDestination] with a route that is a continuation of this destination's [route]
      */
@@ -49,7 +48,7 @@ internal fun screenDestination(
     graph: NavGraph,
     pathName: String,
     reservedNameCheck: Boolean = true,
-    init: NavRoute.Builder.() -> Unit = {}
+    init: NavRoute.Builder.() -> Unit = {},
 ): ScreenDestination {
     val route = navRoute(graphName = graph.name, path = pathName, reservedNamesCheck = reservedNameCheck, init)
     return ScreenDestination(graph, route)

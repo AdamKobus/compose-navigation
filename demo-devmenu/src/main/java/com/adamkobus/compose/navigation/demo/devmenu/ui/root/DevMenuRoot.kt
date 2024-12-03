@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.adamkobus.compose.navigation.ComposeNavHost
 import com.adamkobus.compose.navigation.demo.devmenu.nav.DevMenuGraph
 import com.adamkobus.compose.navigation.demo.devmenu.nav.DevMenuNavId
@@ -16,14 +17,13 @@ import com.adamkobus.compose.navigation.demo.devmenu.theme.DevMenuTheme
 import com.adamkobus.compose.navigation.demo.devmenu.ui.tabhost.DevMenuTabHost
 import com.adamkobus.compose.navigation.demo.ui.DemoAppBackground
 import com.adamkobus.compose.navigation.demo.ui.LifecycleAwareComponent
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun DevMenuRoot() {
     val vm: DevMenuRootVM = hiltViewModel()
     LifecycleAwareComponent(observer = vm)
-    val controller = rememberAnimatedNavController()
+    val controller = rememberNavController()
     DevMenuRootContent(controller = controller)
     BackHandler(onBack = vm.interactions.onBackPressed)
 }
@@ -36,14 +36,15 @@ private fun DevMenuRootContent(controller: NavHostController) {
             ComposeNavHost(
                 startGraph = DevMenuGraph,
                 controller = controller,
-                navigationId = DevMenuNavId
+                navigationId = DevMenuNavId,
             ) {
                 devMenuGraph()
             }
             DevMenuTabHost(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
         }
     }

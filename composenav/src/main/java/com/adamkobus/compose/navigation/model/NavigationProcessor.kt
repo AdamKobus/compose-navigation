@@ -27,7 +27,7 @@ internal class NavigationProcessor(
     private val navIntentResolver: NavIntentResolvingManager,
     private val navGatekeeper: NavGatekeeper,
     private val loggerProvider: Provider<NavLogger>,
-    private val timeoutProvider: Provider<Long>
+    private val timeoutProvider: Provider<Long>,
 ) {
     private val navState: NavState
         get() = stateManager.navState
@@ -52,36 +52,44 @@ internal class NavigationProcessor(
     fun getDispatcher(navigationId: NavigationId): PendingActionDispatcher {
         synchronized(dispatchers) {
             return dispatchers.find { it.navigationId == navigationId } ?: run {
-                val dispatcher = PendingActionDispatcher(
-                    navigationId = navigationId,
-                    loggerProvider = loggerProvider,
-                    timeoutProvider = timeoutProvider,
-                    mainDispatcher = mainDispatcher,
-                    stateManager = stateManager
-                )
+                val dispatcher =
+                    PendingActionDispatcher(
+                        navigationId = navigationId,
+                        loggerProvider = loggerProvider,
+                        timeoutProvider = timeoutProvider,
+                        mainDispatcher = mainDispatcher,
+                        stateManager = stateManager,
+                    )
                 dispatchers.add(dispatcher)
                 dispatcher
             }
         }
     }
 
-    fun postNavAction(navAction: NavAction, onTaskCompleted: CompletableDeferred<NavigationResult>? = null) {
+    fun postNavAction(
+        navAction: NavAction,
+        onTaskCompleted: CompletableDeferred<NavigationResult>? = null,
+    ) {
         scope.launch {
             actionBuffer.emit(ProcessorTask.Action(navAction, onTaskCompleted))
         }
     }
 
-    fun postNavIntent(intent: NavIntent, onTaskCompleted: CompletableDeferred<NavigationResult>? = null) {
+    fun postNavIntent(
+        intent: NavIntent,
+        onTaskCompleted: CompletableDeferred<NavigationResult>? = null,
+    ) {
         scope.launch {
             actionBuffer.emit(ProcessorTask.Intent(intent, onTaskCompleted))
         }
     }
 
     private suspend fun processTask(task: ProcessorTask) {
-        val result = when (task) {
-            is ProcessorTask.Action -> processAction(task.navAction)
-            is ProcessorTask.Intent -> processIntent(task.navIntent)
-        }
+        val result =
+            when (task) {
+                is ProcessorTask.Action -> processAction(task.navAction)
+                is ProcessorTask.Intent -> processIntent(task.navIntent)
+            }
         task.onTaskCompleted?.complete(result)
     }
 
@@ -109,9 +117,10 @@ internal class NavigationProcessor(
             return NavigationResult.Discarded(DiscardReason.NotDelivered)
         }
 
-        val readyDispatchers = dispatchers.filter {
-            it.awaitUntilReady()
-        }
+        val readyDispatchers =
+            dispatchers.filter {
+                it.awaitUntilReady()
+            }
 
         val rejectingVerifier = navGatekeeper.isNavActionAllowed(navState, action)
         if (rejectingVerifier != null) {
@@ -119,9 +128,10 @@ internal class NavigationProcessor(
             return NavigationResult.Discarded(DiscardReason.RejectedByVerifier(rejectingVerifier))
         }
 
-        val suitableDispatchers = readyDispatchers.filter {
-            isDispatcherSuitableForAction(it, action)
-        }
+        val suitableDispatchers =
+            readyDispatchers.filter {
+                isDispatcherSuitableForAction(it, action)
+            }
 
         if (suitableDispatchers.isEmpty()) {
             logger.v("$logPrefix There is no NavHost suitable for action: $action")
@@ -133,24 +143,25 @@ internal class NavigationProcessor(
         suitableDispatchers.map {
             Pair(it, it.dispatchAction(action))
         }.forEach { (dispatcher, deferredResult) ->
-            val mappedResult = when (deferredResult.await()) {
-                DispatchResult.Success -> {
-                    logger.v("$logPrefix Action $action accepted by dispatcher $dispatcher")
-                    NavigationResult.Accepted
+            val mappedResult =
+                when (deferredResult.await()) {
+                    DispatchResult.Success -> {
+                        logger.v("$logPrefix Action $action accepted by dispatcher $dispatcher")
+                        NavigationResult.Accepted
+                    }
+                    DispatchResult.Timeout -> {
+                        logger.e("$logPrefix Timeout when trying to deliver action $action to $dispatcher")
+                        NavigationResult.Discarded(DiscardReason.Timeout)
+                    }
+                    DispatchResult.NotDelivered -> {
+                        logger.w("$logPrefix Failed to deliver action $action to $dispatcher")
+                        NavigationResult.Discarded(DiscardReason.NotDelivered)
+                    }
+                    DispatchResult.WrongNavHost -> {
+                        logger.v("$logPrefix Action cannot be processed by nav host $dispatcher: $action")
+                        NavigationResult.Discarded(DiscardReason.NotDelivered)
+                    }
                 }
-                DispatchResult.Timeout -> {
-                    logger.e("$logPrefix Timeout when trying to deliver action $action to $dispatcher")
-                    NavigationResult.Discarded(DiscardReason.Timeout)
-                }
-                DispatchResult.NotDelivered -> {
-                    logger.w("$logPrefix Failed to deliver action $action to $dispatcher")
-                    NavigationResult.Discarded(DiscardReason.NotDelivered)
-                }
-                DispatchResult.WrongNavHost -> {
-                    logger.v("$logPrefix Action cannot be processed by nav host $dispatcher: $action")
-                    NavigationResult.Discarded(DiscardReason.NotDelivered)
-                }
-            }
             if (result !is NavigationResult.Accepted) {
                 result = mappedResult
             }
@@ -158,7 +169,10 @@ internal class NavigationProcessor(
         return result
     }
 
-    private suspend fun isDispatcherSuitableForAction(dispatcher: PendingActionDispatcher, action: NavAction): Boolean {
+    private suspend fun isDispatcherSuitableForAction(
+        dispatcher: PendingActionDispatcher,
+        action: NavAction,
+    ): Boolean {
         val supportedGraphs = dispatcher.getSupportedGraphRoutes() ?: return false
         return if (action is NavigateAction || action is PopUpToAction) {
             action.toDestination.graph.serializedRoute in supportedGraphs

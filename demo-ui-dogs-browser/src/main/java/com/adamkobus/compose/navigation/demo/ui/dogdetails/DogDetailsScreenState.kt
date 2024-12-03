@@ -5,5 +5,5 @@ import com.adamkobus.compose.navigation.democore.data.DogInfo
 import com.adamkobus.compose.navigation.democore.util.AsyncData
 
 data class DogDetailsScreenState(
-    val dogInfo: State<AsyncData<DogInfo, Throwable>>
+    val dogInfo: State<AsyncData<DogInfo, Throwable>>,
 )

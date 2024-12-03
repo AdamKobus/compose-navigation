@@ -10,7 +10,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module
 object PocModule {
-
     @Provides
     fun providesNavigationConsumer(): NavigationConsumer {
         return ComposeNavigation.getNavigationConsumer()

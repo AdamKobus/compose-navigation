@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +33,18 @@ fun WelcomeScreen() {
 fun WelcomeScreenContent(interactions: WelcomeScreenInteractions) {
     DemoAppBackground {
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .padding(Paddings.Screen)
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Column {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.welcome_hi),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h2
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(modifier = Modifier.height(90.dp))
                 WelcomeScreenButton(stringResource(id = R.string.welcome_button_cats), onClick = interactions.onCatsSelected)
@@ -55,7 +56,10 @@ fun WelcomeScreenContent(interactions: WelcomeScreenInteractions) {
 }
 
 @Composable
-private fun WelcomeScreenButton(text: String, onClick: () -> Unit) {
+private fun WelcomeScreenButton(
+    text: String,
+    onClick: () -> Unit,
+) {
     Button(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
         Text(text = text)
     }

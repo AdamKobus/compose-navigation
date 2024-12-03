@@ -3,10 +3,10 @@ package com.adamkobus.compose.navigation.demo.devmenu.ui.tabhost
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.LeadingIconTab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LeadingIconTab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -29,7 +29,7 @@ internal fun DevMenuTabHost(modifier: Modifier) {
 private fun DevMenuTabHostContent(
     modifier: Modifier,
     state: DevMenuTabHostState = DevMenuTabHostState.stub(),
-    interactions: DevMenuTabHostInteractions = DevMenuTabHostInteractions.STUB
+    interactions: DevMenuTabHostInteractions = DevMenuTabHostInteractions.STUB,
 ) {
     Box(modifier = modifier) {
         Crossfade(targetState = state.isVisible.value) { renderedIsVisible ->
@@ -47,19 +47,22 @@ private fun EmptyTabHost() {
 }
 
 @Composable
-private fun TabHost(state: DevMenuTabHostState, onTabSelected: (DevMenuTabData) -> Unit) {
+private fun TabHost(
+    state: DevMenuTabHostState,
+    onTabSelected: (DevMenuTabData) -> Unit,
+) {
     val selectedIndex = state.selectedIndex.value
     val items = state.tabs.value
     val scope = rememberCoroutineScope()
     TabRow(
-        selectedTabIndex = selectedIndex
+        selectedTabIndex = selectedIndex,
     ) {
         items.forEachIndexed { index, tab ->
             LeadingIconTab(
                 icon = {
                     Icon(
                         painter = painterResource(id = tab.iconResId),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 },
                 text = {
@@ -70,7 +73,7 @@ private fun TabHost(state: DevMenuTabHostState, onTabSelected: (DevMenuTabData) 
                     scope.launch {
                         onTabSelected(tab)
                     }
-                }
+                },
             )
         }
     }

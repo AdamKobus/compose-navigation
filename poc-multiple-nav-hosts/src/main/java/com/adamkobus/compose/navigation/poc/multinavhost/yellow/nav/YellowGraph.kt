@@ -12,7 +12,6 @@ import com.adamkobus.compose.navigation.poc.multinavhost.yellow.ui.home.YellowHo
 import com.adamkobus.compose.navigation.poc.multinavhost.yellow.ui.next.YellowNextScreen
 
 object YellowGraph : NavGraph("yellowGraph") {
-
     override fun startDestination(): NavDestination = Home
 
     val Home = screenDestination("home")

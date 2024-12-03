@@ -20,34 +20,37 @@ import javax.inject.Inject
 class DogsListScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource,
-    private val dogsSource: DogsSource
+    private val dogsSource: DogsSource,
 ) : LifecycleAwareViewModel() {
-
     private val isLoading = mutableStateOf(true)
     private val dogsList = mutableStateOf<List<DogInfo>>(emptyList())
-    val screenState = DogsListScreenState(
-        isLoading = isLoading,
-        dogsList = dogsList
-    )
+    val screenState =
+        DogsListScreenState(
+            isLoading = isLoading,
+            dogsList = dogsList,
+        )
 
-    val interactions = DogsListInteractions(
-        onDogsItemSelected = {
+    val interactions =
+        DogsListInteractions(
+            onDogsItemSelected = {
+                viewModelScope.launch {
+                    navigationConsumer.offer(FromDogsList.ToDogDetails(it.id))
+                }
+            },
+        )
+
+    private val settingsAction =
+        AppBarActionState.settings {
             viewModelScope.launch {
-                navigationConsumer.offer(FromDogsList.ToDogDetails(it.id))
+                navigationConsumer.offer(FromDogsList.ToSettings)
             }
         }
-    )
 
-    private val settingsAction = AppBarActionState.settings {
-        viewModelScope.launch {
-            navigationConsumer.offer(FromDogsList.ToSettings)
-        }
-    }
-
-    private val appBarState = AnimatedAppBarState(
-        titleState = AppBarTitleState(titleResId = R.string.dogs_list_title),
-        actionsState = listOf(settingsAction)
-    )
+    private val appBarState =
+        AnimatedAppBarState(
+            titleState = AppBarTitleState(titleResId = R.string.dogs_list_title),
+            actionsState = listOf(settingsAction),
+        )
 
     init {
         runOnStart {

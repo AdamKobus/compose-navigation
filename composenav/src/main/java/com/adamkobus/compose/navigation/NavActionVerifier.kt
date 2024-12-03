@@ -9,7 +9,6 @@ import com.adamkobus.compose.navigation.destination.NavState
  * As an example, it could be used to prevent duplicate nav action if user clicks list item twice.
  */
 interface NavActionVerifier {
-
     /**
      * @param navState Represents the state of the back stack at the moment of performing this check
      * @param action Action that was produced via [NavigationConsumer.offer]
@@ -20,5 +19,8 @@ interface NavActionVerifier {
      * @see [NavState]
      * @see [NavAction]
      */
-    fun isNavActionAllowed(navState: NavState, action: NavAction): VerifyResult
+    fun isNavActionAllowed(
+        navState: NavState,
+        action: NavAction,
+    ): VerifyResult
 }

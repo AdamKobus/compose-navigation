@@ -20,7 +20,7 @@ internal class PendingActionDispatcher(
     private val mainDispatcher: CoroutineDispatcher,
     private val loggerProvider: Provider<NavLogger>,
     private val timeoutProvider: Provider<Long>,
-    private val stateManager: NavStateManager
+    private val stateManager: NavStateManager,
 ) : NavDelegate {
     private val actionDispatchTimeoutMs: Long
         get() = timeoutProvider.provide()
@@ -36,7 +36,7 @@ internal class PendingActionDispatcher(
     override fun onBackStackEntryUpdated(
         actionConsumer: ActionConsumer,
         entry: NavBackStackEntry?,
-        backQueue: List<NavBackStackEntry>
+        backQueue: List<NavBackStackEntry>,
     ) {
         if (actionConsumer == consumer?.owner) {
             stateManager.onBackStackUpdated(navigationId, entry, backQueue)
@@ -57,18 +57,22 @@ internal class PendingActionDispatcher(
         }
     }
 
-    override fun register(actionConsumer: ActionConsumer, supportedGraphsRoutes: List<String>): Flow<NavAction> {
+    override fun register(
+        actionConsumer: ActionConsumer,
+        supportedGraphsRoutes: List<String>,
+    ): Flow<NavAction> {
         consumer?.let {
             unregister(it.owner)
         }
         logger.v("$logPrefix Registering action consumer: $actionConsumer")
         val flow = MutableSharedFlow<NavAction>()
-        consumer = PendingActionConsumer(
-            actionConsumer,
-            flow,
-            CoroutineScope(this.mainDispatcher + SupervisorJob()),
-            supportedGraphsRoutes
-        )
+        consumer =
+            PendingActionConsumer(
+                actionConsumer,
+                flow,
+                CoroutineScope(this.mainDispatcher + SupervisorJob()),
+                supportedGraphsRoutes,
+            )
         return flow
     }
 
@@ -110,24 +114,28 @@ internal class PendingActionDispatcher(
             complete(DispatchResult.WrongNavHost)
         }
 
-    suspend fun getSupportedGraphRoutes(): List<String>? =
-        getReadyConsumer()?.supportedGraphsRoutes
+    suspend fun getSupportedGraphRoutes(): List<String>? = getReadyConsumer()?.supportedGraphsRoutes
 
-    private suspend fun dispatchToConsumer(action: NavAction, consumer: PendingActionConsumer): CompletableDeferred<DispatchResult> {
+    private suspend fun dispatchToConsumer(
+        action: NavAction,
+        consumer: PendingActionConsumer,
+    ): CompletableDeferred<DispatchResult> {
         val ret = CompletableDeferred<DispatchResult>()
         onActionPerformed = ret
         var job: Job? = null
-        job = consumer.scope.launch {
-            timeoutJob = consumer.scope.launch {
-                delay(actionDispatchTimeoutMs)
-                job?.cancel()
-                if (ret == onActionPerformed) {
-                    completeAction(DispatchResult.Timeout)
-                }
+        job =
+            consumer.scope.launch {
+                timeoutJob =
+                    consumer.scope.launch {
+                        delay(actionDispatchTimeoutMs)
+                        job?.cancel()
+                        if (ret == onActionPerformed) {
+                            completeAction(DispatchResult.Timeout)
+                        }
+                    }
+                consumer.owner.awaitUntilReady()
+                consumer.consumerFlow.emit(action)
             }
-            consumer.owner.awaitUntilReady()
-            consumer.consumerFlow.emit(action)
-        }
         return ret
     }
 
@@ -147,7 +155,7 @@ private data class PendingActionConsumer(
     val owner: ActionConsumer,
     val consumerFlow: MutableSharedFlow<NavAction>,
     val scope: CoroutineScope,
-    val supportedGraphsRoutes: List<String>
+    val supportedGraphsRoutes: List<String>,
 ) {
     override fun toString(): String {
         return owner.toString()
@@ -158,5 +166,5 @@ internal enum class DispatchResult {
     WrongNavHost,
     NotDelivered,
     Timeout,
-    Success
+    Success,
 }

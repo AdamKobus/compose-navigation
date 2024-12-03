@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GreenHomeScreenVM @Inject constructor(
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-
-    val interactions = GreenHomeScreenInteractions(
-        onNextClicked = {
-            navigationConsumer.offer(GreenGraph.Home goTo GreenGraph.Next)
-        }
-    )
+    val interactions =
+        GreenHomeScreenInteractions(
+            onNextClicked = {
+                navigationConsumer.offer(GreenGraph.Home goTo GreenGraph.Next)
+            },
+        )
 }

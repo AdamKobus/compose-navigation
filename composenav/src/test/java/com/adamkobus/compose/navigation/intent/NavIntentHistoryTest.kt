@@ -6,15 +6,15 @@ import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class NavIntentHistoryTest {
-
     private val testSubject = NavIntentHistory(INITIAL_ACTION)
 
     @Test
     fun `GIVEN only single node preset WHEN adding intent with same name THEN NavIntentCycleDetectedError thrown`() {
         // when
-        val error = assertThrows(NavIntentCycleDetectedError::class.java) {
-            testSubject.addNode(NavIntent("initial"))
-        }
+        val error =
+            assertThrows(NavIntentCycleDetectedError::class.java) {
+                testSubject.addNode(NavIntent("initial"))
+            }
 
         // then
         assertEquals("initial -> initial", error.message)
@@ -23,11 +23,12 @@ class NavIntentHistoryTest {
     @Test
     fun `GIVEN multiple nodes preset WHEN adding node creates cycle THEN NavIntentCycleDetectedError thrown`() {
         // when
-        val error = assertThrows(NavIntentCycleDetectedError::class.java) {
-            testSubject.addNode(NavIntent("second"))
-            testSubject.addNode(NavIntent("third"))
-            testSubject.addNode(NavIntent("second"))
-        }
+        val error =
+            assertThrows(NavIntentCycleDetectedError::class.java) {
+                testSubject.addNode(NavIntent("second"))
+                testSubject.addNode(NavIntent("third"))
+                testSubject.addNode(NavIntent("second"))
+            }
 
         // then
         assertEquals("initial -> second -> third -> second", error.message)

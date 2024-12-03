@@ -1,10 +1,9 @@
-import com.adamkobus.compose.navigation.Lib
-
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -17,21 +16,21 @@ android {
 dependencies {
     implementation project(':composenav')
 
-    implementation Lib.AndroidX.Core
-    implementation Lib.AndroidX.Appcompat
-    implementation Lib.Kotlin.Coroutines
-    implementation Lib.AdamKobus.LifecycleAwareViewModel
+    implementation libs.androidx.core
+    implementation libs.androidx.appcompat
+    implementation libs.kotlin.coroutines
+    implementation libs.ak.lifecycle.vm
 
     // hilt
-    implementation Lib.Google.Hilt
-    implementation Lib.Google.HiltNavigationCompose
-    kapt Lib.Google.HiltCompiler
+    implementation libs.google.hilt.core
+    ksp libs.google.hilt.compiler
 
     // compose
-    implementation Lib.Compose.Ui
-    implementation  Lib.Compose.Activity
-    implementation Lib.Compose.Material
-    implementation Lib.Compose.ToolingPreview
-    debugImplementation Lib.Compose.UiTooling
-    implementation Lib.Accompanist.NavigationAnimation
+    implementation platform(libs.compose.bom)
+    implementation libs.compose.ui
+    implementation libs.compose.activity
+    implementation libs.compose.material3
+    implementation libs.compose.tooling.preview
+    implementation libs.compose.hilt
+    debugImplementation libs.compose.tooling.ui
 }

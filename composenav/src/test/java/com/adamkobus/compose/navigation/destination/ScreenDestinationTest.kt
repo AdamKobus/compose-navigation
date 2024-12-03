@@ -6,7 +6,6 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class ScreenDestinationTest {
-
     private val graph: NavGraph = mockk()
 
     @Test

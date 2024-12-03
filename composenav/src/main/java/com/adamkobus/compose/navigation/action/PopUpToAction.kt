@@ -15,9 +15,8 @@ class PopUpToAction(
     fromDestination: INavDestination,
     toDestination: INavDestination,
     private val inclusive: Boolean = false,
-    private val saveState: Boolean = false
+    private val saveState: Boolean = false,
 ) : NavAction(fromDestination, toDestination) {
-
     /**
      * Calls [NavHostController.popBackStack]
      *

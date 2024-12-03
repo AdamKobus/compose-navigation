@@ -22,20 +22,21 @@ import javax.inject.Inject
 class CatDetailsScreenVM @Inject constructor(
     private val catsSource: CatsSource,
     private val navigationConsumer: NavigationConsumer,
-    private val appBarStateSource: AppBarStateSource
+    private val appBarStateSource: AppBarStateSource,
 ) : LifecycleAwareViewModel() {
-
     val catIdParam = ViewParam<Int>()
 
     private val catInfo = mutableStateOf<AsyncData<CatInfo, Throwable>>(AsyncData.Loading())
-    val screenState = CatDetailsScreenState(
-        catInfo = catInfo
-    )
+    val screenState =
+        CatDetailsScreenState(
+            catInfo = catInfo,
+        )
 
-    private val appBarState = AnimatedAppBarState(
-        titleState = AppBarTitleState(titleResId = R.string.cat_details_title),
-        iconState = AppBarIconState.back { onBackPressed() }
-    )
+    private val appBarState =
+        AnimatedAppBarState(
+            titleState = AppBarTitleState(titleResId = R.string.cat_details_title),
+            iconState = AppBarIconState.back { onBackPressed() },
+        )
 
     private fun onBackPressed() {
         navigationConsumer.offer(CatsBrowserGraph.CatDetails.pop())

@@ -20,7 +20,10 @@ class PocApplication : Application() {
 }
 
 private object PocNavActionVerifier : NavActionVerifier {
-    override fun isNavActionAllowed(navState: NavState, action: NavAction): VerifyResult {
+    override fun isNavActionAllowed(
+        navState: NavState,
+        action: NavAction,
+    ): VerifyResult {
         if (action.fromDestination.graph == GlobalGraph) return VerifyResult.Allow
         return if (navState.isCurrent(action.fromDestination)) {
             VerifyResult.Allow

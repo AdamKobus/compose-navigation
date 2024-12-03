@@ -19,15 +19,14 @@ class CatsSource @Inject constructor() {
 
     suspend fun getCat(id: Int): CatInfo {
         delay(MOCK_DELAY)
-        if (Random.nextBoolean()) {
-            return data.value.find { it.id == id } ?: throw IllegalArgumentException("Cat with id $id does not exist")
-        } else {
-            throw IllegalArgumentException("Failed to load cat info for id $id")
+        val isSuccess = Random.nextBoolean()
+        require(isSuccess) {
+            "Failed to load cat info for id $id"
         }
+        return data.value.find { it.id == id } ?: throw IllegalArgumentException("Cat with id $id does not exist")
     }
 
-    private fun createData() =
-        generateSequence(0) { it + 1 }.take(MOCKED_DATA_SIZE).map { CatInfo(it, "Cat $it") }.toList()
+    private fun createData() = generateSequence(0) { it + 1 }.take(MOCKED_DATA_SIZE).map { CatInfo(it, "Cat $it") }.toList()
 
     companion object {
         private const val MOCK_DELAY = 500L

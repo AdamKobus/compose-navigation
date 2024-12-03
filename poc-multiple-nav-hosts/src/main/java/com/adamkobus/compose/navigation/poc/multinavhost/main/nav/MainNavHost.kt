@@ -2,18 +2,18 @@ package com.adamkobus.compose.navigation.poc.multinavhost.main.nav
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.compose.rememberNavController
 import com.adamkobus.compose.navigation.ComposeNavHost
 import com.adamkobus.compose.navigation.NavigationId
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavHost() {
-    val controller = rememberAnimatedNavController()
+    val controller = rememberNavController()
     ComposeNavHost(
         startGraph = PocGraph,
         controller = controller,
-        navigationId = MainNavId
+        navigationId = MainNavId,
     ) {
         pocGraph()
     }

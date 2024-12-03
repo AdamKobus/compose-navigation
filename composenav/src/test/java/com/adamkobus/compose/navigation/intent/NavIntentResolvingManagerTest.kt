@@ -17,7 +17,6 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NavIntentResolvingManagerTest {
-
     private val actionProducingResolver: NavIntentResolver = mockk()
     private val intentProducingResolver: NavIntentResolver = mockk()
     private val cycleProducingResolver: NavIntentResolver = mockk()
@@ -38,29 +37,31 @@ class NavIntentResolvingManagerTest {
             }
         }
         coEvery { intentProducingResolver.resolve(capture(slot), any()) } coAnswers {
-            val mapped = if (slot.captured == firstIntent) {
-                secondIntent
-            } else if (slot.captured == secondIntent) {
-                thirdIntent
-            } else if (slot.captured == thirdIntent) {
-                actionProducingIntent
-            } else {
-                null
-            }
+            val mapped =
+                if (slot.captured == firstIntent) {
+                    secondIntent
+                } else if (slot.captured == secondIntent) {
+                    thirdIntent
+                } else if (slot.captured == thirdIntent) {
+                    actionProducingIntent
+                } else {
+                    null
+                }
             mapped?.let {
                 ResolveResult.Intent(it)
             } ?: ResolveResult.None
         }
         coEvery { cycleProducingResolver.resolve(capture(slot), any()) } coAnswers {
-            val mapped = if (slot.captured == firstIntent) {
-                secondIntent
-            } else if (slot.captured == secondIntent) {
-                thirdIntent
-            } else if (slot.captured == thirdIntent) {
-                firstIntent
-            } else {
-                null
-            }
+            val mapped =
+                if (slot.captured == firstIntent) {
+                    secondIntent
+                } else if (slot.captured == secondIntent) {
+                    thirdIntent
+                } else if (slot.captured == thirdIntent) {
+                    firstIntent
+                } else {
+                    null
+                }
             mapped?.let {
                 ResolveResult.Intent(it)
             } ?: ResolveResult.None
@@ -68,79 +69,86 @@ class NavIntentResolvingManagerTest {
     }
 
     @Test
-    fun `GIVEN only one resolver registered WHEN resolve intent that directly produces action THEN action is returned`() = runTest {
-        // given
-        testSubject.register(listOf(actionProducingResolver))
+    fun `GIVEN only one resolver registered WHEN resolve intent that directly produces action THEN action is returned`() =
+        runTest {
+            // given
+            testSubject.register(listOf(actionProducingResolver))
 
-        // when
-        val obtained = testSubject.resolve(actionProducingIntent, navState)
+            // when
+            val obtained = testSubject.resolve(actionProducingIntent, navState)
 
-        // then
-        assertEquals(producedAction, obtained)
-    }
-
-    @Test
-    fun `GIVEN multiple resolvers registered WHEN resolve intent that directly produces action THEN action is returned`() = runTest {
-        // given
-        testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
-
-        // when
-        val obtained = testSubject.resolve(actionProducingIntent, navState)
-
-        // then
-        assertEquals(producedAction, obtained)
-    }
+            // then
+            assertEquals(producedAction, obtained)
+        }
 
     @Test
-    fun `GIVEN unknown intent WHEN resolve THEN null is returned`() = runTest {
-        // given
-        testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
+    fun `GIVEN multiple resolvers registered WHEN resolve intent that directly produces action THEN action is returned`() =
+        runTest {
+            // given
+            testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
-        // when
-        val obtained = testSubject.resolve(unknownIntent, navState)
+            // when
+            val obtained = testSubject.resolve(actionProducingIntent, navState)
 
-        // then
-        assertNull(obtained)
-    }
+            // then
+            assertEquals(producedAction, obtained)
+        }
 
     @Test
-    fun `GIVEN finding actions requires multiple resolves WHEN resolve THEN action is returned`() = runTest {
-        // given
-        testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
+    fun `GIVEN unknown intent WHEN resolve THEN null is returned`() =
+        runTest {
+            // given
+            testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
 
-        // when
-        val obtained = testSubject.resolve(firstIntent, navState)
+            // when
+            val obtained = testSubject.resolve(unknownIntent, navState)
 
-        // then
-        assertEquals(producedAction, obtained)
-    }
+            // then
+            assertNull(obtained)
+        }
+
+    @Test
+    fun `GIVEN finding actions requires multiple resolves WHEN resolve THEN action is returned`() =
+        runTest {
+            // given
+            testSubject.register(listOf(intentProducingResolver, actionProducingResolver))
+
+            // when
+            val obtained = testSubject.resolve(firstIntent, navState)
+
+            // then
+            assertEquals(producedAction, obtained)
+        }
 
     @Test(expected = NavIntentCycleDetectedError::class)
-    fun `GIVEN resolver produces cycle WHEN resolve THEN NavIntentCycleDetectedError thrown`() = runTest {
-        // given
-        testSubject.register(listOf(cycleProducingResolver))
+    fun `GIVEN resolver produces cycle WHEN resolve THEN NavIntentCycleDetectedError thrown`() =
+        runTest {
+            // given
+            testSubject.register(listOf(cycleProducingResolver))
 
-        // when
-        testSubject.resolve(firstIntent, navState)
-    }
+            // when
+            testSubject.resolve(firstIntent, navState)
+        }
 
     @Test(expected = NavIntentMappingTooDeepError::class)
-    fun `GIVEN too many mappings required WHEN resolve THEN NavIntentMappingTooDeepError thrown`() = runTest {
-        // given
-        val firstIntent = createChain(51)
+    fun `GIVEN too many mappings required WHEN resolve THEN NavIntentMappingTooDeepError thrown`() =
+        runTest {
+            // given
+            val firstIntent = createChain(51)
 
-        // when
-        testSubject.resolve(firstIntent, navState)
-    }
+            // when
+            testSubject.resolve(firstIntent, navState)
+        }
 
     @Test
-    fun `GIVEN mappings number just at the depth limit WHEN resolve THEN no error`() = runTest {
-        // given
-        val firstIntent = createChain(50)
+    fun `GIVEN mappings number just at the depth limit WHEN resolve THEN no error`() =
+        runTest {
+            // given
+            val firstIntent = createChain(50)
 
-        // when
-        testSubject.resolve(firstIntent, navState)
-    }
+            // when
+            testSubject.resolve(firstIntent, navState)
+        }
 
     private fun createChain(depth: Int): NavIntent {
         val firstIntent = NavIntent("0")

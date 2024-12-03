@@ -10,9 +10,8 @@ import com.adamkobus.compose.navigation.destination.PopDestination
  */
 class PopAction(
     fromDestination: NavDestination,
-    toDestination: PopDestination = GlobalGraph.Back
+    toDestination: PopDestination = GlobalGraph.Back,
 ) : NavAction(fromDestination = fromDestination, toDestination = toDestination) {
-
     /**
      * Calls [NavHostController.popBackStack]
      */

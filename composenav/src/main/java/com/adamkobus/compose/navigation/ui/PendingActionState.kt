@@ -4,7 +4,6 @@ import com.adamkobus.compose.navigation.action.NavAction
 import kotlinx.coroutines.CompletableDeferred
 
 internal sealed class PendingActionState {
-
     object Missing : PendingActionState()
 
     class Present(val action: NavAction, private val completable: CompletableDeferred<Boolean>) : PendingActionState() {

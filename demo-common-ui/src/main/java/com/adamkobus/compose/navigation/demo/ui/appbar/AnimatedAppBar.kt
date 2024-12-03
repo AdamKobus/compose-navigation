@@ -17,15 +17,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.contentColorFor
-import androidx.compose.material.primarySurface
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -48,30 +47,31 @@ fun AnimatedAppBar() {
 @Composable
 private fun AnimatedAppBarContent(
     appBarState: AnimatedAppBarState,
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = contentColorFor(backgroundColor),
     elevation: Dp = AppBarDefaults.TopAppBarElevation,
     contentPadding: PaddingValues = AppBarDefaults.ContentPadding,
     shape: Shape = RectangleShape,
-    height: Dp = AppBarHeight
+    height: Dp = AppBarHeight,
 ) {
     val targetBackground = animateColorAsState(targetValue = if (appBarState.isAnyContentAvailable) backgroundColor else Color.Transparent)
     val targetElevation = animateDpAsState(targetValue = if (appBarState.isAnyContentAvailable) elevation else 0.dp)
     Surface(
         color = targetBackground.value,
         contentColor = contentColor,
-        elevation = targetElevation.value,
+        shadowElevation = targetElevation.value,
         shape = shape,
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
-            .height(height)
+            .height(height),
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Box(
                 Modifier
                     .fillMaxSize()
                     .padding(contentPadding),
-                contentAlignment = Alignment.CenterStart
+                contentAlignment = Alignment.CenterStart,
             ) {
                 AnimatedAppBarInnerContent(appBarState)
             }
@@ -84,14 +84,15 @@ private fun AnimatedAppBarInnerContent(appBarState: AnimatedAppBarState) {
     val titlePosition = animateDpAsState(targetValue = if (appBarState.iconState != null) TitleIconOffset else TitleNoIconOffset)
     Box(
         modifier = Modifier.fillMaxHeight(),
-        contentAlignment = Alignment.CenterStart
+        contentAlignment = Alignment.CenterStart,
     ) {
         IconContent(appBarState.iconState)
         Row(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .padding(start = titlePosition.value),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 TitleContent(appBarState.titleState)
@@ -103,9 +104,9 @@ private fun AnimatedAppBarInnerContent(appBarState: AnimatedAppBarState) {
 
 @Composable
 private fun TitleContent(titleState: AppBarTitleState?) {
-    ProvideTextStyle(value = MaterialTheme.typography.h6) {
+    ProvideTextStyle(value = MaterialTheme.typography.titleMedium) {
         CompositionLocalProvider(
-            LocalContentAlpha provides ContentAlpha.high
+            LocalContentAlpha provides ContentAlpha.high,
         ) {
             Crossfade(targetState = titleState?.getText() ?: "", modifier = Modifier.fillMaxWidth()) { text ->
                 Text(text = text, modifier = Modifier.fillMaxWidth())
@@ -127,7 +128,7 @@ private fun IconContent(iconState: AppBarIconState?) {
         } else {
             Row(TitleIconModifier, verticalAlignment = Alignment.CenterVertically) {
                 CompositionLocalProvider(
-                    LocalContentAlpha provides ContentAlpha.high
+                    LocalContentAlpha provides ContentAlpha.high,
                 ) {
                     AnimatedAppBarIcon(iconStateInner, onClick = onClickWrapper)
                 }
@@ -138,12 +139,15 @@ private fun IconContent(iconState: AppBarIconState?) {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun ActionButtons(actionsList: List<AppBarActionState>, clickable: Boolean) {
+private fun ActionButtons(
+    actionsList: List<AppBarActionState>,
+    clickable: Boolean,
+) {
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
         Row(
             modifier = Modifier.fillMaxHeight(),
             horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             actionsList.forEachIndexed { index, item ->
                 val onClickWrapper = {
@@ -160,14 +164,20 @@ private fun ActionButtons(actionsList: List<AppBarActionState>, clickable: Boole
 }
 
 @Composable
-fun ActionButtonContent(item: AppBarActionState, onClick: () -> Unit) {
+fun ActionButtonContent(
+    item: AppBarActionState,
+    onClick: () -> Unit,
+) {
     IconButton(onClick = onClick) {
         Icon(imageVector = item.icon, contentDescription = stringResource(id = item.contentDescriptionResId))
     }
 }
 
 @Composable
-private fun AnimatedAppBarIcon(iconState: AppBarIconState, onClick: () -> Unit) {
+private fun AnimatedAppBarIcon(
+    iconState: AppBarIconState,
+    onClick: () -> Unit,
+) {
     IconButton(onClick = onClick) {
         Icon(iconState.icon, iconState.contentDescriptionResId?.let { stringResource(id = it) })
     }
@@ -177,12 +187,14 @@ val AppBarHeight = 56.dp
 
 private val AppBarHorizontalPadding = 4.dp
 
-private val TitleInsetWithoutIcon = Modifier
-    .width(16.dp - AppBarHorizontalPadding)
+private val TitleInsetWithoutIcon =
+    Modifier
+        .width(16.dp - AppBarHorizontalPadding)
 
-private val TitleIconModifier = Modifier
-    .fillMaxHeight()
-    .width(72.dp - AppBarHorizontalPadding)
+private val TitleIconModifier =
+    Modifier
+        .fillMaxHeight()
+        .width(72.dp - AppBarHorizontalPadding)
 
 private val TitleNoIconOffset = 12.dp
 private val TitleIconOffset = 68.dp

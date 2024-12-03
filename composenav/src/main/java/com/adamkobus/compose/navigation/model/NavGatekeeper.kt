@@ -6,14 +6,17 @@ import com.adamkobus.compose.navigation.action.NavAction
 import com.adamkobus.compose.navigation.destination.NavState
 
 internal class NavGatekeeper(
-    private val initialVerifiers: Set<NavActionVerifier> = emptySet()
+    private val initialVerifiers: Set<NavActionVerifier> = emptySet(),
 ) {
+    private val verifiers =
+        mutableListOf<NavActionVerifier>().apply {
+            addAll(initialVerifiers)
+        }
 
-    private val verifiers = mutableListOf<NavActionVerifier>().apply {
-        addAll(initialVerifiers)
-    }
-
-    fun isNavActionAllowed(navState: NavState, action: NavAction): NavActionVerifier? {
+    fun isNavActionAllowed(
+        navState: NavState,
+        action: NavAction,
+    ): NavActionVerifier? {
         synchronized(verifiers) {
             verifiers.forEach {
                 if (it.isNavActionAllowed(navState, action) == VerifyResult.Discard) {

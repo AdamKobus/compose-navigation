@@ -12,7 +12,6 @@ import com.adamkobus.compose.navigation.poc.multinavhost.green.ui.home.GreenHome
 import com.adamkobus.compose.navigation.poc.multinavhost.green.ui.next.GreenNextScreen
 
 object GreenGraph : NavGraph("greenGraph") {
-
     override fun startDestination(): NavDestination = Home
 
     val Home = screenDestination("home")

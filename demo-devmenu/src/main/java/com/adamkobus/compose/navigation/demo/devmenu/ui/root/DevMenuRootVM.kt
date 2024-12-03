@@ -12,14 +12,14 @@ import javax.inject.Inject
 @HiltViewModel
 internal class DevMenuRootVM @Inject constructor(
     private val appBarStateSource: AppBarStateSource,
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-
-    val interactions = DevMenuRootInteractions(
-        onBackPressed = {
-            navigationConsumer.offer(NavIntent(DemoIntents.CLOSE_DEV_MENU))
-        }
-    )
+    val interactions =
+        DevMenuRootInteractions(
+            onBackPressed = {
+                navigationConsumer.offer(NavIntent(DemoIntents.CLOSE_DEV_MENU))
+            },
+        )
 
     init {
         runOnStart {

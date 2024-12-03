@@ -9,5 +9,5 @@ import javax.inject.Inject
 @HiltViewModel
 class DemoAppRootVM @Inject constructor(
     val overlays: AppOverlays,
-    val applyNavGraphsTask: ApplyNavGraphsTask
+    val applyNavGraphsTask: ApplyNavGraphsTask,
 ) : ViewModel()

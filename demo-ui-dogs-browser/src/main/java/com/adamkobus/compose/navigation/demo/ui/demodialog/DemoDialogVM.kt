@@ -10,14 +10,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DemoDialogVM @Inject constructor(
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : ViewModel() {
-
-    val interactions = DemoDialogInteractions(
-        onCancelClicked = {
-            viewModelScope.launch {
-                navigationConsumer.offer(FromDemoDialog.Dismiss)
-            }
-        }
-    )
+    val interactions =
+        DemoDialogInteractions(
+            onCancelClicked = {
+                viewModelScope.launch {
+                    navigationConsumer.offer(FromDemoDialog.Dismiss)
+                }
+            },
+        )
 }

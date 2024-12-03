@@ -15,7 +15,6 @@ sealed class NavigationResult {
      * Indicates that navigation action was executed.
      */
     object Accepted : NavigationResult() {
-
         /**
          * Returns a formatted String representation of [Accepted]
          */
@@ -64,7 +63,6 @@ sealed class DiscardReason {
      * @param verifier [NavActionVerifier] that discarded a [NavAction]
      */
     class RejectedByVerifier(val verifier: NavActionVerifier) : DiscardReason() {
-
         /**
          * Compares other [RejectedByVerifier] based on [verifier] field
          */
@@ -89,7 +87,6 @@ sealed class DiscardReason {
      * Indicates that [NavIntent] could not be mapped to actual action
      */
     object NotMapped : DiscardReason() {
-
         /**
          * Returns a formatted String representation of [NotMapped]
          */
@@ -100,7 +97,6 @@ sealed class DiscardReason {
      * Action could not be delivered because of invalid state
      */
     object NotDelivered : DiscardReason() {
-
         /**
          * Returns a formatted String representation of [NotDelivered]
          */
@@ -114,7 +110,6 @@ sealed class DiscardReason {
      * This might be removed in future once the solution is proven tobe stable.
      */
     object Timeout : DiscardReason() {
-
         /**
          * Returns a formatted String representation of [Timeout]
          */

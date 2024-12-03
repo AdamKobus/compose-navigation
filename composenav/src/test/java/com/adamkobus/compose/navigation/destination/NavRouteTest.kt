@@ -5,7 +5,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class NavRouteTest {
-
     @Test
     fun `GIVEN route defined WHEN buildRoute THEN proper route is returned`() {
         // given
@@ -21,11 +20,12 @@ class NavRouteTest {
     @Test
     fun `GIVEN route with params defined WHEN buildRoute THEN proper route is returned`() {
         // given
-        val testSubject = navRoute("testGraph", "testPath") {
-            param("param1")
-            path("foobar")
-            param("secondParam")
-        }
+        val testSubject =
+            navRoute("testGraph", "testPath") {
+                param("param1")
+                path("foobar")
+                param("secondParam")
+            }
 
         // when
         val obtained = testSubject.buildRoute()
@@ -37,9 +37,10 @@ class NavRouteTest {
     @Test
     fun `GIVEN route defined WHEN next THEN properly initialized route builder is returned`() {
         // given
-        val testSubject = navRoute("testGraph", "testPath").next {
-            param("param")
-        }
+        val testSubject =
+            navRoute("testGraph", "testPath").next {
+                param("param")
+            }
 
         // when
         val obtained = testSubject.buildRoute()
@@ -63,11 +64,12 @@ class NavRouteTest {
     @Test
     fun `GIVEN route with params WHEN buildPath THEN proper path is returned`() {
         // given
-        val testSubject = navRoute("testGraph", "testPath") {
-            param("param1")
-            path("foobar")
-            param("secondParam")
-        }
+        val testSubject =
+            navRoute("testGraph", "testPath") {
+                param("param1")
+                path("foobar")
+                param("secondParam")
+            }
 
         // when
         val obtained = testSubject.buildPath("aaa", "bbb")
@@ -79,11 +81,12 @@ class NavRouteTest {
     @Test(expected = IllegalArgumentException::class)
     fun `GIVEN providing too few params WHEN buildPath THEN IllegalArgumentException is thrown`() {
         // given
-        val testSubject = navRoute("testGraph", "testPath") {
-            param("param1")
-            path("foobar")
-            param("secondParam")
-        }
+        val testSubject =
+            navRoute("testGraph", "testPath") {
+                param("param1")
+                path("foobar")
+                param("secondParam")
+            }
 
         // when
         testSubject.buildPath("aaa")
@@ -92,11 +95,12 @@ class NavRouteTest {
     @Test(expected = IllegalArgumentException::class)
     fun `GIVEN providing too many params WHEN buildPath THEN IllegalArgumentException is thrown`() {
         // given
-        val testSubject = navRoute("testGraph", "testPath") {
-            param("param1")
-            path("foobar")
-            param("secondParam")
-        }
+        val testSubject =
+            navRoute("testGraph", "testPath") {
+                param("param1")
+                path("foobar")
+                param("secondParam")
+            }
 
         // when
         testSubject.buildPath("aaa", "bbb", "ccc")

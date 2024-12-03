@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,8 +25,9 @@ private fun GreenNextScreenContent(interactions: GreenNextScreenInteractions) {
     ScreenBackground(modifier = Modifier.padding(Paddings.Screen)) {
         Column {
             Text(
-                text = "Try changing the screen orientation between Portrait and Landscape. " +
-                    "Back stack state should be preserved between configuration changes by Jetpack's Navigation"
+                text =
+                "Try changing the screen orientation between Portrait and Landscape. " +
+                    "Back stack state should be preserved between configuration changes by Jetpack's Navigation",
             )
             Spacer(modifier = Modifier.height(45.dp))
             Button(onClick = interactions.onOpenDialogClicked, modifier = Modifier.fillMaxWidth()) {

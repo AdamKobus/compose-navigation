@@ -7,10 +7,11 @@ internal object DevMenuPaddings {
     val Screen = 16.dp
     val TabHostSpacing = 64.dp
 
-    val InsetsWithTabHost = PaddingValues(
-        start = Screen,
-        end = Screen,
-        top = Screen,
-        bottom = TabHostSpacing
-    )
+    val InsetsWithTabHost =
+        PaddingValues(
+            start = Screen,
+            end = Screen,
+            top = Screen,
+            bottom = TabHostSpacing,
+        )
 }

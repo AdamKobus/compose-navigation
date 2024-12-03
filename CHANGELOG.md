@@ -6,6 +6,18 @@
 
 ### Changes
 
+# 1.0.0
+
+### Changes
+
+- Updated Kotlin to `2.0.0`
+- Switched to version catalogs for dependency management.
+- Updated to Jetpack Compose BoM `2024.11.00`
+- Accompanist navigation got replaced with AndroidX library.
+
+Migration:
+- Replace `rememberAnimatedNavController()` with `rememberNavController()`
+
 # 0.3.4
 
 ### Changes

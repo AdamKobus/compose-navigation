@@ -15,5 +15,5 @@ enum class VerifyResult {
     /**
      * [NavAction] has been discarded by a verifier and it will no longer be processed.
      */
-    Discard
+    Discard,
 }

@@ -10,9 +10,10 @@ object CatsBrowserGraph : NavGraph("cats") {
     override fun startDestination(): ScreenDestination = CatsList
 
     val CatsList = screenDestination("catsList")
-    val CatDetails = CatsList.next {
-        param(PARAM_CAT_ID)
-    }
+    val CatDetails =
+        CatsList.next {
+            param(PARAM_CAT_ID)
+        }
 }
 
 fun NavStackEntry.catId() = getInt(CatsBrowserGraph.PARAM_CAT_ID)

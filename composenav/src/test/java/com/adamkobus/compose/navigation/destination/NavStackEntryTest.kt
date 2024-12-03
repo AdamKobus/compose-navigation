@@ -10,16 +10,16 @@ import org.junit.Before
 import org.junit.Test
 
 class NavStackEntryTest {
-
     private val destination: NavDestination = mockk()
-    private val arguments = mutableMapOf(
-        "intArg" to "10",
-        "longArg" to "100000000",
-        "stringArg" to "asdf",
-        "floatArg" to "0.5",
-        "doubleArg" to "0.123",
-        "booleanArg" to "true"
-    )
+    private val arguments =
+        mutableMapOf(
+            "intArg" to "10",
+            "longArg" to "100000000",
+            "stringArg" to "asdf",
+            "floatArg" to "0.5",
+            "doubleArg" to "0.123",
+            "booleanArg" to "true",
+        )
 
     private val testSubject = NavStackEntry(destination, arguments)
 
@@ -40,9 +40,10 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN String argument is missing WHEN getString THEN NavArgumentMissingError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentMissingError::class.java) {
-            testSubject.getString("missing")
-        }
+        val error =
+            assertThrows(NavArgumentMissingError::class.java) {
+                testSubject.getString("missing")
+            }
 
         // then
         assertEquals("Destination 'destinationString' did not receive value for argument with key 'missing'", error.message)
@@ -60,9 +61,10 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Long argument is missing WHEN getLong THEN NavArgumentMissingError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentMissingError::class.java) {
-            testSubject.getLong("missing")
-        }
+        val error =
+            assertThrows(NavArgumentMissingError::class.java) {
+                testSubject.getLong("missing")
+            }
 
         // then
         assertEquals("Destination 'destinationString' did not receive value for argument with key 'missing'", error.message)
@@ -71,14 +73,15 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Reading non-numeric argument WHEN getLong THEN NavArgumentFormatInvalidError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentFormatInvalidError::class.java) {
-            testSubject.getLong("stringArg")
-        }
+        val error =
+            assertThrows(NavArgumentFormatInvalidError::class.java) {
+                testSubject.getLong("stringArg")
+            }
 
         // then
         assertEquals(
             "Value 'asdf' of argument 'stringArg' in destination 'destinationString' could not be parsed to Long",
-            error.message
+            error.message,
         )
     }
 
@@ -94,9 +97,10 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Int argument is missing WHEN getInt THEN NavArgumentMissingError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentMissingError::class.java) {
-            testSubject.getInt("missing")
-        }
+        val error =
+            assertThrows(NavArgumentMissingError::class.java) {
+                testSubject.getInt("missing")
+            }
 
         // then
         assertEquals("Destination 'destinationString' did not receive value for argument with key 'missing'", error.message)
@@ -105,14 +109,15 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Reading non-numeric argument WHEN getInt THEN NavArgumentFormatInvalidError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentFormatInvalidError::class.java) {
-            testSubject.getInt("stringArg")
-        }
+        val error =
+            assertThrows(NavArgumentFormatInvalidError::class.java) {
+                testSubject.getInt("stringArg")
+            }
 
         // then
         assertEquals(
             "Value 'asdf' of argument 'stringArg' in destination 'destinationString' could not be parsed to Int",
-            error.message
+            error.message,
         )
     }
 
@@ -128,9 +133,10 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Float argument is missing WHEN getFloat THEN NavArgumentMissingError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentMissingError::class.java) {
-            testSubject.getFloat("missing")
-        }
+        val error =
+            assertThrows(NavArgumentMissingError::class.java) {
+                testSubject.getFloat("missing")
+            }
 
         // then
         assertEquals("Destination 'destinationString' did not receive value for argument with key 'missing'", error.message)
@@ -139,14 +145,15 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Reading non-numeric argument WHEN getFloat THEN NavArgumentFormatInvalidError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentFormatInvalidError::class.java) {
-            testSubject.getFloat("stringArg")
-        }
+        val error =
+            assertThrows(NavArgumentFormatInvalidError::class.java) {
+                testSubject.getFloat("stringArg")
+            }
 
         // then
         assertEquals(
             "Value 'asdf' of argument 'stringArg' in destination 'destinationString' could not be parsed to Float",
-            error.message
+            error.message,
         )
     }
 
@@ -162,9 +169,10 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Double argument is missing WHEN getDouble THEN NavArgumentMissingError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentMissingError::class.java) {
-            testSubject.getDouble("missing")
-        }
+        val error =
+            assertThrows(NavArgumentMissingError::class.java) {
+                testSubject.getDouble("missing")
+            }
 
         // then
         assertEquals("Destination 'destinationString' did not receive value for argument with key 'missing'", error.message)
@@ -173,14 +181,15 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Reading non-numeric argument WHEN getDouble THEN NavArgumentFormatInvalidError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentFormatInvalidError::class.java) {
-            testSubject.getDouble("stringArg")
-        }
+        val error =
+            assertThrows(NavArgumentFormatInvalidError::class.java) {
+                testSubject.getDouble("stringArg")
+            }
 
         // then
         assertEquals(
             "Value 'asdf' of argument 'stringArg' in destination 'destinationString' could not be parsed to Double",
-            error.message
+            error.message,
         )
     }
 
@@ -196,9 +205,10 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Boolean argument is missing WHEN getDouble THEN NavArgumentMissingError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentMissingError::class.java) {
-            testSubject.getBoolean("missing")
-        }
+        val error =
+            assertThrows(NavArgumentMissingError::class.java) {
+                testSubject.getBoolean("missing")
+            }
 
         // then
         assertEquals("Destination 'destinationString' did not receive value for argument with key 'missing'", error.message)
@@ -207,14 +217,15 @@ class NavStackEntryTest {
     @Test
     fun `GIVEN Reading non-boolean argument WHEN getDouble THEN NavArgumentFormatInvalidError is thrown`() {
         // when
-        val error = assertThrows(NavArgumentFormatInvalidError::class.java) {
-            testSubject.getBoolean("stringArg")
-        }
+        val error =
+            assertThrows(NavArgumentFormatInvalidError::class.java) {
+                testSubject.getBoolean("stringArg")
+            }
 
         // then
         assertEquals(
             "Value 'asdf' of argument 'stringArg' in destination 'destinationString' could not be parsed to Boolean",
-            error.message
+            error.message,
         )
     }
 }

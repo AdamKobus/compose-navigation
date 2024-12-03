@@ -17,32 +17,35 @@ import javax.inject.Inject
 @HiltViewModel
 class DemoTabsNavigationVM @Inject constructor(
     private val navigationStateSource: NavigationStateSource,
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-
     private val currentTabHostType = mutableStateOf(TabHostType.NONE)
-    private val animalsTabHostState = mutableStateOf(
-        AnimalsTabHostState(
-            items = listOf(
-                DemoTabs.Dogs,
-                DemoTabs.Cats
-            ).sortedBy { it.index },
-            selectedIndex = 0
+    private val animalsTabHostState =
+        mutableStateOf(
+            AnimalsTabHostState(
+                items =
+                listOf(
+                    DemoTabs.Dogs,
+                    DemoTabs.Cats,
+                ).sortedBy { it.index },
+                selectedIndex = 0,
+            ),
         )
-    )
 
-    val screenState = DemoTabsNavigationState(
-        tabHostType = currentTabHostType,
-        animalsTabHostState = animalsTabHostState
-    )
+    val screenState =
+        DemoTabsNavigationState(
+            tabHostType = currentTabHostType,
+            animalsTabHostState = animalsTabHostState,
+        )
 
-    val interactions = DemoTabsInteractions(
-        onTabSelected = {
-            viewModelScope.launch {
-                processTabSelection(it)
-            }
-        }
-    )
+    val interactions =
+        DemoTabsInteractions(
+            onTabSelected = {
+                viewModelScope.launch {
+                    processTabSelection(it)
+                }
+            },
+        )
 
     init {
         runOnStart {
@@ -86,11 +89,12 @@ class DemoTabsNavigationVM @Inject constructor(
 
     companion object {
         private val CATS_DESTINATIONS = listOf(CatsBrowserGraph.CatsList, CatsBrowserGraph.CatDetails)
-        private val DOGS_DESTINATIONS = listOf(
-            DogsBrowserGraph.DogDetails,
-            DogsBrowserGraph.DogsList,
-            DogsBrowserGraph.DemoDialog,
-            DogsBrowserGraph.DogGallery
-        )
+        private val DOGS_DESTINATIONS =
+            listOf(
+                DogsBrowserGraph.DogDetails,
+                DogsBrowserGraph.DogsList,
+                DogsBrowserGraph.DemoDialog,
+                DogsBrowserGraph.DogGallery,
+            )
     }
 }

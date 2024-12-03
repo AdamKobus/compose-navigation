@@ -8,7 +8,6 @@ import com.adamkobus.compose.navigation.action.NavigateAction
  * It might be a bad idea though as it increases chance for your [NavActionVerifier]s to not work properly.
  */
 object GlobalGraph : NavGraph(name = "__global__", reservedNameCheck = false) {
-
     /**
      * Start destination of [GlobalGraph]. Please keep in mind that navigating to GlobalGraph should be avoided
      */

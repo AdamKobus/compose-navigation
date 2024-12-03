@@ -5,5 +5,5 @@ import com.adamkobus.compose.navigation.democore.data.DogInfo
 
 data class DogsListScreenState(
     val isLoading: State<Boolean>,
-    val dogsList: State<List<DogInfo>>
+    val dogsList: State<List<DogInfo>>,
 )

@@ -3,10 +3,10 @@ package com.adamkobus.compose.navigation.demo.ui.tabhost
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.LeadingIconTab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LeadingIconTab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -25,7 +25,7 @@ fun DemoTabsNavigation(modifier: Modifier = Modifier) {
     DemoTabsNavigationContent(
         state,
         interactions = interactions,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -33,7 +33,7 @@ fun DemoTabsNavigation(modifier: Modifier = Modifier) {
 private fun DemoTabsNavigationContent(
     state: DemoTabsNavigationState,
     interactions: DemoTabsInteractions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
         Crossfade(targetState = state.tabHostType.value) { renderedState ->
@@ -51,17 +51,20 @@ fun EmptyTabHost() {
 }
 
 @Composable
-fun AnimalsTabHost(state: AnimalsTabHostState, onTabSelected: (DemoTabData) -> Unit) {
+fun AnimalsTabHost(
+    state: AnimalsTabHostState,
+    onTabSelected: (DemoTabData) -> Unit,
+) {
     val scope = rememberCoroutineScope()
     TabRow(
-        selectedTabIndex = state.selectedIndex
+        selectedTabIndex = state.selectedIndex,
     ) {
         state.items.forEachIndexed { index, tab ->
             LeadingIconTab(
                 icon = {
                     Icon(
                         painter = painterResource(id = tab.iconResId),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 },
                 text = {
@@ -72,7 +75,7 @@ fun AnimalsTabHost(state: AnimalsTabHostState, onTabSelected: (DemoTabData) -> U
                     scope.launch {
                         onTabSelected(tab)
                     }
-                }
+                },
             )
         }
     }

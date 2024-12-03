@@ -6,7 +6,7 @@ First let's define a dialog in `DetailScreen.kt`:
 
 > `.ui.detail.DetailScreen.kt`
 ```kotlin
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
 
 @Composable
 fun DetailScreenDialog(itemId: Int) {

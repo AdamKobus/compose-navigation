@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ fun CatsListScreen() {
 @Composable
 private fun CatsListScreenContent(
     state: CatsListScreenState,
-    interactions: CatsListInteractions
+    interactions: CatsListInteractions,
 ) {
     when (state.isLoading.value) {
         true -> LoadingScreen()
@@ -43,13 +44,13 @@ private fun CatsListScreenContent(
 @Composable
 private fun CatsListContent(
     state: CatsListScreenState,
-    onCatListItemSelected: (CatInfo) -> Unit
+    onCatListItemSelected: (CatInfo) -> Unit,
 ) {
     val data = state.catsList.value
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = Paddings.ScreenWithTabHostInsets
+        contentPadding = Paddings.ScreenWithTabHostInsets,
     ) {
         items(data, key = { it.id }) { catInfo ->
             CatListItem(catInfo = catInfo, onCatListItemSelected)
@@ -58,14 +59,18 @@ private fun CatsListContent(
 }
 
 @Composable
-private fun CatListItem(catInfo: CatInfo, onCatListItemSelected: (CatInfo) -> Unit) {
+private fun CatListItem(
+    catInfo: CatInfo,
+    onCatListItemSelected: (CatInfo) -> Unit,
+) {
     Card(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .clickable {
                 onCatListItemSelected(catInfo)
             },
-        elevation = 4.dp
+        elevation = CardDefaults.elevatedCardElevation(),
     ) {
         Column(modifier = Modifier.padding(Paddings.CardPadding)) {
             Text(text = catInfo.name)

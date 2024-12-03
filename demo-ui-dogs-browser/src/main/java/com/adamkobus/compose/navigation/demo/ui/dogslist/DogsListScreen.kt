@@ -8,8 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ fun DogsListScreen() {
 @Composable
 private fun DogsListScreenContent(
     state: DogsListScreenState,
-    interactions: DogsListInteractions
+    interactions: DogsListInteractions,
 ) {
     when (state.isLoading.value) {
         true -> LoadingScreen()
@@ -42,12 +43,15 @@ private fun DogsListScreenContent(
 }
 
 @Composable
-private fun DogsListContent(state: DogsListScreenState, onDogsItemSelected: (DogInfo) -> Unit) {
+private fun DogsListContent(
+    state: DogsListScreenState,
+    onDogsItemSelected: (DogInfo) -> Unit,
+) {
     val data = state.dogsList.value
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = Paddings.ScreenWithTabHostInsets
+        contentPadding = Paddings.ScreenWithTabHostInsets,
     ) {
         items(data, key = { it.id }) { dogInfo ->
             DogListItem(dogInfo = dogInfo, onDogsItemSelected)
@@ -56,14 +60,18 @@ private fun DogsListContent(state: DogsListScreenState, onDogsItemSelected: (Dog
 }
 
 @Composable
-private fun DogListItem(dogInfo: DogInfo, onDogsItemSelected: (DogInfo) -> Unit) {
+private fun DogListItem(
+    dogInfo: DogInfo,
+    onDogsItemSelected: (DogInfo) -> Unit,
+) {
     Card(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .clickable {
                 onDogsItemSelected(dogInfo)
             },
-        elevation = Elevation.AppBar
+        elevation = CardDefaults.elevatedCardElevation(Elevation.AppBar),
     ) {
         Column(modifier = Modifier.padding(Paddings.CardPadding)) {
             Text(text = dogInfo.name)

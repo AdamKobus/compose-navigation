@@ -6,7 +6,6 @@ import com.adamkobus.compose.navigation.intent.NavIntent
 import kotlinx.coroutines.CompletableDeferred
 
 internal sealed class ProcessorTask(val onTaskCompleted: CompletableDeferred<NavigationResult>?) {
-
     class Action(val navAction: NavAction, onTaskCompleted: CompletableDeferred<NavigationResult>?) : ProcessorTask(onTaskCompleted) {
         override fun equals(other: Any?): Boolean {
             return other is Action && other.navAction == navAction

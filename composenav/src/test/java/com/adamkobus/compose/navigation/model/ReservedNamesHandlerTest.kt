@@ -5,7 +5,6 @@ import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class ReservedNamesHandlerTest {
-
     private val testSubject = ReservedNamesHandler()
 
     @Test

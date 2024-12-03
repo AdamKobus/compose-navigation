@@ -20,31 +20,34 @@ import javax.inject.Inject
 class CatsListScreenVM @Inject constructor(
     private val navigationConsumer: NavigationConsumer,
     private val appBarStateSource: AppBarStateSource,
-    private val catsSource: CatsSource
+    private val catsSource: CatsSource,
 ) : LifecycleAwareViewModel() {
-
     private val isLoading = mutableStateOf(true)
     private val catsList = mutableStateOf<List<CatInfo>>(emptyList())
-    val screenState = CatsListScreenState(
-        isLoading = isLoading,
-        catsList = catsList
-    )
+    val screenState =
+        CatsListScreenState(
+            isLoading = isLoading,
+            catsList = catsList,
+        )
 
-    val interactions = CatsListInteractions(
-        onCatListItemSelected = {
-            navigationConsumer.offer(FromCatsList.ToCatDetails(it.id))
-        }
-    )
+    val interactions =
+        CatsListInteractions(
+            onCatListItemSelected = {
+                navigationConsumer.offer(FromCatsList.ToCatDetails(it.id))
+            },
+        )
 
-    private val settingsAction = AppBarActionState.settings {
-        viewModelScope.launch {
-            navigationConsumer.offer(FromCatsList.ToSettings)
+    private val settingsAction =
+        AppBarActionState.settings {
+            viewModelScope.launch {
+                navigationConsumer.offer(FromCatsList.ToSettings)
+            }
         }
-    }
-    private val appBarState = AnimatedAppBarState(
-        titleState = AppBarTitleState(titleResId = R.string.cats_list_title),
-        actionsState = listOf(settingsAction)
-    )
+    private val appBarState =
+        AnimatedAppBarState(
+            titleState = AppBarTitleState(titleResId = R.string.cats_list_title),
+            actionsState = listOf(settingsAction),
+        )
 
     init {
         runOnStart {

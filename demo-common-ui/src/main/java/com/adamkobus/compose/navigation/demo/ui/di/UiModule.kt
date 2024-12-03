@@ -11,7 +11,6 @@ import dagger.multibindings.IntoSet
 @InstallIn(SingletonComponent::class)
 @Module
 interface UiModule {
-
     @Binds
     @IntoSet
     fun bindsAppBarOverlayProvider(impl: AppBarOverlayProvider): OverlayProvider

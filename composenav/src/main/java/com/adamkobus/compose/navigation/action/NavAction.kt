@@ -11,9 +11,8 @@ import com.adamkobus.compose.navigation.intent.ResolveResult
  */
 abstract class NavAction(
     val fromDestination: INavDestination,
-    val toDestination: INavDestination
+    val toDestination: INavDestination,
 ) {
-
     /**
      * Compares other [NavAction] by [fromDestination] and [toDestination] fields
      */

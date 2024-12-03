@@ -11,7 +11,6 @@ import dagger.multibindings.IntoSet
 @InstallIn(SingletonComponent::class)
 @Module
 internal interface NavModuleInternalBinds {
-
     @Binds
     @IntoSet
     fun providesStubNavGraphApplier(impl: StubNavGraphApplier): NavGraphApplier

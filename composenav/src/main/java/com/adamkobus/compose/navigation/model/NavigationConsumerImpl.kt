@@ -9,7 +9,6 @@ import com.adamkobus.compose.navigation.intent.NavIntent
 import kotlinx.coroutines.CompletableDeferred
 
 internal class NavigationConsumerImpl : NavigationConsumer {
-
     private val navProcessor
         get() = ComposeNavigation.getNavProcessor()
 

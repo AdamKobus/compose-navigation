@@ -9,12 +9,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SettingsHomeVM @Inject constructor(
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-
-    val interactions = SettingsHomeInteractions(
-        onRestartAppClicked = {
-            navigationConsumer.offer(DemoIntents.restartApp(origin = DevMenuSettingsGraph.Home))
-        }
-    )
+    val interactions =
+        SettingsHomeInteractions(
+            onRestartAppClicked = {
+                navigationConsumer.offer(DemoIntents.restartApp(origin = DevMenuSettingsGraph.Home))
+            },
+        )
 }

@@ -26,7 +26,7 @@ data class NavIntent(
     val origin: NavDestination? = null,
     val popOptions: NavOptions? = null,
     val navigationId: NavigationId? = null,
-    private val arguments: MutableMap<String, Any> = mutableMapOf()
+    private val arguments: MutableMap<String, Any> = mutableMapOf(),
 ) {
     /**
      * Creates a copy of [NavIntent] with [pair] added to its arguments
@@ -36,13 +36,18 @@ data class NavIntent(
     /**
      * Creates a copy of [NavIntent] with [pair] added to its arguments
      */
-    operator fun plus(pair: Pair<String, Any>): NavIntent = copy(
-        arguments = arguments.toMutableMap().also {
-            it[pair.first] = pair.second
-        }
-    )
+    operator fun plus(pair: Pair<String, Any>): NavIntent =
+        copy(
+            arguments =
+            arguments.toMutableMap().also {
+                it[pair.first] = pair.second
+            },
+        )
 
-    fun addArgument(key: String, value: Any) {
+    fun addArgument(
+        key: String,
+        value: Any,
+    ) {
         arguments[key] = value
     }
 
@@ -100,7 +105,7 @@ data class NavIntent(
 internal fun navIntent(
     name: String,
     sourceDestination: NavDestination,
-    reservedNameCheck: Boolean = true
+    reservedNameCheck: Boolean = true,
 ): NavIntent {
     if (reservedNameCheck) {
         ComposeNavigation.getReservedNamesHandler().checkIntentName(name)

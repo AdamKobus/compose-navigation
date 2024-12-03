@@ -3,14 +3,13 @@ package com.adamkobus.compose.navigation.model
 import com.adamkobus.compose.navigation.error.ReservedNameError
 
 internal class ReservedNamesHandler {
-
     internal var enabled = true
 
     fun checkGraphName(graphName: String) {
         if (enabled && graphName.startsWith(RESERVED_NAME_PREFIX)) {
             throw ReservedNameError(
                 "Graph names starting with $RESERVED_NAME_PREFIX are reserved " +
-                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()"
+                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()",
             )
         }
     }
@@ -19,7 +18,7 @@ internal class ReservedNamesHandler {
         if (enabled && pathName.startsWith(RESERVED_NAME_PREFIX)) {
             throw ReservedNameError(
                 "Path names starting with $RESERVED_NAME_PREFIX are reserved " +
-                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()"
+                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()",
             )
         }
     }
@@ -28,7 +27,7 @@ internal class ReservedNamesHandler {
         if (enabled && paramName.startsWith(RESERVED_NAME_PREFIX)) {
             throw ReservedNameError(
                 "Param names starting with $RESERVED_NAME_PREFIX are reserved " +
-                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()"
+                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()",
             )
         }
     }
@@ -37,7 +36,7 @@ internal class ReservedNamesHandler {
         if (enabled && name.startsWith(RESERVED_NAME_PREFIX)) {
             throw ReservedNameError(
                 "Intent names starting with $RESERVED_NAME_PREFIX are reserved " +
-                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()"
+                    "for internal usage. You can disable this with ComposeNavigation.disableRestrictedNamesCheck()",
             )
         }
     }

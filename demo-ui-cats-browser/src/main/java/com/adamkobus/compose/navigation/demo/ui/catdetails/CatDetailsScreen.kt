@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,13 +46,14 @@ private fun CatDetailsScreenContent(screenState: CatDetailsScreenState) {
 @Composable
 private fun CatDetails(catInfo: CatInfo) {
     Column(modifier = Modifier.padding(Paddings.Screen)) {
-        Text(text = catInfo.name, style = MaterialTheme.typography.h2)
+        Text(text = catInfo.name, style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.height(24.dp))
         val currentDestination = LocalNavDestination.current
         val isCatDetails = currentDestination == CatsBrowserGraph.CatDetails
         Text(
-            text = "Current destination: $currentDestination\n" +
-                "isCatDetailsDestination: $isCatDetails"
+            text =
+            "Current destination: $currentDestination\n" +
+                "isCatDetailsDestination: $isCatDetails",
         )
     }
 }
@@ -60,10 +61,11 @@ private fun CatDetails(catInfo: CatInfo) {
 @Composable
 private fun CatError() {
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
-            .padding(Paddings.Screen)
+            .padding(Paddings.Screen),
     ) {
-        Text(text = stringResource(id = R.string.cat_details_error), style = MaterialTheme.typography.h2, color = Color.Red)
+        Text(text = stringResource(id = R.string.cat_details_error), style = MaterialTheme.typography.titleMedium, color = Color.Red)
     }
 }

@@ -9,9 +9,8 @@ package com.adamkobus.compose.navigation.destination
  */
 abstract class NavGraph internal constructor(
     val name: String,
-    private val reservedNameCheck: Boolean = true
+    private val reservedNameCheck: Boolean = true,
 ) : NavDestination {
-
     /**
      * @param name It is used to identify this graph. All destinations created in this graph will also be prefixed by the graph's name.
      */
@@ -35,14 +34,18 @@ abstract class NavGraph internal constructor(
     /**
      * Creates new type-safe builder for [ScreenDestination]. It will be initialized with this graph and provided [name]
      */
-    fun screenDestination(name: String, init: NavRoute.Builder.() -> Unit = {}): ScreenDestination =
-        screenDestination(this, pathName = name, reservedNameCheck = reservedNameCheck, init = init)
+    fun screenDestination(
+        name: String,
+        init: NavRoute.Builder.() -> Unit = {},
+    ): ScreenDestination = screenDestination(this, pathName = name, reservedNameCheck = reservedNameCheck, init = init)
 
     /**
      * Creates new type-safe builder for [DialogDestination]. It will be initialized with this graph and provided [name]
      */
-    fun dialogDestination(pathName: String, init: NavRoute.Builder.() -> Unit = {}): DialogDestination =
-        dialogDestination(this, pathName = pathName, reservedNameCheck = reservedNameCheck, init = init)
+    fun dialogDestination(
+        pathName: String,
+        init: NavRoute.Builder.() -> Unit = {},
+    ): DialogDestination = dialogDestination(this, pathName = pathName, reservedNameCheck = reservedNameCheck, init = init)
 
     /**
      * In case of [NavGraph], [graph] always points to itself

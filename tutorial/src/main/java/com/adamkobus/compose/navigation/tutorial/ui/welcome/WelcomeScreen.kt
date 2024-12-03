@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +33,7 @@ fun WelcomeScreen() {
 private fun WelcomeScreenContent(interactions: WelcomeScreenInteractions = WelcomeScreenInteractions.STUB) {
     Column(
         modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Button(onClick = interactions.onShowImageClicked, modifier = Modifier.fillMaxWidth()) {
             Text(text = "Show me an image!")
@@ -57,37 +57,39 @@ private fun WelcomeScreenPreview() {
 
 @HiltViewModel
 class WelcomeScreenVM @Inject constructor(
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : ViewModel() {
-    val interactions = WelcomeScreenInteractions(
-        onShowImageClicked = {
-            viewModelScope.launch {
-                navigationConsumer.offer(TutorialNavActions.FromWelcomeToImage)
-            }
-        },
-        onShowListClicked = {
-            viewModelScope.launch {
-                navigationConsumer.offer(TutorialNavActions.FromWelcomeToList)
-            }
-        },
-        onOpenRandomItemClicked = {
-            viewModelScope.launch {
-                navigationConsumer.offer(TutorialIntents.openRandomItem(TutorialGraph.Welcome))
-            }
-        }
-    )
+    val interactions =
+        WelcomeScreenInteractions(
+            onShowImageClicked = {
+                viewModelScope.launch {
+                    navigationConsumer.offer(TutorialNavActions.FromWelcomeToImage)
+                }
+            },
+            onShowListClicked = {
+                viewModelScope.launch {
+                    navigationConsumer.offer(TutorialNavActions.FromWelcomeToList)
+                }
+            },
+            onOpenRandomItemClicked = {
+                viewModelScope.launch {
+                    navigationConsumer.offer(TutorialIntents.openRandomItem(TutorialGraph.Welcome))
+                }
+            },
+        )
 }
 
 data class WelcomeScreenInteractions(
     val onShowImageClicked: () -> Unit,
     val onShowListClicked: () -> Unit,
-    val onOpenRandomItemClicked: () -> Unit
+    val onOpenRandomItemClicked: () -> Unit,
 ) {
     companion object {
-        val STUB = WelcomeScreenInteractions(
-            onShowImageClicked = {},
-            onShowListClicked = {},
-            onOpenRandomItemClicked = {}
-        )
+        val STUB =
+            WelcomeScreenInteractions(
+                onShowImageClicked = {},
+                onShowListClicked = {},
+                onOpenRandomItemClicked = {},
+            )
     }
 }

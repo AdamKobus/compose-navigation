@@ -19,6 +19,8 @@ signing.gpg
 .idea/compiler.xml
 .idea/jarRepositories.xml
 .idea/deploymentTargetDropDown.xml
+.idea/deploymentTargetSelector.xml
+.idea/inspectionProfiles/Project_Default.xml
 gradle.xml
 *.iml
 

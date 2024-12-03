@@ -9,10 +9,10 @@ on `Detail` destination when the button is clicked:
 > `.ui.detailscreen.DetailScreen.kt`
 ```kotlin
 // added imports
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material3.icons.Icons
+import androidx.compose.material3.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import com.adamkobus.compose.navigation.NavigationConsumer

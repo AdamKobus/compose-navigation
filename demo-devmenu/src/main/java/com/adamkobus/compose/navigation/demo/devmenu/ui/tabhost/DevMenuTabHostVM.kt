@@ -15,28 +15,30 @@ import javax.inject.Inject
 @HiltViewModel
 internal class DevMenuTabHostVM @Inject constructor(
     private val navigationStateSource: NavigationStateSource,
-    private val navigationConsumer: NavigationConsumer
+    private val navigationConsumer: NavigationConsumer,
 ) : LifecycleAwareViewModel() {
-
     private val isVisible = mutableStateOf(false)
     private val selectedIndex = mutableStateOf(0)
-    private val tabs = mutableStateOf(
-        listOf(
-            DevMenuTabs.Info,
-            DevMenuTabs.Settings
+    private val tabs =
+        mutableStateOf(
+            listOf(
+                DevMenuTabs.Info,
+                DevMenuTabs.Settings,
+            ),
         )
-    )
-    val state = DevMenuTabHostState(
-        tabs = tabs,
-        isVisible = isVisible,
-        selectedIndex = selectedIndex
-    )
+    val state =
+        DevMenuTabHostState(
+            tabs = tabs,
+            isVisible = isVisible,
+            selectedIndex = selectedIndex,
+        )
 
-    val interactions = DevMenuTabHostInteractions(
-        onTabSelected = {
-            processTabSelection(it)
-        }
-    )
+    val interactions =
+        DevMenuTabHostInteractions(
+            onTabSelected = {
+                processTabSelection(it)
+            },
+        )
 
     init {
         runOnStart {

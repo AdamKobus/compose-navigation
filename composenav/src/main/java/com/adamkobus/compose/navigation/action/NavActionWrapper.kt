@@ -10,9 +10,8 @@ import com.adamkobus.compose.navigation.NavigationConsumer
  * @param action actual action that will be processed when offered to [NavigationConsumer]
  */
 open class NavActionWrapper(
-    val action: NavAction
+    val action: NavAction,
 ) {
-
     /**
      * Compares other [NavActionWrapper] by [action] field
      */

@@ -22,13 +22,15 @@ object TutorialGraph : NavGraph("tutorialGraph") {
     val Image = screenDestination("image")
     val List = screenDestination("list")
 
-    val Detail = List.next {
-        param(PARAM_ITEM_ID)
-    }
+    val Detail =
+        List.next {
+            param(PARAM_ITEM_ID)
+        }
 
-    val DetailDialog = Detail.next {
-        path("dialog")
-    }.asDialog()
+    val DetailDialog =
+        Detail.next {
+            path("dialog")
+        }.asDialog()
 }
 
 fun NavStackEntry.getItemId() = getInt(TutorialGraph.PARAM_ITEM_ID)

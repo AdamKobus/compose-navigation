@@ -6,14 +6,12 @@ import com.adamkobus.compose.navigation.ComposeNavigation
  * Used to declare apart of [ScreenDestination]'s route..
  */
 sealed class NavRoutePart {
-
     /**
      * Declares a path of the route that contains name of a [NavGraph]
      *
      * @param name Name of a [NavGraph]
      */
     class GraphName internal constructor(val name: String, reservedNamesCheck: Boolean = true) : NavRoutePart() {
-
         /**
          * @param name Name of a [NavGraph]
          */
@@ -51,7 +49,6 @@ sealed class NavRoutePart {
      * @param name will become part of the final route without any modification
      */
     class Path internal constructor(val name: String, reservedNamesCheck: Boolean) : NavRoutePart() {
-
         /**
          * @param name will become part of the final route without any modification
          */
@@ -89,7 +86,6 @@ sealed class NavRoutePart {
      * @param paramName name by which this param can be later obtained from [NavStackEntry]
      */
     class Param internal constructor(val paramName: String, reservedNamesCheck: Boolean) : NavRoutePart() {
-
         /**
          * @param paramName name by which this param can be later obtained from [NavStackEntry]
          */

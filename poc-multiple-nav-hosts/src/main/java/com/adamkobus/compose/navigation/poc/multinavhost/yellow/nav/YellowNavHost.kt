@@ -10,13 +10,16 @@ import com.adamkobus.compose.navigation.poc.multinavhost.ui.theme.YellowTheme
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun YellowNavHost(controller: NavHostController, modifier: Modifier = Modifier) {
+fun YellowNavHost(
+    controller: NavHostController,
+    modifier: Modifier = Modifier,
+) {
     YellowTheme {
         ComposeNavHost(
             startGraph = YellowGraph,
             controller = controller,
             navigationId = YellowNavId,
-            modifier = modifier
+            modifier = modifier,
         ) {
             yellowGraph()
         }

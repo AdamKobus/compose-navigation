@@ -28,5 +28,8 @@ interface NavIntentResolver {
      *
      * - [ResolveResult.None] - should be returned when the implementation of [NavIntentResolver] doesn't recognize provided [intent]
      */
-    suspend fun resolve(intent: NavIntent, navState: NavState): ResolveResult
+    suspend fun resolve(
+        intent: NavIntent,
+        navState: NavState,
+    ): ResolveResult
 }

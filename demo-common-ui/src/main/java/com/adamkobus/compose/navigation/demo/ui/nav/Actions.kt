@@ -6,10 +6,11 @@ import com.adamkobus.compose.navigation.action.navActionOptions
 
 sealed class FromSplash(action: NavAction) : NavActionWrapper(action) {
     object ToWelcome : FromSplash(
-        AppGraph.SplashScreen goTo OnBoardingGraph withOptions navActionOptions {
-            popUpTo(AppRootGraph)
-            launchSingleTop = true
-        }
+        AppGraph.SplashScreen goTo OnBoardingGraph withOptions
+            navActionOptions {
+                popUpTo(AppRootGraph)
+                launchSingleTop = true
+            },
     )
 }
 
@@ -19,22 +20,24 @@ sealed class FromWelcome(action: NavAction) : NavActionWrapper(action) {
             .setNavOptions {
                 popUpTo(AppRootGraph)
                 launchSingleTop = true
-            }
+            },
     )
 
     object ToDogsList : FromWelcome(
-        OnBoardingGraph.WelcomeScreen goTo DogsBrowserGraph withOptions navActionOptions {
-            popUpTo(AppRootGraph)
-            launchSingleTop = true
-        }
+        OnBoardingGraph.WelcomeScreen goTo DogsBrowserGraph withOptions
+            navActionOptions {
+                popUpTo(AppRootGraph)
+                launchSingleTop = true
+            },
     )
 }
 
 sealed class FromCatsList(action: NavAction) : NavActionWrapper(action) {
     class ToCatDetails(catId: Int) : FromCatsList(
-        CatsBrowserGraph.CatsList goTo CatsBrowserGraph.CatDetails arg catId withOptions navActionOptions {
-            popUpTo(CatsBrowserGraph.CatsList)
-        }
+        CatsBrowserGraph.CatsList goTo CatsBrowserGraph.CatDetails arg catId withOptions
+            navActionOptions {
+                popUpTo(CatsBrowserGraph.CatsList)
+            },
     )
 
     object ToSettings : FromCatsList(CatsBrowserGraph.CatsList goTo SettingsGraph)
@@ -46,12 +49,15 @@ sealed class FromCatDetails(action: NavAction) : NavActionWrapper(action) {
 
 sealed class FromDogsList(action: NavAction) : NavActionWrapper(action) {
     class ToDogDetails(dogId: Int) : FromDogsList(DogsBrowserGraph.DogsList goTo DogsBrowserGraph.DogDetails arg dogId)
+
     object ToSettings : FromDogsList(DogsBrowserGraph.DogsList goTo SettingsGraph)
 }
 
 sealed class FromDogDetails(action: NavAction) : NavActionWrapper(action) {
     object Back : FromDogDetails(DogsBrowserGraph.DogDetails.pop())
+
     object ToDemoDialog : FromDogDetails(DogsBrowserGraph.DogDetails goTo DogsBrowserGraph.DemoDialog)
+
     class ToGallery(dogId: Int) : FromDogDetails(DogsBrowserGraph.DogDetails goTo DogsBrowserGraph.DogGallery arg dogId)
 }
 

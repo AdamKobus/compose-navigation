@@ -9,7 +9,6 @@ import com.adamkobus.compose.navigation.destination.NavStackEntry
 import com.adamkobus.compose.navigation.destination.UnknownDestination
 
 internal class KnownDestinationsSource {
-
     private val knownDestinations = mutableMapOf<String, NavDestination>()
 
     internal fun addToKnownDestinations(destination: INavDestination) {
@@ -20,7 +19,10 @@ internal class KnownDestinationsSource {
         }
     }
 
-    private fun addKnownDestination(route: String, destination: NavDestination) {
+    private fun addKnownDestination(
+        route: String,
+        destination: NavDestination,
+    ) {
         synchronized(knownDestinations) {
             knownDestinations.putIfAbsent(route, destination)
         }
@@ -38,16 +40,19 @@ internal class KnownDestinationsSource {
 }
 
 internal fun NavBackStackEntry.toNavStackEntry(
-    knownDestinationsSource: KnownDestinationsSource = ComposeNavigation.getKnownDestinationsSource()
+    knownDestinationsSource: KnownDestinationsSource = ComposeNavigation.getKnownDestinationsSource(),
 ): NavStackEntry {
     val destination = knownDestinationsSource.resolveNavBackStackEntryToDestination(this)
     return NavStackEntry(
         destination = destination,
-        arguments = buildArguments(destination, this.arguments)
+        arguments = buildArguments(destination, this.arguments),
     )
 }
 
-private fun buildArguments(destination: NavDestination, arguments: Bundle?): Map<String, String> =
+private fun buildArguments(
+    destination: NavDestination,
+    arguments: Bundle?,
+): Map<String, String> =
     destination.route.paramNames.associateWith {
         arguments?.getString(it)!!
     }

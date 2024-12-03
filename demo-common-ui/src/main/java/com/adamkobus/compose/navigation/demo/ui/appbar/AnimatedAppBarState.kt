@@ -2,28 +2,28 @@ package com.adamkobus.compose.navigation.demo.ui.appbar
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarDefaults.DefaultStyle
+import com.adamkobus.compose.navigation.demo.ui.appbar.AnimatedAppBarDefaults.DEFAULT_STYLE
 import com.adamkobus.compose.navigation.demo.ui.common.R
 
 data class AnimatedAppBarState(
     val titleState: AppBarTitleState? = null,
     val iconState: AppBarIconState? = null,
     val actionsState: List<AppBarActionState> = emptyList(),
-    val searchState: AppBarSearchState = AppBarSearchState()
+    val searchState: AppBarSearchState = AppBarSearchState(),
 ) {
     val isAnyContentAvailable: Boolean
         get() = titleState != null || iconState != null || actionsState.isNotEmpty() || searchState.isSearchEnabled
 }
 
 data class AppBarTitleState(
-    val style: Int = DefaultStyle,
+    val style: Int = DEFAULT_STYLE,
     @StringRes private val titleResId: Int? = null,
-    private val title: String? = null
+    private val title: String? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         return other is AppBarTitleState && other.style == style && other.titleResId == titleResId && other.title == title
@@ -46,7 +46,7 @@ class AppBarIconState(
     @StringRes val contentDescriptionResId: Int?,
     val onClick: (() -> Unit) = {},
     val iconId: Int = nextIconId,
-    val style: Int = AnimatedAppBarDefaults.DefaultStyle
+    val style: Int = AnimatedAppBarDefaults.DEFAULT_STYLE,
 ) {
     override fun equals(other: Any?): Boolean {
         return other is AppBarIconState && other.iconId == iconId
@@ -65,7 +65,11 @@ class AppBarIconState(
             }
 
         fun back(onClick: () -> Unit): AppBarIconState =
-            AppBarIconState(icon = Icons.Filled.ArrowBack, onClick = onClick, contentDescriptionResId = R.string.accessibility_back)
+            AppBarIconState(
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
+                onClick = onClick,
+                contentDescriptionResId = R.string.accessibility_back,
+            )
     }
 }
 
@@ -73,9 +77,8 @@ class AppBarActionState(
     val actionId: Int = nextActionId,
     val icon: ImageVector,
     @StringRes val contentDescriptionResId: Int,
-    val onClick: (() -> Unit)
+    val onClick: (() -> Unit),
 ) {
-
     override fun equals(other: Any?): Boolean {
         return other is AppBarActionState && other.actionId == actionId
     }
@@ -100,5 +103,5 @@ class AppBarActionState(
 data class AppBarSearchState(
     val isSearchEnabled: Boolean = false,
     val currentText: String = "",
-    val onQueryChanged: ((String) -> Unit)? = null
+    val onQueryChanged: ((String) -> Unit)? = null,
 )
